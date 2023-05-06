@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robsic/src/core/ui/organisms/appbar_organism.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,14 +12,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
+      appBar: AppBarOrganism(),
       body: const Center(
         child: Text(
           'Home Page',
         ),
       ),
+      floatingActionButton:
+          FloatingActionButton(child: Icon(Icons.add), onPressed: () {}),
     );
   }
 }
