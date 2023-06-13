@@ -1,0 +1,27 @@
+part of './app_theme.dart';
+
+const ColorScheme _appColorScheme = ColorScheme(
+  brightness: Brightness.light,
+  primary: TokenColors.primary,
+  onPrimary: TokenColors.gray50,
+  primaryContainer: TokenColors.primary60,
+  onPrimaryContainer: TokenColors.gray900,
+  secondary: TokenColors.secondary,
+  onSecondary: TokenColors.gray50,
+  secondaryContainer: TokenColors.secondary60,
+  tertiary: TokenColors.emphasis,
+  onTertiary: TokenColors.gray50,
+  tertiaryContainer: TokenColors.emphasis60,
+  onTertiaryContainer: TokenColors.gray900,
+  error: TokenColors.alert,
+  onError: TokenColors.gray50,
+  errorContainer: TokenColors.alert60,
+  onErrorContainer: TokenColors.gray900,
+  background: TokenColors.gray100,
+  onBackground: TokenColors.gray900,
+  surface: TokenColors.gray100,
+  onSurface: TokenColors.gray900,
+  outline: TokenColors.primary40,
+  surfaceVariant: TokenColors.primary40,
+  onSurfaceVariant: TokenColors.gray600,
+);
