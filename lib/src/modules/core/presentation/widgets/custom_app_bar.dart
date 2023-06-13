@@ -1,0 +1,90 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:robsic/src/core/ui/templates/appbar_template.dart';
+import 'package:robsic/src/core/utils/responsive_utils.dart';
+
+import '../../../../core/constants/routes.dart';
+import '../../../../core/ui/atoms/atoms.dart';
+import '../../../../core/ui/molecules/molecules.dart';
+import '../../../../core/ui/tokens/tokens.dart';
+
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
+  const CustomAppBar({
+    super.key,
+    this.height = 90.0,
+  });
+
+  final double height;
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+
+  @override
+  Size get preferredSize => Size.fromHeight(height);
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  late bool isDesktop;
+  @override
+  Widget build(BuildContext context) {
+    isDesktop = ResponsiveUtils.isDesktop(context);
+    return AppbarTemplate(
+      height: widget.height,
+      leading: Row(
+        children: [
+          InkWell(
+            child: const Image(
+                image: ImagesAsset.robsicLogo, fit: BoxFit.fitHeight),
+            onTap: () => context.go(Routes.home),
+          ),
+          const SpaceAtom(
+              spaceType: SpaceType.horizontal, value: TokenSpaces.lg),
+          const Image(
+              image: ImagesAsset.assinHorUnifeiPos, fit: BoxFit.fitHeight),
+        ],
+      ),
+      trailing: Visibility(
+        visible: MediaQuery.of(context).size.width < 1100.0,
+        child: IconButton(
+          onPressed: () {
+            Scaffold.of(context).openEndDrawer();
+          },
+          icon: const Icon(Icons.menu),
+        ),
+      ),
+      child: MediaQuery.of(context).size.width >= 1100.0
+          ? Row(
+              children: [
+                AppbarMenuMolecule(
+                  label: 'About-us',
+                  onPressed: () => context.go(Routes.about),
+                  isSelected: true,
+                ),
+                const SizedBox(width: TokenSpaces.lg),
+                AppbarMenuMolecule(
+                    label: 'Members',
+                    onPressed: () => context.go(Routes.members)),
+                const SizedBox(width: TokenSpaces.lg),
+                AppbarMenuMolecule(
+                  label: 'Projects',
+                  onPressed: () => context.go(Routes.projects),
+                ),
+                const SizedBox(width: TokenSpaces.lg),
+                AppbarMenuMolecule(
+                  label: 'Publications',
+                  onPressed: () => context.go(Routes.publications),
+                ),
+                const SpaceAtom(
+                  spaceType: SpaceType.horizontal,
+                  value: TokenSpaces.md,
+                ),
+                OutlinedButtonMolecule(
+                  label: LabelAtom(text: 'contact us'.toUpperCase()),
+                  onPressed: () => context.go(Routes.contact),
+                ),
+              ],
+            )
+          : null,
+    );
+  }
+}
