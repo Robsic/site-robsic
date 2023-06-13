@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class OutlinedButtonMolecule extends StatelessWidget {
-  const OutlinedButtonMolecule({
+class ElevatedButtonMolecule extends StatelessWidget {
+  const ElevatedButtonMolecule({
     super.key,
     this.onPressed,
     this.label,
@@ -12,7 +12,7 @@ class OutlinedButtonMolecule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
+    return ElevatedButton(
       onPressed: onPressed,
       child: label,
     );
