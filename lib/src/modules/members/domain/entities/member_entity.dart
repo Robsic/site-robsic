@@ -1,7 +1,9 @@
+import 'package:robsic/src/modules/core/core.dart';
+
 class MemberEntity {
   final String name;
   final String role;
-  final String phothoUrl;
+  final ImageEntity photo;
   final String description;
   final String orcidUrl;
   final String lattesUrl;
@@ -10,7 +12,7 @@ class MemberEntity {
   MemberEntity({
     required this.name,
     required this.role,
-    required this.phothoUrl,
+    required this.photo,
     required this.description,
     required this.orcidUrl,
     required this.lattesUrl,

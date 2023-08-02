@@ -107,13 +107,13 @@ class Membercard extends StatelessWidget {
               spaceType: SpaceType.vertical,
               value: TokenSpaces.sm,
             ),
-            Row(
+            const Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Image(image: ImagesAsset.logoLattes),
                     SpaceAtom(
                       spaceType: SpaceType.horizontal,
@@ -127,7 +127,7 @@ class Membercard extends StatelessWidget {
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Image(image: ImagesAsset.logoOrcid),
                     SpaceAtom(
                       spaceType: SpaceType.horizontal,
@@ -141,7 +141,7 @@ class Membercard extends StatelessWidget {
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Image(image: ImagesAsset.logoLinkedIn),
                     SpaceAtom(
                       spaceType: SpaceType.horizontal,

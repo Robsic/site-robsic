@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
+
 import '../../../core/core.dart';
 import '../../home.dart';
 
@@ -13,12 +14,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      endDrawer: const CustomEndDrawer(),
+    return const Scaffold(
+      appBar: CustomAppBar(),
+      endDrawer: CustomEndDrawer(),
       body: SingleChildScrollView(
         child: Column(
-          children: const [
+          children: [
             HeaderSection(),
             AreasOfExpertiseSection(),
             Divider(height: 2.0, color: Colors.green),
