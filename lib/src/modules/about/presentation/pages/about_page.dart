@@ -7,6 +7,8 @@ import 'package:robsic/src/core/ui/templates/page_template.dart';
 import 'package:robsic/src/core/ui/tokens/token_spaces.dart';
 import 'package:robsic/src/modules/about/about.dart';
 import 'package:robsic/src/modules/core/core.dart';
+import 'package:robsic/src/modules/core/presentation/widgets/page_error.dart';
+import 'package:robsic/src/modules/core/presentation/widgets/page_loading.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -32,7 +34,12 @@ class _AboutPageState extends State<AboutPage> {
       child: ValueListenableBuilder(
         valueListenable: _aboutStore,
         builder: (context, state, _) {
-          if (state is AboutStateSuccess) {
+          if (state is AboutStateFailure) {
+            return PageError(
+              errorMessage: 'Erro ao carregar a página!',
+              reloadAction: () => _aboutStore.getAboutPageData(),
+            );
+          } else if (state is AboutStateSuccess) {
             AboutPageEntity aboutPageData = state.aboutEntity;
             HeaderSectionEntity? headerSection = aboutPageData.headerSection;
             return SingleChildScrollView(
@@ -77,8 +84,9 @@ class _AboutPageState extends State<AboutPage> {
                 ],
               ),
             );
+          } else {
+            return const PageLoading();
           }
-          return const Center();
         },
       ),
     );
