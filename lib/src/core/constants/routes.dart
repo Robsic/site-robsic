@@ -1,6 +1,5 @@
 class Routes {
   Routes._internal();
-  //static const String initialRoute = '/';
   static const String about = '/about';
   static const String contact = '/contact';
   static const String home = '/';

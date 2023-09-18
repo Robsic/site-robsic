@@ -4,14 +4,14 @@ import 'package:robsic/src/modules/core/domain/entities/image_entity.dart';
 class AboutPageEntity {
   final HeaderSectionEntity? headerSection;
   final String? title;
-  final String? intoduction;
+  final String? introduction;
   final List<ImageEntity>? images;
   final String? moreAbout;
 
   const AboutPageEntity({
     this.headerSection,
     this.title,
-    this.intoduction,
+    this.introduction,
     this.images,
     this.moreAbout,
   });

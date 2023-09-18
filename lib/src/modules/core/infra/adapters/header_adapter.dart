@@ -11,7 +11,10 @@ class HeaderAdapter {
         content: map['content'] ?? '',
       );
     } on FormatException catch (error, stackTrace) {
-      throw (FormatExceptionFailure(error: error, stackTrace: stackTrace));
+      throw (FormatExceptionFailure(
+        error: error,
+        stackTrace: stackTrace,
+      ));
     }
   }
 }

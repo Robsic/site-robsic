@@ -13,7 +13,7 @@ class AboutPageAdapter {
         headerSection:
             map['header'] != null ? HeaderAdapter.fromMap(map['header']) : null,
         title: map['title'],
-        intoduction: map['introduction'],
+        introduction: map['introduction'],
         images: map['images']?['data'] != null
             ? ImageAdapter.fromList(map['images']['data'])
             : null,
