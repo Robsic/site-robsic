@@ -72,6 +72,18 @@ class _AboutPageState extends State<AboutPage> {
                             text: aboutPageData.introduction ?? '',
                             textStyle: Theme.of(context).textTheme.bodyLarge,
                           ),
+                          if (aboutPageData.images?.isNotEmpty ?? false)
+                            ConstrainedBox(
+                              constraints:
+                                  const BoxConstraints(maxHeight: 600.0),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: TokenSpaces.lg,
+                                ),
+                                child: CarouselWidget(
+                                    images: aboutPageData.images!),
+                              ),
+                            ),
                           BodyTextAtom(
                             text: aboutPageData.moreAbout ?? '',
                             textStyle: Theme.of(context).textTheme.bodyLarge,
