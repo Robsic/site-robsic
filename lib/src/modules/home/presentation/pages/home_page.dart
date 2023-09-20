@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:robsic/main.dart';
-import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/page_error.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/page_loading.dart';
-import 'package:robsic/src/modules/home/domain/domain.dart';
-import 'package:robsic/src/modules/home/presentation/stores/home_states.dart';
-import 'package:robsic/src/modules/home/presentation/stores/home_store.dart';
+import 'package:robsic/src/core/core.dart';
 
 import '../../../core/core.dart';
+import '../../domain/domain.dart';
 import '../../home.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,6 +45,8 @@ class _HomePageState extends State<HomePage> {
                 homePageData.projectsSection;
             ContentWithImageSectionEntity? membersSectionData =
                 homePageData.membersSection;
+            BasicContentSectionEntity? papersSectionData =
+                homePageData.publicationsSection;
 
             return SingleChildScrollView(
               child: Column(
@@ -62,7 +60,9 @@ class _HomePageState extends State<HomePage> {
                   const Divider(height: 2.0, color: Colors.green),
                   MembersSection(membersSectionData: membersSectionData),
                   const Divider(height: 2.0, color: Colors.green),
-                  const PapersSection(),
+                  PapersSection(
+                    papersSectionData: papersSectionData,
+                  ),
                   const FooterOrganism()
                 ],
               ),

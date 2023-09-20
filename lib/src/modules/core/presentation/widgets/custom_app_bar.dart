@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:robsic/src/core/ui/templates/appbar_template.dart';
-import 'package:robsic/src/core/utils/responsive_utils.dart';
-
-import '../../../../core/constants/routes.dart';
-import '../../../../core/ui/atoms/atoms.dart';
-import '../../../../core/ui/molecules/molecules.dart';
-import '../../../../core/ui/tokens/tokens.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/core/core.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -25,6 +21,15 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _CustomAppBarState extends State<CustomAppBar> {
   late bool isDesktop;
+
+  late final LaunchUrlService _launchUrlService;
+
+  @override
+  void initState() {
+    super.initState();
+    _launchUrlService = serviceLocator.get<LaunchUrlService>();
+  }
+
   @override
   Widget build(BuildContext context) {
     isDesktop = ResponsiveUtils.isDesktop(context);
@@ -34,13 +39,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
         children: [
           InkWell(
             child: const Image(
-                image: ImagesAsset.robsicLogo, fit: BoxFit.fitHeight),
-            onTap: () => context.go(Routes.home),
+                image: ImagesAsset.assinHorUnifeiPos, fit: BoxFit.fitHeight),
+            onTap: () => _launchUrlService.launch(url: EndPoints.unifeiSiteUrl),
           ),
           const SpaceAtom(
               spaceType: SpaceType.horizontal, value: TokenSpaces.lg),
-          const Image(
-              image: ImagesAsset.assinHorUnifeiPos, fit: BoxFit.fitHeight),
+          InkWell(
+            child: const Image(
+                image: ImagesAsset.robsicLogo, fit: BoxFit.fitHeight),
+            onTap: () => context.go(Routes.home),
+          ),
         ],
       ),
       trailing: Visibility(

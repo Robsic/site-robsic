@@ -12,3 +12,7 @@ class ConnectionFailure extends AppFailure {
 class FormatExceptionFailure extends AppFailure {
   const FormatExceptionFailure({super.error, super.stackTrace});
 }
+
+class UnableLaunchUrlFailure extends AppFailure {
+  const UnableLaunchUrlFailure({super.error, super.stackTrace});
+}

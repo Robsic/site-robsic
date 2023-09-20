@@ -15,13 +15,16 @@ GetIt serviceLocator = GetIt.instance;
 void initDependencies() async {
   // httpCLient
   serviceLocator.registerLazySingleton<Dio>(() => dioClient());
+
+  //services
   serviceLocator.registerLazySingleton<HttpClientService>(
       () => DioHttpService(serviceLocator.get<Dio>()));
+  serviceLocator
+      .registerLazySingleton<LaunchUrlService>(() => LaunchUrlServiceImpl());
 
   //datasources
   serviceLocator.registerLazySingleton<AboutDatasource>(
       () => AboutDatasourceImpl(serviceLocator.get<HttpClientService>()));
-
   serviceLocator.registerLazySingleton<HomeDatasource>(
       () => HomeDatasourceImpl(serviceLocator.get<HttpClientService>()));
 
