@@ -7,7 +7,7 @@ class HomeStore extends ValueNotifier<HomeState> {
 
   final GetHomeDataUsecase _getHomeDataUsecase;
 
-  Future<void> getHomeData() async {
+  Future<void> getHomePageData() async {
     value = const HomeStateLoading();
     final result = await _getHomeDataUsecase();
     result.fold(
