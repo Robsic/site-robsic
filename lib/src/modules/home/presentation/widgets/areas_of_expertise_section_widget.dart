@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robsic/src/core/constants/constants.dart';
 import 'package:robsic/src/core/utils/responsive_utils.dart';
@@ -50,7 +51,7 @@ class AreasOfExpertiseSection extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Areas of Expertise'.toUpperCase(),
+                          expertiseAreasSectionData?.title.toUpperCase() ?? '',
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge
@@ -71,7 +72,10 @@ class AreasOfExpertiseSection extends StatelessWidget {
                           },
                         )),
                         OutlinedButtonMolecule(
-                          label: LabelAtom(text: 'About Us'.toUpperCase()),
+                          label: LabelAtom(
+                              text: AppLocalizations.of(context)!
+                                  .aboutUsLabel
+                                  .toUpperCase()),
                           onPressed: () => context.go(Routes.about),
                         ),
                       ],

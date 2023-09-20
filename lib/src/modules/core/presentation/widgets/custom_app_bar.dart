@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/core/core.dart';
@@ -64,22 +65,22 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ? Row(
               children: [
                 AppbarMenuMolecule(
-                  label: 'About-us',
+                  label: AppLocalizations.of(context)!.aboutUsLabel,
                   onPressed: () => context.go(Routes.about),
                   isSelected: true,
                 ),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
-                    label: 'Members',
+                    label: AppLocalizations.of(context)!.membersLabel,
                     onPressed: () => context.go(Routes.members)),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
-                  label: 'Projects',
+                  label: AppLocalizations.of(context)!.projectsLabel,
                   onPressed: () => context.go(Routes.projects),
                 ),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
-                  label: 'Publications',
+                  label: AppLocalizations.of(context)!.publicationsLabel,
                   onPressed: () => context.go(Routes.publications),
                 ),
                 const SpaceAtom(
@@ -87,7 +88,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   value: TokenSpaces.md,
                 ),
                 OutlinedButtonMolecule(
-                  label: LabelAtom(text: 'contact us'.toUpperCase()),
+                  label: LabelAtom(
+                      text: AppLocalizations.of(context)!
+                          .contactUsLabel
+                          .toUpperCase()),
                   onPressed: () => context.go(Routes.contact),
                 ),
               ],

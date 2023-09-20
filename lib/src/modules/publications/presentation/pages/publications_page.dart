@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/templates/page_template.dart';
 import 'package:robsic/src/modules/publications/domain/entities/publication_entity.dart';
 import 'package:robsic/src/modules/publications/presentation/widgets/publication_card_widget.dart';
 
@@ -29,8 +28,7 @@ class _PublicationsPageState extends State<PublicationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
-      appBar: const CustomAppBar(),
+    return DefaultPageScaffold(
       child: SingleChildScrollView(
         child: Column(
           children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robsic/src/core/constants/routes.dart';
 import 'package:robsic/src/core/ui/atoms/atoms.dart';
@@ -24,27 +25,27 @@ class CustomEndDrawer extends StatelessWidget {
         shrinkWrap: true,
         children: [
           DrawerMenuMolecule(
-            label: 'About-us',
+            label: AppLocalizations.of(context)!.aboutUsLabel,
             onPressed: () => context.go(Routes.about),
             isSelected: true,
           ),
           DrawerMenuMolecule(
-            label: 'Members',
+            label: AppLocalizations.of(context)!.membersLabel,
             onPressed: () => context.go(Routes.members),
           ),
           DrawerMenuMolecule(
-            label: 'Projects',
+            label: AppLocalizations.of(context)!.projectsLabel,
             onPressed: () => context.go(Routes.projects),
           ),
           DrawerMenuMolecule(
-            label: 'Publications',
+            label: AppLocalizations.of(context)!.publicationsLabel,
             onPressed: () => context.go(Routes.publications),
           ),
         ],
       ),
       footer: OutlinedButtonMolecule(
         label: LabelAtom(
-          text: 'Contact Us'.toUpperCase(),
+          text: AppLocalizations.of(context)!.contactUsLabel.toUpperCase(),
         ),
         onPressed: () => context.go(Routes.contact),
       ),

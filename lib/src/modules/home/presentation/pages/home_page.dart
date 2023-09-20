@@ -25,10 +25,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      endDrawer: const CustomEndDrawer(),
-      body: ValueListenableBuilder<HomeState>(
+    return DefaultPageScaffold(
+      child: ValueListenableBuilder<HomeState>(
         valueListenable: _homeStore,
         builder: (context, state, _) {
           if (state is HomeStateFailure) {

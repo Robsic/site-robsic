@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:robsic/src/core/constants/routes.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/core/constants/constants.dart';
 import 'package:robsic/src/core/ui/atoms/images_asset.dart';
 import 'package:robsic/src/core/ui/atoms/label_atom.dart';
 import 'package:robsic/src/core/ui/molecules/footer_link_molecule.dart';
 import 'package:robsic/src/core/utils/responsive_utils.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
 import '../tokens/tokens.dart';
 
-class FooterOrganism extends StatelessWidget {
+class FooterOrganism extends StatefulWidget {
   const FooterOrganism({
     super.key,
   });
+
+  @override
+  State<FooterOrganism> createState() => _FooterOrganismState();
+}
+
+class _FooterOrganismState extends State<FooterOrganism> {
+  late final LaunchUrlService _launchUrlService;
+
+  @override
+  void initState() {
+    super.initState();
+    _launchUrlService = serviceLocator.get<LaunchUrlService>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +53,20 @@ class FooterOrganism extends StatelessWidget {
                     children: [
                       Flexible(
                         child: InkWell(
+                          child: const Image(
+                              image: ImagesAsset.assinHorComplUnifeiNeg),
+                          onTap: () => _launchUrlService.launch(
+                              url: EndPoints.unifeiSiteUrl),
+                        ),
+                      ),
+                      const SizedBox(height: TokenSpaces.md),
+                      Flexible(
+                        child: InkWell(
                           child:
                               const Image(image: ImagesAsset.robsicLogoFullHor),
                           onTap: () => context.go(Routes.home),
                         ),
                       ),
-                      const SizedBox(height: TokenSpaces.md),
-                      const Flexible(
-                          child:
-                              Image(image: ImagesAsset.assinHorComplUnifeiNeg))
                     ],
                   ),
                 ),
@@ -71,7 +92,7 @@ class FooterOrganism extends StatelessWidget {
                           bottom: TokenSpaces.xxs,
                         ),
                         child: LabelAtom(
-                          text: 'Links',
+                          text: AppLocalizations.of(context)!.linksLabel,
                           textStyle: TokenTextStyles.titleMedium.copyWith(
                             color: TokenColors.primary,
                             fontWeight: FontWeight.bold,
@@ -80,19 +101,19 @@ class FooterOrganism extends StatelessWidget {
                       ),
                       FooterLinkMolecule(
                         onPressed: () => context.go(Routes.about),
-                        label: 'About Us',
+                        label: AppLocalizations.of(context)!.aboutUsLabel,
                       ),
                       FooterLinkMolecule(
                         onPressed: () => context.go(Routes.members),
-                        label: 'Members',
+                        label: AppLocalizations.of(context)!.membersLabel,
                       ),
                       FooterLinkMolecule(
                         onPressed: () => context.go(Routes.projects),
-                        label: 'Projects',
+                        label: AppLocalizations.of(context)!.projectsLabel,
                       ),
                       FooterLinkMolecule(
                         onPressed: () => context.go(Routes.publications),
-                        label: 'Publications',
+                        label: AppLocalizations.of(context)!.publicationsLabel,
                       ),
                     ],
                   ),
@@ -112,7 +133,7 @@ class FooterOrganism extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       LabelAtom(
-                        text: 'Address',
+                        text: AppLocalizations.of(context)!.addressLabel,
                         textStyle: Theme.of(context)
                             .textTheme
                             .titleMedium
@@ -129,7 +150,8 @@ class FooterOrganism extends StatelessWidget {
                       ),
                       const Spacer(),
                       LabelAtom(
-                        text: '© 2023 RobSIC - All rights reserved',
+                        text:
+                            '© ${DateTime.now().year} RobSIC - ${AppLocalizations.of(context)!.allRightsReservedLabel}',
                         textStyle: TokenTextStyles.bodyMedium
                             .apply(color: TokenColors.secondary),
                       ),

@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:robsic/src/core/ui/atoms/atoms.dart';
 import 'package:robsic/src/core/ui/molecules/elevated_button_molecule.dart';
 import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
-import 'package:robsic/src/core/ui/templates/page_template.dart';
 import 'package:robsic/src/core/ui/tokens/tokens.dart';
 import 'package:robsic/src/core/utils/responsive_utils.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/custom_app_bar.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
-import '../../../core/presentation/widgets/default_header_section.dart';
 import '../widgets/custom_text_form_field.dart';
 
 class ContactPage extends StatefulWidget {
@@ -22,8 +20,7 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     final bool isDesktop = ResponsiveUtils.isDesktop(context);
-    return PageTemplate(
-      appBar: const CustomAppBar(),
+    return DefaultPageScaffold(
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robsic/src/modules/home/domain/domain.dart';
 
@@ -37,7 +38,7 @@ class PapersSection extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () => context.go(Routes.publications),
                     child: Text(
-                      'Papers'.toUpperCase(),
+                      AppLocalizations.of(context)!.papersLabel.toUpperCase(),
                     ),
                   )
                 ],

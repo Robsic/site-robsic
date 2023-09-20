@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
-import 'package:robsic/src/core/ui/templates/page_template.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/default_header_section.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
 import '../../../../core/ui/tokens/tokens.dart';
 
@@ -15,7 +14,7 @@ class MembersPage extends StatefulWidget {
 class _MembersPageState extends State<MembersPage> {
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
+    return DefaultPageScaffold(
       child: SingleChildScrollView(
           child: Column(
         children: [

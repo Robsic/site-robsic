@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robsic/src/core/utils/responsive_utils.dart';
 import 'package:robsic/src/modules/home/domain/domain.dart';
@@ -53,7 +54,9 @@ class ProjectsSectionWidget extends StatelessWidget {
                                 ElevatedButton(
                                   onPressed: () => context.go(Routes.projects),
                                   child: Text(
-                                    'See Projects'.toUpperCase(),
+                                    AppLocalizations.of(context)!
+                                        .seeProjectsLabel
+                                        .toUpperCase(),
                                   ),
                                 ),
                               ],

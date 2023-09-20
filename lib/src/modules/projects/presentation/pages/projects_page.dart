@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/custom_app_bar.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/default_header_section.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
 import '../../../../core/core.dart';
 
@@ -14,8 +13,7 @@ class ProjectsPage extends StatefulWidget {
 class _ProjectsPageState extends State<ProjectsPage> {
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
-      appBar: const CustomAppBar(),
+    return DefaultPageScaffold(
       child: SingleChildScrollView(
           child: Column(
         children: [
