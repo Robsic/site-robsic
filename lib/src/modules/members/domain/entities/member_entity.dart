@@ -8,6 +8,8 @@ class MemberEntity {
   final String orcidUrl;
   final String lattesUrl;
   final String linkedinUrl;
+  final String email;
+  final bool canReceiveEmail;
 
   MemberEntity({
     required this.name,
@@ -17,5 +19,7 @@ class MemberEntity {
     required this.orcidUrl,
     required this.lattesUrl,
     required this.linkedinUrl,
+    required this.email,
+    required this.canReceiveEmail,
   });
 }

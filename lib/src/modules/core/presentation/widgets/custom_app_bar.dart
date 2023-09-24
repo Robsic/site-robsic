@@ -23,12 +23,12 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   late bool isDesktop;
 
-  late final LaunchUrlService _launchUrlService;
+  late final UrlLauncherDriver _urlLauncher;
 
   @override
   void initState() {
     super.initState();
-    _launchUrlService = serviceLocator.get<LaunchUrlService>();
+    _urlLauncher = serviceLocator.get<UrlLauncherDriver>();
   }
 
   @override
@@ -41,7 +41,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           InkWell(
             child: const Image(
                 image: ImagesAsset.assinHorUnifeiPos, fit: BoxFit.fitHeight),
-            onTap: () => _launchUrlService.launch(url: EndPoints.unifeiSiteUrl),
+            onTap: () => _urlLauncher.launchUrl(EndPoints.unifeiSiteUrl),
           ),
           const SpaceAtom(
               spaceType: SpaceType.horizontal, value: TokenSpaces.lg),

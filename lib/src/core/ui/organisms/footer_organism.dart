@@ -21,12 +21,12 @@ class FooterOrganism extends StatefulWidget {
 }
 
 class _FooterOrganismState extends State<FooterOrganism> {
-  late final LaunchUrlService _launchUrlService;
+  late final UrlLauncherDriver _urlLauncher;
 
   @override
   void initState() {
     super.initState();
-    _launchUrlService = serviceLocator.get<LaunchUrlService>();
+    _urlLauncher = serviceLocator.get<UrlLauncherDriver>();
   }
 
   @override
@@ -55,8 +55,8 @@ class _FooterOrganismState extends State<FooterOrganism> {
                         child: InkWell(
                           child: const Image(
                               image: ImagesAsset.assinHorComplUnifeiNeg),
-                          onTap: () => _launchUrlService.launch(
-                              url: EndPoints.unifeiSiteUrl),
+                          onTap: () =>
+                              _urlLauncher.launchUrl(EndPoints.unifeiSiteUrl),
                         ),
                       ),
                       const SizedBox(height: TokenSpaces.md),

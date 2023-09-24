@@ -9,5 +9,9 @@
   "ourMembersLabel": "Nossos Membros",
   "seeProjectsLabel": "Ver Projetos",
   "papersLabel": "Artigos",
-  "allRightsReservedLabel": "Todos os direitos reservados"   
+  "allRightsReservedLabel": "Todos os direitos reservados" ,
+  "lattesLabel": "Lattes",
+  "orcidLabel": "Orcid",
+  "linkedinLabel": "Linkedin",
+  "sendEmailLabel": "Enviar email"   
 }

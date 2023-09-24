@@ -15,6 +15,8 @@ class MemberAdapter {
         lattesUrl: map['lattes'] ?? '',
         orcidUrl: map['orcid'] ?? '',
         linkedinUrl: map['linkedin'] ?? '',
+        email: map['email'] ?? '',
+        canReceiveEmail: map['can_receive_email'] ?? false,
         photo: ImageAdapter.fromMap(map['photo']['data']['attributes']),
       );
     } on AppFailure {
