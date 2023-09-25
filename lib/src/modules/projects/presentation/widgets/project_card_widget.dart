@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/atoms/atoms.dart';
-import 'package:robsic/src/core/ui/molecules/molecules.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:robsic/src/core/core.dart';
 
-import '../../../../core/ui/tokens/tokens.dart';
 import '../../domain/entities/project_entity.dart';
 
 class Projectcard extends StatelessWidget {
@@ -25,9 +24,8 @@ class Projectcard extends StatelessWidget {
               child: SizedBox(
                 height: double.infinity,
                 child: CachedNetworkImage(
-                  imageUrl:
-                      'https://images.unsplash.com/photo-1559758045-8ce743f79096?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-                  fit: BoxFit.fitHeight,
+                  imageUrl: EndPoints.baseUrl + project.image.url,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -116,7 +114,10 @@ class Projectcard extends StatelessWidget {
                   Row(
                     children: [
                       ElevatedButtonMolecule(
-                        label: LabelAtom(text: 'Get Access'.toUpperCase()),
+                        label: LabelAtom(
+                            text: AppLocalizations.of(context)!
+                                .seeDetailsLabel
+                                .toUpperCase()),
                         onPressed: () {},
                       ),
                     ],

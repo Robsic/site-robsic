@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/core/core.dart';
 
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state, _) {
           if (state is HomeStateFailure) {
             return PageError(
-              errorMessage: 'Erro ao carregar a página!',
+              errorMessage: AppLocalizations.of(context)!.errorLoadingPage,
               reloadAction: () => _homeStore.getHomePageData(),
             );
           } else if (state is HomeStateSuccess) {

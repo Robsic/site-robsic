@@ -13,5 +13,9 @@
   "lattesLabel": "Lattes",
   "orcidLabel": "Orcid",
   "linkedinLabel": "Linkedin",
-  "sendEmailLabel": "Send email" 
+  "sendEmailLabel": "Send email",
+  "errorLoadingPage": "Error loading page!",
+  "errorLoadingMembersList": "Error loading members list!",
+  "errorLoadingProjectsList": "Error loading projects list!",
+  "seeDetailsLabel": "See Details"
 }

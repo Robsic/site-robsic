@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/modules/core/core.dart';
 import 'package:robsic/src/modules/members/domain/domain.dart';
@@ -21,12 +22,7 @@ class _MembersPageState extends State<MembersPage> {
   void initState() {
     super.initState();
     _membersStore = serviceLocator.get<MembersStore>();
-    _getMembersPageData();
-  }
-
-  Future<void> _getMembersPageData() async {
-    await _membersStore.getMembersData();
-    await _membersStore.getMembersList();
+    _membersStore.getMembersData();
   }
 
   @override
@@ -37,7 +33,7 @@ class _MembersPageState extends State<MembersPage> {
           builder: (context, state, _) {
             if (state is MembersStateFailure) {
               return PageError(
-                errorMessage: 'Erro ao carregar a página!',
+                errorMessage: AppLocalizations.of(context)!.errorLoadingPage,
                 reloadAction: () => _membersStore.getMembersData(),
               );
             } else if (state is MembersStateSuccess) {
@@ -55,8 +51,8 @@ class _MembersPageState extends State<MembersPage> {
                       builder: (context, stateList, _) {
                         if (stateList is MembersListStateFailure) {
                           return PageError(
-                            errorMessage:
-                                'Erro ao carregar a lista de membros!',
+                            errorMessage: AppLocalizations.of(context)!
+                                .errorLoadingMembersList,
                             reloadAction: () => _membersStore.getMembersList(),
                           );
                         } else if (stateList is MembersListStateSuccess) {

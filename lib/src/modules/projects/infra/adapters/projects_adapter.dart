@@ -9,7 +9,7 @@ class ProjectsAdapter {
 
   static ProjectsEntity fromMap(Map<String, dynamic> map) {
     try {
-      return ProjectsEntity(header: HeaderAdapter.fromMap(map));
+      return ProjectsEntity(header: HeaderAdapter.fromMap(map['header']));
     } on AppFailure {
       rethrow;
     } on FormatException catch (error, stackTrace) {

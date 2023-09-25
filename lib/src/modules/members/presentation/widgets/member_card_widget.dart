@@ -40,7 +40,7 @@ class _MembercardState extends State<Membercard> {
       child: Container(
         padding: const EdgeInsets.all(TokenSpaces.lg),
         constraints: const BoxConstraints(
-          maxWidth: 400.0,
+          maxWidth: 350.0,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

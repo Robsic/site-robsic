@@ -9,12 +9,13 @@ class ProjectAdapter {
   static ProjectEntity fromMap(Map<String, dynamic> map) {
     try {
       return ProjectEntity(
-        name: map['name'],
-        category: map['category'],
-        description: map['description'],
+        name: map['name'] ?? '',
+        category: map['category'] ?? '',
+        description: map['description'] ?? '',
         startDate: DateTime.parse(map['start_date']),
-        endDate: DateTime.parse(map['end_date']),
-        image: ImageAdapter.fromList(map['images']['data']['attributes']).first,
+        endDate:
+            map['end_date'] != null ? DateTime.parse(map['end_date']) : null,
+        image: ImageAdapter.fromList(map['images']['data']).first,
       );
     } on AppFailure {
       rethrow;
@@ -28,7 +29,9 @@ class ProjectAdapter {
 
   static List<ProjectEntity> fromList(List list) {
     try {
-      return list.map((project) => fromMap(project['attributes'])).toList();
+      return list.map((project) {
+        return fromMap(project['attributes']);
+      }).toList();
     } on AppFailure {
       rethrow;
     } on FormatException catch (error, stackTrace) {

@@ -13,6 +13,10 @@ import 'package:robsic/src/modules/members/domain/domain.dart';
 import 'package:robsic/src/modules/members/external/datasources/datasources.dart';
 import 'package:robsic/src/modules/members/infra/infra.dart';
 import 'package:robsic/src/modules/members/presentation/stores/members_store.dart';
+import 'package:robsic/src/modules/projects/domain/domain.dart';
+import 'package:robsic/src/modules/projects/external/datasources/datasources.dart';
+import 'package:robsic/src/modules/projects/infra/infra.dart';
+import 'package:robsic/src/modules/projects/presentation/stores/projects_store.dart';
 
 GetIt serviceLocator = GetIt.instance;
 
@@ -33,6 +37,8 @@ void initDependencies() async {
       () => HomeDatasourceImpl(serviceLocator.get<HttpClientService>()));
   serviceLocator.registerLazySingleton<MembersDatasource>(
       () => MembersDatasourceImpl(serviceLocator.get<HttpClientService>()));
+  serviceLocator.registerLazySingleton<ProjectsDatasource>(
+      () => ProjectsDatasourceImpl(serviceLocator.get<HttpClientService>()));
 
   //repositories
   serviceLocator.registerLazySingleton<AboutRepository>(
@@ -41,6 +47,8 @@ void initDependencies() async {
       () => HomeRepositoryImpl(serviceLocator.get<HomeDatasource>()));
   serviceLocator.registerLazySingleton<MembersRepository>(
       () => MembersRepositoryImpl(serviceLocator.get<MembersDatasource>()));
+  serviceLocator.registerLazySingleton<ProjectsRepository>(
+      () => ProjectsRepositoryImpl(serviceLocator.get<ProjectsDatasource>()));
 
   //usecases
   serviceLocator.registerLazySingleton<GetAboutPageDataUsecase>(
@@ -51,6 +59,10 @@ void initDependencies() async {
       () => GetMembersDataUsecase(serviceLocator.get<MembersRepository>()));
   serviceLocator.registerLazySingleton<GetMembersListUsecase>(
       () => GetMembersListUsecase(serviceLocator.get<MembersRepository>()));
+  serviceLocator.registerLazySingleton<GetProjectsDataUsecase>(
+      () => GetProjectsDataUsecase(serviceLocator.get<ProjectsRepository>()));
+  serviceLocator.registerLazySingleton<GetProjectsListUsecase>(
+      () => GetProjectsListUsecase(serviceLocator.get<ProjectsRepository>()));
 
   //stores
   serviceLocator.registerSingleton<AboutStore>(
@@ -60,6 +72,9 @@ void initDependencies() async {
   serviceLocator.registerLazySingleton<MembersStore>(() => MembersStore(
       serviceLocator.get<GetMembersDataUsecase>(),
       serviceLocator.get<GetMembersListUsecase>()));
+  serviceLocator.registerLazySingleton<ProjectsStore>(() => ProjectsStore(
+      serviceLocator.get<GetProjectsDataUsecase>(),
+      serviceLocator.get<GetProjectsListUsecase>()));
 }
 
 void main() {
