@@ -8,7 +8,7 @@ class EndPoints {
   static const String contact =
       '/api/contact-page?populate=header&populate=image';
   static const String home =
-      '/api/home-page?populate[header][populate]=*&populate[expertise_areas_section][populate]=*&populate[projects_section][populate]=*&populate[members_section][populate]=*&populate[publications_section][populate]=*';
+      '/api/home-page?populate[header][populate]=*&populate[expertise_areas_section][populate]=*&populate[projects_section][populate]=*&populate[members_section][populate]=*&populate[publications_section][populate]=*&populate[partnerships_section][populate]=*';
   static const String members = '/api/members-page?populate=header';
   static const String membersList = '/api/members?populate=photo';
   static const String projects = '/api/projects-page?populate=header';

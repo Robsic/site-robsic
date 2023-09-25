@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/core/core.dart';
+import 'package:robsic/src/modules/home/presentation/widgets/partnerships_section_widget.dart';
 
 import '../../../core/core.dart';
 import '../../domain/domain.dart';
@@ -46,6 +47,8 @@ class _HomePageState extends State<HomePage> {
                 homePageData.membersSection;
             BasicContentSectionEntity? papersSectionData =
                 homePageData.publicationsSection;
+            PartnershipsSectionEntity? partnershipsSectionData =
+                homePageData.partnershipsSection;
 
             return SingleChildScrollView(
               child: Column(
@@ -61,6 +64,10 @@ class _HomePageState extends State<HomePage> {
                   const Divider(height: 2.0, color: Colors.green),
                   PapersSection(
                     papersSectionData: papersSectionData,
+                  ),
+                  const Divider(height: 2.0, color: Colors.green),
+                  PartnershipsSection(
+                    partnershipsSectionData: partnershipsSectionData,
                   ),
                   const FooterOrganism()
                 ],

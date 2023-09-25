@@ -7,14 +7,14 @@ import '../../domain/domain.dart';
 class PartnershipsSection extends StatelessWidget {
   const PartnershipsSection({
     super.key,
-    this.partnershipsSection,
+    this.partnershipsSectionData,
   });
 
-  final PartnershipsSectionEntity? partnershipsSection;
+  final PartnershipsSectionEntity? partnershipsSectionData;
 
   @override
   Widget build(BuildContext context) {
-    return partnershipsSection != null
+    return partnershipsSectionData != null
         ? Container(
             color: TokenColors.secondary20,
             constraints: const BoxConstraints(
@@ -28,7 +28,7 @@ class PartnershipsSection extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SectionTitleMolecule(
-                        title: partnershipsSection!.title ?? '',
+                        title: partnershipsSectionData!.title ?? '',
                         sectionTitleStyle: SectionTitleStyle.onLightBackground,
                       ),
                     ],
@@ -39,18 +39,16 @@ class PartnershipsSection extends StatelessWidget {
                     child: Center(
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: partnershipsSection!.images?.length,
+                        itemCount: partnershipsSectionData!.images?.length,
                         itemBuilder: (context, index) {
-                          final partner = partnershipsSection!.images?[index];
+                          final partner =
+                              partnershipsSectionData!.images?[index];
                           return SizedBox(
                             height: 150.0,
                             width: 300.0,
                             child: CachedNetworkImage(
                               imageUrl:
                                   '${EndPoints.baseUrl}${partner?.url ?? ''}',
-                              httpHeaders: const {
-                                'ngrok-skip-browser-warning': '1234'
-                              },
                               fit: BoxFit.contain,
                             ),
                           );
