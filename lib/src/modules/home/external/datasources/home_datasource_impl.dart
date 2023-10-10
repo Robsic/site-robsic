@@ -13,7 +13,7 @@ class HomeDatasourceImpl implements HomeDatasource {
   @override
   Future<Map<String, dynamic>> getHomeData() async {
     try {
-      const path = "${EndPoints.home}&locale=pt-BR";
+      const path = EndPoints.home;
       final response = await httpClient.get(path);
       return response['data']?["attributes"] ?? {};
     } on AppFailure {

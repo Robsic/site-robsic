@@ -22,10 +22,12 @@ class FooterOrganism extends StatefulWidget {
 
 class _FooterOrganismState extends State<FooterOrganism> {
   late final UrlLauncherDriver _urlLauncher;
+  late final AppMenusStore _appMenusStore;
 
   @override
   void initState() {
     super.initState();
+    _appMenusStore = serviceLocator.get<AppMenusStore>();
     _urlLauncher = serviceLocator.get<UrlLauncherDriver>();
   }
 
@@ -64,7 +66,10 @@ class _FooterOrganismState extends State<FooterOrganism> {
                         child: InkWell(
                           child:
                               const Image(image: ImagesAsset.robsicLogoFullHor),
-                          onTap: () => context.go(Routes.home),
+                          onTap: () {
+                            _appMenusStore.setMenu(AppMenus.home);
+                            context.go(Routes.home);
+                          },
                         ),
                       ),
                     ],
@@ -100,19 +105,31 @@ class _FooterOrganismState extends State<FooterOrganism> {
                         ),
                       ),
                       FooterLinkMolecule(
-                        onPressed: () => context.go(Routes.about),
+                        onPressed: () {
+                          _appMenusStore.setMenu(AppMenus.about);
+                          context.go(Routes.about);
+                        },
                         label: AppLocalizations.of(context)!.aboutUsLabel,
                       ),
                       FooterLinkMolecule(
-                        onPressed: () => context.go(Routes.members),
+                        onPressed: () {
+                          _appMenusStore.setMenu(AppMenus.members);
+                          context.go(Routes.members);
+                        },
                         label: AppLocalizations.of(context)!.membersLabel,
                       ),
                       FooterLinkMolecule(
-                        onPressed: () => context.go(Routes.projects),
+                        onPressed: () {
+                          _appMenusStore.setMenu(AppMenus.projects);
+                          context.go(Routes.projects);
+                        },
                         label: AppLocalizations.of(context)!.projectsLabel,
                       ),
                       FooterLinkMolecule(
-                        onPressed: () => context.go(Routes.publications),
+                        onPressed: () {
+                          _appMenusStore.setMenu(AppMenus.publications);
+                          context.go(Routes.publications);
+                        },
                         label: AppLocalizations.of(context)!.publicationsLabel,
                       ),
                     ],

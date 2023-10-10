@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/core/ui/atoms/body_text_atom.dart';
 import 'package:robsic/src/core/ui/atoms/label_atom.dart';
 import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
@@ -16,12 +17,23 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   late final AboutStore _aboutStore;
+  late final AppStore _appStore;
 
   @override
   void initState() {
     super.initState();
+    _appStore = serviceLocator.get<AppStore>();
+    _appStore.addListener(_reloadData);
     _aboutStore = serviceLocator.get<AboutStore>();
     _aboutStore.getAboutPageData();
+  }
+
+  void _reloadData() => _aboutStore.getAboutPageData();
+
+  @override
+  void dispose() {
+    _appStore.removeListener(_reloadData);
+    super.dispose();
   }
 
   @override

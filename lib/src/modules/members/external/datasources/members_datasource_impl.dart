@@ -13,7 +13,7 @@ class MembersDatasourceImpl implements MembersDatasource {
   @override
   Future<Map<String, dynamic>> getMembersData() async {
     try {
-      const path = "${EndPoints.members}&locale=pt-BR";
+      const path = EndPoints.members;
       final response = await _clientHttp.get(path);
       return response['data']?["attributes"] ?? {};
     } catch (error) {
@@ -25,7 +25,7 @@ class MembersDatasourceImpl implements MembersDatasource {
   @override
   Future<Map<String, dynamic>> getMembersList() async {
     try {
-      const path = "${EndPoints.membersList}&locale=pt-BR";
+      const path = EndPoints.membersList;
       final response = await _clientHttp.get(path);
       return response;
     } catch (error) {

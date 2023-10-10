@@ -13,7 +13,7 @@ class ProjectsDatasourceImpl implements ProjectsDatasource {
   @override
   Future<Map<String, dynamic>> getProjectsData() async {
     try {
-      const path = "${EndPoints.projects}&locale=pt-BR";
+      const path = EndPoints.projects;
       final response = await _clientHttp.get(path);
       return response['data']?["attributes"] ?? {};
     } catch (error) {
@@ -25,7 +25,7 @@ class ProjectsDatasourceImpl implements ProjectsDatasource {
   @override
   Future<Map<String, dynamic>> getProjectsList() async {
     try {
-      const path = "${EndPoints.projectsList}&locale=pt-BR";
+      const path = EndPoints.projectsList;
       final response = await _clientHttp.get(path);
       return response;
     } catch (error) {

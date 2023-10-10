@@ -9,8 +9,7 @@ class ContactDatasourceImpl implements ContactDatasource {
   @override
   Future<Map<String, dynamic>> getContactpageData() async {
     try {
-      final response =
-          await _httpClient.get('${EndPoints.contact}&locale=pt-BR');
+      final response = await _httpClient.get(EndPoints.contact);
       return response['data']?["attributes"] ?? {};
     } on AppFailure {
       rethrow;

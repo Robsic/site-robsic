@@ -23,11 +23,13 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   late bool isDesktop;
 
+  late final AppMenusStore _appMenusStore;
   late final UrlLauncherDriver _urlLauncher;
 
   @override
   void initState() {
     super.initState();
+    _appMenusStore = serviceLocator.get<AppMenusStore>();
     _urlLauncher = serviceLocator.get<UrlLauncherDriver>();
   }
 
@@ -48,12 +50,15 @@ class _CustomAppBarState extends State<CustomAppBar> {
           InkWell(
             child: const Image(
                 image: ImagesAsset.robsicLogo, fit: BoxFit.fitHeight),
-            onTap: () => context.go(Routes.home),
+            onTap: () {
+              _appMenusStore.setMenu(AppMenus.home);
+              context.go(Routes.home);
+            },
           ),
         ],
       ),
       trailing: Visibility(
-        visible: MediaQuery.of(context).size.width < 1100.0,
+        visible: MediaQuery.of(context).size.width < 1200.0,
         child: IconButton(
           onPressed: () {
             Scaffold.of(context).openEndDrawer();
@@ -61,28 +66,41 @@ class _CustomAppBarState extends State<CustomAppBar> {
           icon: const Icon(Icons.menu),
         ),
       ),
-      child: MediaQuery.of(context).size.width >= 1100.0
+      child: MediaQuery.of(context).size.width >= 1200.0
           ? Row(
               children: [
                 AppbarMenuMolecule(
                   label: AppLocalizations.of(context)!.aboutUsLabel,
-                  onPressed: () => context.go(Routes.about),
-                  isSelected: true,
+                  onPressed: () {
+                    _appMenusStore.setMenu(AppMenus.about);
+                    context.go(Routes.about);
+                  },
+                  isSelected: _appMenusStore.isAboutPage,
                 ),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
                     label: AppLocalizations.of(context)!.membersLabel,
-                    onPressed: () => context.go(Routes.members)),
+                    onPressed: () {
+                      _appMenusStore.setMenu(AppMenus.members);
+                      context.go(Routes.members);
+                    },
+                    isSelected: _appMenusStore.isMembersPage),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
-                  label: AppLocalizations.of(context)!.projectsLabel,
-                  onPressed: () => context.go(Routes.projects),
-                ),
+                    label: AppLocalizations.of(context)!.projectsLabel,
+                    onPressed: () {
+                      _appMenusStore.setMenu(AppMenus.projects);
+                      context.go(Routes.projects);
+                    },
+                    isSelected: _appMenusStore.isProjectsPage),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
-                  label: AppLocalizations.of(context)!.publicationsLabel,
-                  onPressed: () => context.go(Routes.publications),
-                ),
+                    label: AppLocalizations.of(context)!.publicationsLabel,
+                    onPressed: () {
+                      _appMenusStore.setMenu(AppMenus.publications);
+                      context.go(Routes.publications);
+                    },
+                    isSelected: _appMenusStore.isPublicationsPage),
                 const SpaceAtom(
                   spaceType: SpaceType.horizontal,
                   value: TokenSpaces.md,
@@ -92,8 +110,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       text: AppLocalizations.of(context)!
                           .contactUsLabel
                           .toUpperCase()),
-                  onPressed: () => context.go(Routes.contact),
+                  onPressed: () {
+                    _appMenusStore.setMenu(AppMenus.contact);
+                    context.go(Routes.contact);
+                  },
                 ),
+                const SpaceAtom(
+                  spaceType: SpaceType.horizontal,
+                  value: TokenSpaces.md,
+                ),
+                const SelectLanguage(),
               ],
             )
           : null,

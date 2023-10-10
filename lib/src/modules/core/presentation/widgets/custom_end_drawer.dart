@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:robsic/src/core/constants/routes.dart';
-import 'package:robsic/src/core/ui/atoms/atoms.dart';
-import 'package:robsic/src/core/ui/templates/drawer_template.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/core/core.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
-import '../../../../core/ui/molecules/molecules.dart';
-
-class CustomEndDrawer extends StatelessWidget {
+class CustomEndDrawer extends StatefulWidget {
   const CustomEndDrawer({super.key});
+
+  @override
+  State<CustomEndDrawer> createState() => _CustomEndDrawerState();
+}
+
+class _CustomEndDrawerState extends State<CustomEndDrawer> {
+  late final AppMenusStore _appMenusStore;
+
+  @override
+  void initState() {
+    super.initState();
+    _appMenusStore = serviceLocator.get<AppMenusStore>();
+  }
 
   @override
   Widget build(BuildContext context) {
     return DrawerTemplate(
       header: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
             onPressed: () => Navigator.of(context).maybePop(),
             icon: const Icon(Icons.arrow_back),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: TokenSpaces.lg),
+            child: SelectLanguage(),
           )
         ],
       ),
@@ -26,20 +42,35 @@ class CustomEndDrawer extends StatelessWidget {
         children: [
           DrawerMenuMolecule(
             label: AppLocalizations.of(context)!.aboutUsLabel,
-            onPressed: () => context.go(Routes.about),
-            isSelected: true,
+            onPressed: () {
+              _appMenusStore.setMenu(AppMenus.about);
+              context.go(Routes.about);
+            },
+            isSelected: _appMenusStore.isAboutPage,
           ),
           DrawerMenuMolecule(
             label: AppLocalizations.of(context)!.membersLabel,
-            onPressed: () => context.go(Routes.members),
+            onPressed: () {
+              _appMenusStore.setMenu(AppMenus.members);
+              context.go(Routes.members);
+            },
+            isSelected: _appMenusStore.isMembersPage,
           ),
           DrawerMenuMolecule(
             label: AppLocalizations.of(context)!.projectsLabel,
-            onPressed: () => context.go(Routes.projects),
+            onPressed: () {
+              _appMenusStore.setMenu(AppMenus.projects);
+              context.go(Routes.projects);
+            },
+            isSelected: _appMenusStore.isProjectsPage,
           ),
           DrawerMenuMolecule(
             label: AppLocalizations.of(context)!.publicationsLabel,
-            onPressed: () => context.go(Routes.publications),
+            onPressed: () {
+              _appMenusStore.setMenu(AppMenus.publications);
+              context.go(Routes.publications);
+            },
+            isSelected: _appMenusStore.isPublicationsPage,
           ),
         ],
       ),
@@ -47,7 +78,10 @@ class CustomEndDrawer extends StatelessWidget {
         label: LabelAtom(
           text: AppLocalizations.of(context)!.contactUsLabel.toUpperCase(),
         ),
-        onPressed: () => context.go(Routes.contact),
+        onPressed: () {
+          _appMenusStore.setMenu(AppMenus.contact);
+          context.go(Routes.contact);
+        },
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:robsic/src/app.dart';
+import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/core/core.dart';
 import 'package:robsic/src/modules/about/about.dart';
 import 'package:robsic/src/modules/core/core.dart';
@@ -65,6 +66,8 @@ void initDependencies() async {
       () => GetProjectsListUsecase(serviceLocator.get<ProjectsRepository>()));
 
   //stores
+  serviceLocator.registerSingleton<AppStore>(AppStore());
+  serviceLocator.registerSingleton<AppMenusStore>(AppMenusStore());
   serviceLocator.registerSingleton<AboutStore>(
       AboutStore(serviceLocator.get<GetAboutPageDataUsecase>()));
   serviceLocator.registerLazySingleton<HomeStore>(

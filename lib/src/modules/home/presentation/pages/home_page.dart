@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/core/core.dart';
 import 'package:robsic/src/modules/home/presentation/widgets/partnerships_section_widget.dart';
 
@@ -17,12 +18,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final HomeStore _homeStore;
+  late final AppStore _appStore;
 
   @override
   void initState() {
     super.initState();
+    _appStore = serviceLocator.get<AppStore>();
+    _appStore.addListener(_reloadData);
     _homeStore = serviceLocator.get<HomeStore>();
     _homeStore.getHomePageData();
+  }
+
+  void _reloadData() {
+    _homeStore.getHomePageData();
+  }
+
+  @override
+  void dispose() {
+    _appStore.removeListener(_reloadData);
+    super.dispose();
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/modules/core/core.dart';
 import 'package:robsic/src/modules/members/domain/domain.dart';
 import 'package:robsic/src/modules/members/presentation/stores/stores.dart';
@@ -17,12 +18,23 @@ class MembersPage extends StatefulWidget {
 
 class _MembersPageState extends State<MembersPage> {
   late final MembersStore _membersStore;
+  late final AppStore _appStore;
 
   @override
   void initState() {
     super.initState();
+    _appStore = serviceLocator.get<AppStore>();
+    _appStore.addListener(_reloadData);
     _membersStore = serviceLocator.get<MembersStore>();
     _membersStore.getMembersData();
+  }
+
+  void _reloadData() => _membersStore.getMembersData();
+
+  @override
+  void dispose() {
+    _appStore.removeListener(_reloadData);
+    super.dispose();
   }
 
   @override

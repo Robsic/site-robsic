@@ -5,3 +5,4 @@ export './default_page_scaffold.dart';
 export './load_image_error.dart';
 export './page_error.dart';
 export './page_loading.dart';
+export './select_language.dart';
