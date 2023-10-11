@@ -1,16 +1,37 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
+import 'package:robsic/src/core/constants/constants.dart';
 import 'package:robsic/src/core/ui/atoms/atoms.dart';
 import 'package:robsic/src/core/ui/molecules/molecules.dart';
 import 'package:robsic/src/core/utils/responsive_utils.dart';
 import 'package:robsic/src/modules/publications/domain/entities/publication_entity.dart';
 
 import '../../../../core/ui/tokens/tokens.dart';
+import '../../../core/core.dart';
 
-class Publicationcard extends StatelessWidget {
+class Publicationcard extends StatefulWidget {
   const Publicationcard({super.key, required this.publication});
 
   final PublicationEntity publication;
+
+  @override
+  State<Publicationcard> createState() => _PublicationcardState();
+}
+
+class _PublicationcardState extends State<Publicationcard> {
+  late final UrlLauncherDriver _urlLauncher;
+  late final AppStore _appStore;
+
+  @override
+  void initState() {
+    super.initState();
+    _appStore = serviceLocator.get<AppStore>();
+    _urlLauncher = serviceLocator.get<UrlLauncherDriver>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +49,13 @@ class Publicationcard extends StatelessWidget {
                 child: SizedBox(
                   height: double.infinity,
                   child: CachedNetworkImage(
-                    imageUrl:
-                        'https://images.unsplash.com/photo-1614332625575-6bef549fcc7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1441&q=80',
+                    imageUrl: EndPoints.baseUrl +
+                        (widget.publication.image?.url ?? ''),
                     fit: BoxFit.fitHeight,
+                    errorWidget: (context, _, __) => const Image(
+                      image: ImagesAsset.defaultPublication,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -54,7 +79,7 @@ class Publicationcard extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: LabelAtom(
-                                  text: publication.title,
+                                  text: widget.publication.title,
                                   textStyle: TokenTextStyles.titleLarge.apply(
                                     color: TokenColors.emphasis,
                                   ),
@@ -70,7 +95,7 @@ class Publicationcard extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: LabelAtom(
-                                  text: publication.autors.first,
+                                  text: widget.publication.autors,
                                   textStyle: TokenTextStyles.labelSmall.apply(
                                     color: TokenColors.gray900,
                                   ),
@@ -86,9 +111,12 @@ class Publicationcard extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: LabelAtom(
-                                  text: publication.publicationDate.toString(),
+                                  text: _formattedDate(
+                                          widget.publication.publicationDate,
+                                          _appStore.value)
+                                      .toString(),
                                   textStyle: TokenTextStyles.labelSmall.apply(
-                                    color: TokenColors.gray300,
+                                    color: TokenColors.gray500,
                                   ),
                                 ),
                               ),
@@ -102,7 +130,7 @@ class Publicationcard extends StatelessWidget {
                             child: ListView(
                               children: [
                                 BodyTextAtom(
-                                  text: publication.abstract,
+                                  text: widget.publication.resume,
                                   textStyle: TokenTextStyles.bodyLarge,
                                 ),
                               ],
@@ -119,8 +147,12 @@ class Publicationcard extends StatelessWidget {
                   Row(
                     children: [
                       ElevatedButtonMolecule(
-                        label: LabelAtom(text: 'Get Access'.toUpperCase()),
-                        onPressed: () {},
+                        label: LabelAtom(
+                            text: AppLocalizations.of(context)!
+                                .getAccessLabel
+                                .toUpperCase()),
+                        onPressed: () =>
+                            _urlLauncher.launchUrl(widget.publication.urlLink),
                       ),
                     ],
                   ),
@@ -131,5 +163,10 @@ class Publicationcard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formattedDate(DateTime date, [AppLocale? locale]) {
+    return DateFormat.yMd(locale?.fullLanguageCode ?? AppLocale.ptBR)
+        .format(date);
   }
 }

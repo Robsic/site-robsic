@@ -18,6 +18,11 @@ import 'package:robsic/src/modules/projects/domain/domain.dart';
 import 'package:robsic/src/modules/projects/external/datasources/datasources.dart';
 import 'package:robsic/src/modules/projects/infra/infra.dart';
 import 'package:robsic/src/modules/projects/presentation/stores/projects_store.dart';
+import 'package:robsic/src/modules/publications/domain/domain.dart';
+import 'package:robsic/src/modules/publications/external/datasources/publications_datasource_impl.dart';
+import 'package:robsic/src/modules/publications/infra/datasources/datasources.dart';
+import 'package:robsic/src/modules/publications/infra/repositories/publications_repository_impl.dart';
+import 'package:robsic/src/modules/publications/presentation/presentation.dart';
 
 GetIt serviceLocator = GetIt.instance;
 
@@ -40,6 +45,8 @@ void initDependencies() async {
       () => MembersDatasourceImpl(serviceLocator.get<HttpClientService>()));
   serviceLocator.registerLazySingleton<ProjectsDatasource>(
       () => ProjectsDatasourceImpl(serviceLocator.get<HttpClientService>()));
+  serviceLocator.registerLazySingleton<PublicationsDatasource>(() =>
+      PublicationsDatasourceImpl(serviceLocator.get<HttpClientService>()));
 
   //repositories
   serviceLocator.registerLazySingleton<AboutRepository>(
@@ -50,6 +57,8 @@ void initDependencies() async {
       () => MembersRepositoryImpl(serviceLocator.get<MembersDatasource>()));
   serviceLocator.registerLazySingleton<ProjectsRepository>(
       () => ProjectsRepositoryImpl(serviceLocator.get<ProjectsDatasource>()));
+  serviceLocator.registerLazySingleton<PublicationsRepository>(() =>
+      PublicationsRepositoryImpl(serviceLocator.get<PublicationsDatasource>()));
 
   //usecases
   serviceLocator.registerLazySingleton<GetAboutPageDataUsecase>(
@@ -64,6 +73,11 @@ void initDependencies() async {
       () => GetProjectsDataUsecase(serviceLocator.get<ProjectsRepository>()));
   serviceLocator.registerLazySingleton<GetProjectsListUsecase>(
       () => GetProjectsListUsecase(serviceLocator.get<ProjectsRepository>()));
+  serviceLocator.registerLazySingleton<GetPublicationsPageDataUsecase>(() =>
+      GetPublicationsPageDataUsecase(
+          serviceLocator.get<PublicationsRepository>()));
+  serviceLocator.registerLazySingleton<GetPublicationsListUsecase>(() =>
+      GetPublicationsListUsecase(serviceLocator.get<PublicationsRepository>()));
 
   //stores
   serviceLocator.registerSingleton<AppStore>(AppStore());
@@ -78,6 +92,9 @@ void initDependencies() async {
   serviceLocator.registerLazySingleton<ProjectsStore>(() => ProjectsStore(
       serviceLocator.get<GetProjectsDataUsecase>(),
       serviceLocator.get<GetProjectsListUsecase>()));
+  serviceLocator.registerLazySingleton<PublicationsStore>(() =>
+      PublicationsStore(serviceLocator.get<GetPublicationsPageDataUsecase>(),
+          serviceLocator.get<GetPublicationsListUsecase>()));
 }
 
 void main() {

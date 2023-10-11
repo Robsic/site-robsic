@@ -13,4 +13,6 @@ class EndPoints {
   static const String membersList = '/api/members?populate=photo';
   static const String projects = '/api/projects-page?populate=header';
   static const String projectsList = '/api/projects?populate=images';
+  static const String publications = '/api/publications-page?populate=header';
+  static const String publicationsList = '/api/publications?populate=image';
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/modules/publications/domain/entities/publication_entity.dart';
-import 'package:robsic/src/modules/publications/presentation/widgets/publication_card_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/modules/publications/domain/domain.dart';
 
 import '../../../../core/ui/organisms/footer_organism.dart';
 import '../../../../core/ui/tokens/tokens.dart';
 import '../../../core/core.dart';
+import '../../publications.dart';
 
 class PublicationsPage extends StatefulWidget {
   const PublicationsPage({super.key});
@@ -14,55 +16,80 @@ class PublicationsPage extends StatefulWidget {
 }
 
 class _PublicationsPageState extends State<PublicationsPage> {
-  final publication = PublicationEntity(
-    title:
-        'An Improoved Voltage-Shifting Strategy to Attain Concomitant Accurat Power Sharing and Voltage Restoration In Droop-Controlled Microgrids',
-    autors: ['Waner Wodson Aparecido Gonçalves Silva'],
-    publicationDate: DateTime(2020, 04, 01),
-    abstract:
-        ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc consectetur ligula ipsum, nec auctor risus scelerisque quis. Vestibulum varius turpis sed sagittis faucibus. Integer a ipsum sit amet est rhoncus fringilla et ut ligula. Nunc nibh sapien, dapibus eu orci vel, molestie interdum dolor. Mauris eu aliquam mi. Nullam fermentum mauris non blandit aliquet. Quisque tortor mi, sagittis nec ultricies et, accumsan non metus. Curabitur eget purus et tortor gravida efficitur ut a nisi. Aliquam posuere quis quam eget egestas.',
-    urlLink: '',
-    thumbUrl:
-        'https://images.unsplash.com/photo-1614332625575-6bef549fcc7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1441&q=80',
-  );
+  late final PublicationsStore _publicationsStore;
+
+  @override
+  void initState() {
+    super.initState();
+    _publicationsStore = serviceLocator.get<PublicationsStore>();
+    _publicationsStore.getPublicationsPageData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultPageScaffold(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const DefaultHeaderSection(
-              title: 'Publications',
-              text:
-                  'It is a interdisciplinary team, composed of researchers with solid klowledge in Robotics, Electronics, and Computing.',
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: TokenSpaces.xl,
-              ),
-              color: TokenColors.gray100,
-              width: double.infinity,
-              child: FractionallySizedBox(
-                widthFactor: 0.9,
-                child: Wrap(
-                  spacing: TokenSpaces.md,
-                  runSpacing: TokenSpaces.md,
-                  alignment: WrapAlignment.center,
-                  runAlignment: WrapAlignment.start,
+      child: ValueListenableBuilder<PublicationsState>(
+          valueListenable: _publicationsStore,
+          builder: (context, state, _) {
+            if (state is PublicationsStateFailure) {
+              return PageError(
+                  errorMessage: AppLocalizations.of(context)!.errorLoadingPage);
+            } else if (state is PublicationsStateSuccess) {
+              PublicationsPageEntity publicationsPageData =
+                  state.publicationsPageEntity;
+              HeaderSectionEntity? headerSection = publicationsPageData.header;
+              return SingleChildScrollView(
+                child: Column(
                   children: [
-                    for (int i = 0; i < 10; i++)
-                      Publicationcard(
-                        publication: publication,
-                      ),
+                    DefaultHeaderSection(
+                      title: headerSection?.title ?? '',
+                      text: headerSection?.content ?? '',
+                    ),
+                    ValueListenableBuilder(
+                        valueListenable: _publicationsStore,
+                        builder: (context, stateList, _) {
+                          if (stateList is PublicationsListStateFailure) {
+                            return PageError(
+                                errorMessage: AppLocalizations.of(context)!
+                                    .errorLoadingPublicationsList);
+                          } else if (stateList
+                              is PublicationsListStateSuccess) {
+                            List<PublicationEntity> publications =
+                                stateList.publications;
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: TokenSpaces.xl,
+                              ),
+                              color: TokenColors.gray100,
+                              width: double.infinity,
+                              child: FractionallySizedBox(
+                                widthFactor: 0.9,
+                                child: Wrap(
+                                  spacing: TokenSpaces.md,
+                                  runSpacing: TokenSpaces.md,
+                                  alignment: WrapAlignment.center,
+                                  runAlignment: WrapAlignment.start,
+                                  children: List.generate(
+                                    publications.length,
+                                    (index) => Publicationcard(
+                                      publication: publications[index],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return const PageLoading();
+                          }
+                        }),
+                    const FooterOrganism(),
                   ],
                 ),
-              ),
-            ),
-            const FooterOrganism(),
-          ],
-        ),
-      ),
+              );
+            } else {
+              return const PageLoading();
+            }
+          }),
     );
   }
 }

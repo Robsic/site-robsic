@@ -17,5 +17,7 @@
   "errorLoadingPage": "Erro ao carregar a página!",
   "errorLoadingMembersList": "Erro ao carregar a lista de membros!" ,
   "errorLoadingProjectsList": "Erro ao carregar a lista de projetos!",
-  "seeDetailsLabel": "Ver detalhes"
+  "errorLoadingPublicationsList": "Erro ao carregar a lista de publicações!",
+  "seeDetailsLabel": "Ver detalhes",
+  "getAccessLabel": "Acessar"
 }

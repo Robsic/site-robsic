@@ -12,4 +12,5 @@ class ImagesAsset {
   static const logoLattes = AssetImage(ImagesPaths.logoLattes);
   static const logoLinkedIn = AssetImage(ImagesPaths.logoLinkedIn);
   static const logoOrcid = AssetImage(ImagesPaths.logoOrcid);
+  static const defaultPublication = AssetImage(ImagesPaths.defaultPublication);
 }

@@ -17,5 +17,7 @@
   "errorLoadingPage": "Error loading page!",
   "errorLoadingMembersList": "Error loading members list!",
   "errorLoadingProjectsList": "Error loading projects list!",
-  "seeDetailsLabel": "See Details"
+  "errorLoadingPublicationsList": "Error loading publications list!",
+  "seeDetailsLabel": "See Details",
+  "getAccessLabel": "Get Access"
 }

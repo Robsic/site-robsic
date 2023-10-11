@@ -1,17 +1,19 @@
+import 'package:robsic/src/modules/core/core.dart';
+
 class PublicationEntity {
   final String title;
-  final List<String> autors;
+  final String autors;
   final DateTime publicationDate;
-  final String thumbUrl;
-  final String abstract;
+  final String resume;
   final String urlLink;
+  final ImageEntity? image;
 
   PublicationEntity({
     required this.title,
     required this.autors,
     required this.publicationDate,
-    required this.thumbUrl,
-    required this.abstract,
+    required this.resume,
     required this.urlLink,
+    this.image,
   });
 }
