@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/src/core/ui/atoms/atoms.dart';
 import 'package:robsic/src/core/ui/molecules/elevated_button_molecule.dart';
 import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
@@ -46,7 +47,9 @@ class _ContactPageState extends State<ContactPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             LabelAtom(
-                              text: 'Send a message'.toUpperCase(),
+                              text: AppLocalizations.of(context)!
+                                  .sendAMessageLabel
+                                  .toUpperCase(),
                               textStyle: TokenTextStyles.headlineSmall,
                             ),
                             const SpaceAtom(
@@ -56,23 +59,30 @@ class _ContactPageState extends State<ContactPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const CustomTextFormFIeld(
-                                    labelText: 'Name',
-                                    hintText: 'Your Name',
+                                  CustomTextFormFIeld(
+                                    labelText:
+                                        AppLocalizations.of(context)!.nameLabel,
+                                    hintText: AppLocalizations.of(context)!
+                                        .yourNameLabel,
                                   ),
                                   const SpaceAtom(
                                       spaceType: SpaceType.vertical,
                                       value: TokenSpaces.lg),
-                                  const CustomTextFormFIeld(
-                                    labelText: 'Email',
-                                    hintText: 'youremail@example.com',
+                                  CustomTextFormFIeld(
+                                    labelText: AppLocalizations.of(context)!
+                                        .emailLabel,
+                                    hintText: AppLocalizations.of(context)!
+                                        .emailPlaceholder,
                                   ),
                                   const SpaceAtom(
                                       spaceType: SpaceType.vertical,
                                       value: TokenSpaces.lg),
-                                  const CustomTextFormFIeld(
-                                    labelText: 'Message',
-                                    hintText: 'type your message here...',
+                                  CustomTextFormFIeld(
+                                    labelText: AppLocalizations.of(context)!
+                                        .messageLabel,
+                                    hintText: AppLocalizations.of(context)!
+                                        .typeYourMessageHere
+                                        .toLowerCase(),
                                     maxLines: 6,
                                   ),
                                   const SpaceAtom(
@@ -80,7 +90,9 @@ class _ContactPageState extends State<ContactPage> {
                                       value: TokenSpaces.lg),
                                   ElevatedButtonMolecule(
                                     label: LabelAtom(
-                                      text: 'Send Message'.toUpperCase(),
+                                      text: AppLocalizations.of(context)!
+                                          .sendEmailLabel
+                                          .toUpperCase(),
                                     ),
                                     onPressed: () {},
                                   )

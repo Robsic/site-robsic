@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/modules/core/core.dart';
 import 'package:robsic/src/modules/projects/domain/domain.dart';
 import 'package:robsic/src/modules/projects/presentation/stores/projects_states.dart';
@@ -18,12 +19,23 @@ class ProjectsPage extends StatefulWidget {
 
 class _ProjectsPageState extends State<ProjectsPage> {
   late final ProjectsStore _projectsStore;
+  late final AppStore _appStore;
 
   @override
   void initState() {
     super.initState();
+    _appStore = serviceLocator.get<AppStore>();
+    _appStore.addListener(_reloadData);
     _projectsStore = serviceLocator.get<ProjectsStore>();
     _projectsStore.getProjectsPageData();
+  }
+
+  void _reloadData() => _projectsStore.getProjectsPageData();
+
+  @override
+  void dispose() {
+    _appStore.removeListener(_reloadData);
+    super.dispose();
   }
 
   @override

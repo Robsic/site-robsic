@@ -19,5 +19,13 @@
   "errorLoadingProjectsList": "Erro ao carregar a lista de projetos!",
   "errorLoadingPublicationsList": "Erro ao carregar a lista de publicações!",
   "seeDetailsLabel": "Ver detalhes",
-  "getAccessLabel": "Acessar"
+  "getAccessLabel": "Acessar",
+  "sendAMessageLabel": "Envie uma Mensagem",
+  "nameLabel": "Nome",
+  "yourNameLabel": "Seu Nome",
+  "emailLabel": "E-mail",
+  "emailPlaceholder": "seuemail@example.com",
+  "messageLabel": "Mensagem",
+  "typeYourMessageHere": "Digite sua mensagem aqui...",
+  "sendMessageLabel": "Enviar Mensagem"
 }

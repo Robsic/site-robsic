@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/modules/publications/domain/domain.dart';
 
 import '../../../../core/ui/organisms/footer_organism.dart';
@@ -17,12 +18,23 @@ class PublicationsPage extends StatefulWidget {
 
 class _PublicationsPageState extends State<PublicationsPage> {
   late final PublicationsStore _publicationsStore;
+  late final AppStore _appStore;
 
   @override
   void initState() {
     super.initState();
+    _appStore = serviceLocator.get<AppStore>();
+    _appStore.addListener(_reloadData);
     _publicationsStore = serviceLocator.get<PublicationsStore>();
     _publicationsStore.getPublicationsPageData();
+  }
+
+  void _reloadData() => _publicationsStore.getPublicationsPageData();
+
+  @override
+  void dispose() {
+    _appStore.removeListener(_reloadData);
+    super.dispose();
   }
 
   @override
