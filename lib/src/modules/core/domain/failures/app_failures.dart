@@ -16,3 +16,7 @@ class FormatExceptionFailure extends AppFailure {
 class UnableLaunchUrlFailure extends AppFailure {
   const UnableLaunchUrlFailure({super.error, super.stackTrace});
 }
+
+class InvalidContactmessageFailure extends AppFailure {
+  const InvalidContactmessageFailure({super.error, super.stackTrace});
+}

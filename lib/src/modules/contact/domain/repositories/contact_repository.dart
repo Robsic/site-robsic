@@ -5,4 +5,6 @@ import '../entities/entities.dart';
 
 abstract class ContactRepository {
   AsyncResult<ContactPageEntity, AppFailure> getContactPageData();
+  AsyncResult<ContactMessageEntity, AppFailure> sendContactMessage(
+      ContactMessageEntity contactMessage);
 }

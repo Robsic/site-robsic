@@ -31,8 +31,8 @@ class DioHttpService implements HttpClientService {
 
   @override
   Future<Map<String, dynamic>> post(String path,
-      [Map<String, dynamic>? data,
-      Map<String, dynamic>? queryParameters]) async {
+      {Map<String, dynamic>? data,
+      Map<String, dynamic>? queryParameters}) async {
     try {
       Map<String, dynamic> newQueryParameters =
           clientHttp.options.queryParameters;

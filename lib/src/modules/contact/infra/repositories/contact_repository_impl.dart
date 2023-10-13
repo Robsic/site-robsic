@@ -1,4 +1,5 @@
 import 'package:result_dart/result_dart.dart';
+import 'package:robsic/src/modules/contact/infra/adapters/contact_message_adapter.dart';
 
 import '../../../core/core.dart';
 import '../../domain/domain.dart';
@@ -15,6 +16,18 @@ class ContactRepositoryImpl implements ContactRepository {
       final result = await _contactDatasource.getContactpageData();
       final contactEntity = ContactPageAdapter.fromMap(result);
       return Success(contactEntity);
+    } on AppFailure catch (error) {
+      return Failure(error);
+    }
+  }
+
+  @override
+  AsyncResult<ContactMessageEntity, AppFailure> sendContactMessage(
+      ContactMessageEntity contactMessage) async {
+    try {
+      final contactMessageData = ContactMessageAdapter.toMap(contactMessage);
+      await _contactDatasource.sendContactMessage(contactMessageData);
+      return Success(contactMessage);
     } on AppFailure catch (error) {
       return Failure(error);
     }

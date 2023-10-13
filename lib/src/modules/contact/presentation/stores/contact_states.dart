@@ -17,10 +17,23 @@ class ContactStateLoading extends ContactState {
 class ContactStateSuccess extends ContactState {
   final ContactPageEntity contactPage;
 
-  ContactStateSuccess(this.contactPage);
+  const ContactStateSuccess(this.contactPage);
 }
 
 class ContactStateFailure extends ContactState {
   final AppFailure failure;
   const ContactStateFailure(this.failure);
+}
+
+class SendContactMessageStateLoading extends ContactStateSuccess {
+  const SendContactMessageStateLoading(super.contactPage);
+}
+
+class SendContactMessageStateSuccess extends ContactStateSuccess {
+  const SendContactMessageStateSuccess(super.contactPage);
+}
+
+class SendContactMessageStateFailure extends ContactStateSuccess {
+  final AppFailure failure;
+  const SendContactMessageStateFailure(super.contactPage, this.failure);
 }

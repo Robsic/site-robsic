@@ -5,6 +5,10 @@ import 'package:robsic/src/app.dart';
 import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/core/core.dart';
 import 'package:robsic/src/modules/about/about.dart';
+import 'package:robsic/src/modules/contact/domain/domain.dart';
+import 'package:robsic/src/modules/contact/external/datasources/contact_datasource_impl.dart';
+import 'package:robsic/src/modules/contact/infra/infra.dart';
+import 'package:robsic/src/modules/contact/presentation/stores/contact_store.dart';
 import 'package:robsic/src/modules/core/core.dart';
 import 'package:robsic/src/modules/home/domain/domain.dart';
 import 'package:robsic/src/modules/home/external/datasources/datasources.dart';
@@ -47,6 +51,8 @@ void initDependencies() async {
       () => ProjectsDatasourceImpl(serviceLocator.get<HttpClientService>()));
   serviceLocator.registerLazySingleton<PublicationsDatasource>(() =>
       PublicationsDatasourceImpl(serviceLocator.get<HttpClientService>()));
+  serviceLocator.registerLazySingleton<ContactDatasource>(
+      () => ContactDatasourceImpl(serviceLocator.get<HttpClientService>()));
 
   //repositories
   serviceLocator.registerLazySingleton<AboutRepository>(
@@ -59,6 +65,8 @@ void initDependencies() async {
       () => ProjectsRepositoryImpl(serviceLocator.get<ProjectsDatasource>()));
   serviceLocator.registerLazySingleton<PublicationsRepository>(() =>
       PublicationsRepositoryImpl(serviceLocator.get<PublicationsDatasource>()));
+  serviceLocator.registerLazySingleton<ContactRepository>(
+      () => ContactRepositoryImpl(serviceLocator.get<ContactDatasource>()));
 
   //usecases
   serviceLocator.registerLazySingleton<GetAboutPageDataUsecase>(
@@ -78,6 +86,10 @@ void initDependencies() async {
           serviceLocator.get<PublicationsRepository>()));
   serviceLocator.registerLazySingleton<GetPublicationsListUsecase>(() =>
       GetPublicationsListUsecase(serviceLocator.get<PublicationsRepository>()));
+  serviceLocator.registerLazySingleton<GetContactPageDataUsecase>(
+      () => GetContactPageDataUsecase(serviceLocator.get<ContactRepository>()));
+  serviceLocator.registerLazySingleton<SendContactMessageUsecase>(
+      () => SendContactMessageUsecase(serviceLocator.get<ContactRepository>()));
 
   //stores
   serviceLocator.registerSingleton<AppStore>(AppStore());
@@ -95,6 +107,9 @@ void initDependencies() async {
   serviceLocator.registerLazySingleton<PublicationsStore>(() =>
       PublicationsStore(serviceLocator.get<GetPublicationsPageDataUsecase>(),
           serviceLocator.get<GetPublicationsListUsecase>()));
+  serviceLocator.registerLazySingleton<ContactStore>(() => ContactStore(
+      serviceLocator.get<GetContactPageDataUsecase>(),
+      serviceLocator.get<SendContactMessageUsecase>()));
 }
 
 void main() {
