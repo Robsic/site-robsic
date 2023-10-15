@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/tokens/tokens.dart';
 
-import '../atoms/circle_decorator_atom.dart';
-import '../atoms/label_atom.dart';
+import '../atoms/atoms.dart';
+import '../tokens/tokens.dart';
 
 enum SectionTitleStyle { onLightBackground, onDarkBackground }
 

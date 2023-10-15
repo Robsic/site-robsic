@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/app_store.dart';
-import 'package:robsic/src/modules/publications/domain/domain.dart';
 
-import '../../../../core/ui/organisms/footer_organism.dart';
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
 import '../../../core/core.dart';
-import '../../publications.dart';
+import '../../domain/domain.dart';
+import '../stores/stores.dart';
+import '../widgets/widgets.dart';
 
 class PublicationsPage extends StatefulWidget {
   const PublicationsPage({super.key});

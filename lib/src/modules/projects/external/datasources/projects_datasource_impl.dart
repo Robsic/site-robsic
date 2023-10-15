@@ -1,8 +1,7 @@
 import 'dart:developer';
 
-import 'package:robsic/src/core/core.dart';
-import 'package:robsic/src/modules/core/core.dart';
-
+import '../../../../resources/resources.dart';
+import '../../../core/core.dart';
 import '../../infra/infra.dart';
 
 class ProjectsDatasourceImpl implements ProjectsDatasource {

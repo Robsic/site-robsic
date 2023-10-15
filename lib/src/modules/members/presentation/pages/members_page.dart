@@ -3,10 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/modules/core/core.dart';
-import 'package:robsic/src/modules/members/domain/domain.dart';
-import 'package:robsic/src/modules/members/presentation/stores/stores.dart';
 
-import '../../../../core/core.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
+import '../stores/stores.dart';
 import '../widgets/widgets.dart';
 
 class MembersPage extends StatefulWidget {

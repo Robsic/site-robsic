@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import '../../../../core/core.dart';
+import '../../../../resources/resources.dart';
 import '../../../core/core.dart';
 import '../../infra/infra.dart';
 

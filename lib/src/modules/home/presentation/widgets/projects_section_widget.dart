@@ -2,13 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:robsic/src/core/utils/responsive_utils.dart';
-import 'package:robsic/src/modules/home/domain/domain.dart';
 
-import '../../../../core/constants/routes.dart';
-import '../../../../core/ui/atoms/atoms.dart';
-import '../../../../core/ui/molecules/molecules.dart';
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
 
 class ProjectsSectionWidget extends StatelessWidget {
   const ProjectsSectionWidget({super.key, this.projectsSectionData});
@@ -71,8 +67,8 @@ class ProjectsSectionWidget extends StatelessWidget {
                         child: SizedBox(
                           height: double.infinity,
                           child: CachedNetworkImage(
-                            imageUrl:
-                                'https://images.unsplash.com/photo-1508873535684-277a3cbcc4e8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
+                            imageUrl: EndPoints.baseUrl +
+                                (projectsSectionData?.image!.url ?? ""),
                             fit: BoxFit.cover,
                           ),
                         ),

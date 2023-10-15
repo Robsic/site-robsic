@@ -2,13 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
-import 'package:robsic/src/core/constants/constants.dart';
-import 'package:robsic/src/core/ui/atoms/atoms.dart';
-import 'package:robsic/src/core/ui/molecules/molecules.dart';
 import 'package:robsic/src/modules/core/core.dart';
 import 'package:robsic/src/modules/members/domain/entities/member_entity.dart';
 
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
 
 class Membercard extends StatefulWidget {
   const Membercard({super.key, required this.member});

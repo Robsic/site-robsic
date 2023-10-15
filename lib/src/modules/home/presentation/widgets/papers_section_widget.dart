@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:robsic/src/modules/home/domain/domain.dart';
 
-import '../../../../core/constants/constants.dart';
-import '../../../../core/ui/ui.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
 
 class PapersSection extends StatelessWidget {
   const PapersSection({

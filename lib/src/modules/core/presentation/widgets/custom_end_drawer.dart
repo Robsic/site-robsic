@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robsic/main.dart';
-import 'package:robsic/src/core/core.dart';
 import 'package:robsic/src/modules/core/core.dart';
+
+import '../../../../resources/resources.dart';
 
 class CustomEndDrawer extends StatefulWidget {
   const CustomEndDrawer({super.key});

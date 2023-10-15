@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/app_store.dart';
-import 'package:robsic/src/core/ui/atoms/body_text_atom.dart';
-import 'package:robsic/src/core/ui/atoms/label_atom.dart';
-import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
-import 'package:robsic/src/core/ui/tokens/token_spaces.dart';
 import 'package:robsic/src/modules/about/about.dart';
 import 'package:robsic/src/modules/core/core.dart';
+
+import '../../../../resources/resources.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});

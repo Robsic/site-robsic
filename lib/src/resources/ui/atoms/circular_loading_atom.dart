@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/core.dart';
+
+import '../tokens/tokens.dart';
 
 class CircularLoadingAtom extends StatelessWidget {
   const CircularLoadingAtom(

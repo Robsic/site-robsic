@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:robsic/main.dart';
-import 'package:robsic/src/core/constants/constants.dart';
-import 'package:robsic/src/core/ui/atoms/images_asset.dart';
-import 'package:robsic/src/core/ui/atoms/label_atom.dart';
-import 'package:robsic/src/core/ui/molecules/footer_link_molecule.dart';
-import 'package:robsic/src/core/utils/responsive_utils.dart';
 import 'package:robsic/src/modules/core/core.dart';
 
+import '../../constants/constants.dart';
+import '../../utils/utils.dart';
+import '../atoms/atoms.dart';
+import '../molecules/molecules.dart';
 import '../tokens/tokens.dart';
 
 class FooterOrganism extends StatefulWidget {

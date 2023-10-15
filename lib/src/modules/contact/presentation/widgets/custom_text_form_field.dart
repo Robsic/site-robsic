@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/ui/atoms/atoms.dart';
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({

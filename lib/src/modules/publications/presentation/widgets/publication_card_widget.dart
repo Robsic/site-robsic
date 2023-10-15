@@ -4,14 +4,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/app_store.dart';
-import 'package:robsic/src/core/constants/constants.dart';
-import 'package:robsic/src/core/ui/atoms/atoms.dart';
-import 'package:robsic/src/core/ui/molecules/molecules.dart';
-import 'package:robsic/src/core/utils/responsive_utils.dart';
-import 'package:robsic/src/modules/publications/domain/entities/publication_entity.dart';
 
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
 import '../../../core/core.dart';
+import '../../domain/domain.dart';
 
 class Publicationcard extends StatefulWidget {
   const Publicationcard({super.key, required this.publication});

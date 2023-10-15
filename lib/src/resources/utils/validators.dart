@@ -1,4 +1,4 @@
-import '../core.dart';
+import '../resources.dart';
 
 abstract class FieldValidator {
   const FieldValidator();

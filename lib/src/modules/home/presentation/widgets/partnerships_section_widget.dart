@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/core.dart';
 
+import '../../../../resources/resources.dart';
 import '../../domain/domain.dart';
 
 class PartnershipsSection extends StatelessWidget {

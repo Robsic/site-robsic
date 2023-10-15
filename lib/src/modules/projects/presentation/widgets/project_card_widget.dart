@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:robsic/src/core/core.dart';
 
-import '../../domain/entities/project_entity.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
 
 class Projectcard extends StatelessWidget {
   const Projectcard({super.key, required this.project});

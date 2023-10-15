@@ -3,9 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/app_store.dart';
-import 'package:robsic/src/core/constants/router.dart';
-
-import 'core/constants/themes/app_theme.dart';
+import 'package:robsic/src/resources/resources.dart';
 
 class App extends StatefulWidget {
   const App({super.key});

@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/core.dart';
-import 'package:robsic/src/modules/core/core.dart';
+
+import '../../../../resources/resources.dart';
+import '../../../core/core.dart';
 
 class CarouselWidget extends StatefulWidget {
   const CarouselWidget({super.key, required this.images});

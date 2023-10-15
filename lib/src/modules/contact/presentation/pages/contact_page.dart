@@ -5,7 +5,7 @@ import 'package:robsic/main.dart';
 import 'package:robsic/src/modules/core/core.dart';
 
 import '../../../../app_store.dart';
-import '../../../../core/core.dart';
+import '../../../../resources/resources.dart';
 import '../../domain/domain.dart';
 import '../../infra/infra.dart';
 import '../stores/stores.dart';

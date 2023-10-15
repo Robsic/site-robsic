@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/core.dart';
+
+import '../../../../resources/resources.dart';
 
 class PageError extends StatelessWidget {
   const PageError({super.key, required this.errorMessage, this.reloadAction});

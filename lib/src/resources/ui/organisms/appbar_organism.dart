@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/tokens/tokens.dart';
+
+import '../tokens/tokens.dart';
 
 class AppBarOrganism extends StatefulWidget implements PreferredSizeWidget {
   const AppBarOrganism({

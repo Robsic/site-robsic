@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/organisms/header_section_organism.dart';
 import 'package:robsic/src/modules/core/core.dart';
 
-import '../../../../core/ui/atoms/body_text_atom.dart';
-import '../../../../core/ui/molecules/section_title_molecule.dart';
+import '../../../../resources/resources.dart';
 
 class HeaderSection extends StatelessWidget {
   const HeaderSection({super.key, this.headerSectionData});

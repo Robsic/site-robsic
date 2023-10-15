@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/core.dart';
+import '../../../../resources/resources.dart';
 
 enum SnackBarType { success, error, warning }
 

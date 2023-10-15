@@ -2,13 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:robsic/src/core/constants/constants.dart';
-import 'package:robsic/src/core/utils/responsive_utils.dart';
-import 'package:robsic/src/modules/home/domain/domain.dart';
 
-import '../../../../core/ui/atoms/atoms.dart';
-import '../../../../core/ui/molecules/molecules.dart';
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
 
 class AreasOfExpertiseSection extends StatelessWidget {
   const AreasOfExpertiseSection(

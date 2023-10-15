@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/atoms/atoms.dart';
-import 'package:robsic/src/core/ui/tokens/tokens.dart';
+
+import '../atoms/atoms.dart';
+import '../tokens/tokens.dart';
 
 class DrawerOrganism extends StatelessWidget {
   const DrawerOrganism({

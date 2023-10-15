@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/atoms/atoms.dart';
-import 'package:robsic/src/core/ui/organisms/appbar_organism.dart';
 
+import '../atoms/atoms.dart';
+import '../organisms/organisms.dart';
 import '../tokens/tokens.dart';
 
 class AppbarTemplate extends StatefulWidget implements PreferredSizeWidget {

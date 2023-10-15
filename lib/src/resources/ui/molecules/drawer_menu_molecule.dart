@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../atoms/label_atom.dart';
+import '../atoms/atoms.dart';
 import '../tokens/tokens.dart';
 
 class DrawerMenuMolecule extends StatefulWidget {

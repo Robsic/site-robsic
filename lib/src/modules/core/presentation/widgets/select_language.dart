@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/app_store.dart';
 
-import '../../../../core/core.dart';
+import '../../../../resources/resources.dart';
 
 class SelectLanguage extends StatefulWidget {
   const SelectLanguage({super.key});

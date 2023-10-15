@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/organisms/organisms.dart';
+
+import '../organisms/organisms.dart';
 
 class DrawerTemplate extends StatelessWidget {
   const DrawerTemplate(

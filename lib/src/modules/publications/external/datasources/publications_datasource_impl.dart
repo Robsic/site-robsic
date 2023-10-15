@@ -1,6 +1,5 @@
-import 'package:robsic/src/modules/core/core.dart';
-
-import '../../../../core/core.dart';
+import '../../../../resources/resources.dart';
+import '../../../core/core.dart';
 import '../../infra/infra.dart';
 
 class PublicationsDatasourceImpl implements PublicationsDatasource {

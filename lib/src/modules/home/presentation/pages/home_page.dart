@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/app_store.dart';
-import 'package:robsic/src/core/core.dart';
-import 'package:robsic/src/modules/home/presentation/widgets/partnerships_section_widget.dart';
 
+import '../../../../resources/resources.dart';
 import '../../../core/core.dart';
 import '../../domain/domain.dart';
-import '../../home.dart';
+import '../stores/stores.dart';
+import '../widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -1,4 +1,4 @@
-import '../../../../core/core.dart';
+import '../../../../resources/resources.dart';
 
 class ContactMessageEntity {
   final String name;

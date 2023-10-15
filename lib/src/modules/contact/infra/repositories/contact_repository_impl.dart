@@ -1,5 +1,4 @@
 import 'package:result_dart/result_dart.dart';
-import 'package:robsic/src/modules/contact/infra/adapters/contact_message_adapter.dart';
 
 import '../../../core/core.dart';
 import '../../domain/domain.dart';

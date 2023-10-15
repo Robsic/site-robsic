@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/constants/constants.dart';
-import 'package:robsic/src/core/ui/atoms/circular_loading_atom.dart';
+
+import '../../../../resources/resources.dart';
 
 class PageLoading extends StatelessWidget {
   const PageLoading({super.key});

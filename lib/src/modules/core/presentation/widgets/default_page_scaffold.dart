@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/core.dart';
 import 'package:robsic/src/modules/core/core.dart';
+
+import '../../../../resources/resources.dart';
 
 class DefaultPageScaffold extends StatelessWidget {
   const DefaultPageScaffold({super.key, required this.child});

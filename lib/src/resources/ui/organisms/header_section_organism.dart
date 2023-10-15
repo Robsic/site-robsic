@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/utils/responsive_utils.dart';
 
+import '../../utils/utils.dart';
 import '../tokens/tokens.dart';
 
 class HeaderSectionOrganism extends StatelessWidget {
