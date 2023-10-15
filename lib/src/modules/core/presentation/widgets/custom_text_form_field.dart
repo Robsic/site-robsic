@@ -17,6 +17,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onSaved,
     this.validator,
     this.autovalidateMode,
+    this.sufixIcon,
   });
 
   final TextEditingController? controller;
@@ -31,6 +32,7 @@ class CustomTextFormField extends StatelessWidget {
   final void Function(String?)? onSaved;
   final String? Function(String?)? validator;
   final AutovalidateMode? autovalidateMode;
+  final Widget? sufixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,7 @@ class CustomTextFormField extends StatelessWidget {
             hintText: hintText,
             border: const OutlineInputBorder(),
             floatingLabelBehavior: FloatingLabelBehavior.never,
+            suffixIcon: sufixIcon,
           ),
           keyboardType: keyboardType,
           autovalidateMode: autovalidateMode,
@@ -67,7 +70,7 @@ class CustomTextFormField extends StatelessWidget {
           onFieldSubmitted: onFieldSubmitted,
           onSaved: onSaved,
           validator: validator,
-          maxLines: maxLines,
+          maxLines: maxLines ?? 1,
         ),
       ],
     );

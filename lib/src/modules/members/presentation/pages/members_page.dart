@@ -20,9 +20,12 @@ class _MembersPageState extends State<MembersPage> {
   late final MembersStore _membersStore;
   late final AppStore _appStore;
 
+  late String searchTerm;
+
   @override
   void initState() {
     super.initState();
+    searchTerm = '';
     _appStore = serviceLocator.get<AppStore>();
     _appStore.addListener(_reloadData);
     _membersStore = serviceLocator.get<MembersStore>();
@@ -77,19 +80,61 @@ class _MembersPageState extends State<MembersPage> {
                             width: double.infinity,
                             child: FractionallySizedBox(
                               widthFactor: 0.9,
-                              child: Wrap(
-                                  spacing: TokenSpaces.md,
-                                  runSpacing: TokenSpaces.md,
-                                  crossAxisAlignment: WrapCrossAlignment.start,
-                                  alignment: WrapAlignment.center,
-                                  runAlignment: WrapAlignment.start,
-                                  children: List.generate(
-                                    members.length,
-                                    (index) {
-                                      MemberEntity member = members[index];
-                                      return Membercard(member: member);
-                                    },
-                                  )),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: SizedBox(
+                                      width: 367.0,
+                                      child: CustomTextFormField(
+                                        labelText: AppLocalizations.of(context)!
+                                            .nameLabel,
+                                        onChanged: (searchTerm) {
+                                          this.searchTerm = searchTerm;
+                                          _membersStore.searchTerm(searchTerm);
+                                        },
+                                        onEditingComplete: () => _membersStore
+                                            .searchTerm(searchTerm),
+                                        sufixIcon: GestureDetector(
+                                          onTap: () {
+                                            _membersStore
+                                                .searchTerm(searchTerm);
+                                          },
+                                          child: const Icon(
+                                            Icons.search,
+                                            color: TokenColors.primary,
+                                          ),
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                  const SpaceAtom(
+                                      spaceType: SpaceType.vertical,
+                                      value: TokenSpaces.md),
+                                  members.isEmpty
+                                      ? const SizedBox(
+                                          height: 100.0,
+                                          child: BodyTextAtom(
+                                              text: 'Membros não encontrados!'))
+                                      : Wrap(
+                                          spacing: TokenSpaces.md,
+                                          runSpacing: TokenSpaces.md,
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.start,
+                                          alignment: WrapAlignment.start,
+                                          runAlignment: WrapAlignment.start,
+                                          children: List.generate(
+                                            members.length,
+                                            (index) {
+                                              MemberEntity member =
+                                                  members[index];
+                                              return Membercard(member: member);
+                                            },
+                                          ),
+                                        ),
+                                ],
+                              ),
                             ),
                           );
                         } else {

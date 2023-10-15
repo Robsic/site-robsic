@@ -32,5 +32,8 @@
   "sendMessageError": "Não foi possível enviar a mensagem.",
   "emptyFieldErrorMessage": "O campo não pode ser vazio!",
   "invalidNameMessage": "Preencha o nome completo!",
-  "invalidEmailMessage": "Preencha com um email válido!"
+  "invalidEmailMessage": "Preencha com um email válido!",
+  "noMembersFound": "Não foram encontrados membros.",
+  "noProjectsFound": "Não foram encontrados projetos.",
+  "noPublicationsFound": "Não foram encontradas publicações."
 }

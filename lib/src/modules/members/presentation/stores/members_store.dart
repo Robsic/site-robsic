@@ -14,6 +14,20 @@ class MembersStore extends ValueNotifier<MembersState> {
 
   MembersEntity? _entity;
   List<MemberEntity> _members = [];
+  List<MemberEntity> _filtredMembersBySeachTerm = [];
+
+  void searchTerm(String searchTerm) {
+    value = MembersListStateLoading(_entity!);
+    if (searchTerm.length > 3) {
+      _filtredMembersBySeachTerm = _members.where((member) {
+        String memberName = member.name.toLowerCase();
+        return memberName.startsWith(searchTerm.toLowerCase());
+      }).toList();
+      value = MembersListStateSuccess(_entity!, _filtredMembersBySeachTerm);
+    } else {
+      value = MembersListStateSuccess(_entity!, _members);
+    }
+  }
 
   Future<void> getMembersData() async {
     value = const MembersStateLoading();

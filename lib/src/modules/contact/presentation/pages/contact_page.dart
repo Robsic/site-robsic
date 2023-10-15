@@ -9,7 +9,6 @@ import '../../../../resources/resources.dart';
 import '../../domain/domain.dart';
 import '../../infra/infra.dart';
 import '../stores/stores.dart';
-import '../widgets/widgets.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});

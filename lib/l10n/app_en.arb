@@ -32,5 +32,8 @@
   "sendMessageError": "The message could not be sent.",
   "emptyFieldErrorMessage": "The field cannot be empty!",
   "invalidNameMessage": "Fill in the full name!",
-  "invalidEmailMessage": "Fill in a valid email!"
+  "invalidEmailMessage": "Fill in a valid email!",
+  "noMembersFound": "No members found.",
+  "noProjectsFound": "No projects found.",
+  "noPublicationsFound": "No publications found."
 }
