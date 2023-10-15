@@ -21,15 +21,18 @@ class AppBarOrganism extends StatefulWidget implements PreferredSizeWidget {
 class _AppBarOrganismState extends State<AppBarOrganism> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: TokenColors.secondary20,
-      height: widget.preferredSize.height,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: TokenSpaces.md,
+    return Material(
+      elevation: 2.0,
+      child: Container(
+        color: TokenColors.secondary20,
+        height: widget.preferredSize.height,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: TokenSpaces.md,
+          ),
+          child: widget.child,
         ),
-        child: widget.child,
       ),
     );
   }

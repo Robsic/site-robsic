@@ -21,12 +21,16 @@
   "seeDetailsLabel": "See Details",
   "getAccessLabel": "Get Access",
   "sendAMessageLabel": "Send a Message",
-  "nameLabel": "Name",
-  "yourNameLabel": "Your Name",
+  "nameLabel": "Full Name",
+  "yourNameLabel": "Your Full Name",
   "emailLabel": "E-mail",
   "emailPlaceholder": "youremail@example.com",
   "messageLabel": "Message",
   "typeYourMessageHere": "Type your message here...",
-  "sendMessageLabel": "Send Message"
-
+  "sendMessageLabel": "Send Message",
+  "sendMessageSuccess": "Message sent successfully!",
+  "sendMessageError": "The message could not be sent.",
+  "emptyFieldErrorMessage": "The field cannot be empty!",
+  "invalidNameMessage": "Fill in the full name!",
+  "invalidEmailMessage": "Fill in a valid email!"
 }

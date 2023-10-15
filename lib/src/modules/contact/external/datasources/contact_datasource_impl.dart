@@ -24,10 +24,9 @@ class ContactDatasourceImpl implements ContactDatasource {
     try {
       log(contactMessageData.toString());
       await Future.delayed(const Duration(seconds: 2));
-      return {};
-      // final response =
-      // await _httpClient.post(EndPoints.contact, data: contactMessageData);
-      // return response['data']?["attributes"] ?? {};
+      final response =
+          await _httpClient.post(EndPoints.sendEmail, data: contactMessageData);
+      return response;
     } on AppFailure {
       rethrow;
     }

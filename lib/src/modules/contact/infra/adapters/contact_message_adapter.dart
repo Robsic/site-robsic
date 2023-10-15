@@ -8,7 +8,7 @@ class ContactMessageAdapter {
   static ContactMessageEntity fromDto(ContactMessageDto contactMessage) {
     return ContactMessageEntity(
       name: contactMessage.name ?? '',
-      recipientEmail: contactMessage.recipientEmail,
+      recipientMemberId: contactMessage.recipientMemberId,
       senderEmail: contactMessage.senderEmail ?? '',
       message: contactMessage.message ?? '',
     );
@@ -17,7 +17,7 @@ class ContactMessageAdapter {
   static Map<String, dynamic> toMap(ContactMessageEntity contactMessage) {
     return {
       'name': contactMessage.name,
-      'recipientEmail': contactMessage.recipientEmail,
+      'recipientMemberId': contactMessage.recipientMemberId,
       'senderEmail': contactMessage.senderEmail,
       'message': contactMessage.message,
     };

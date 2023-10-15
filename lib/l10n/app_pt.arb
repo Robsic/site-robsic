@@ -21,11 +21,16 @@
   "seeDetailsLabel": "Ver detalhes",
   "getAccessLabel": "Acessar",
   "sendAMessageLabel": "Envie uma Mensagem",
-  "nameLabel": "Nome",
-  "yourNameLabel": "Seu Nome",
+  "nameLabel": "Nome Completo",
+  "yourNameLabel": "Seu Nome Completo",
   "emailLabel": "E-mail",
   "emailPlaceholder": "seuemail@example.com",
   "messageLabel": "Mensagem",
   "typeYourMessageHere": "Digite sua mensagem aqui...",
-  "sendMessageLabel": "Enviar Mensagem"
+  "sendMessageLabel": "Enviar Mensagem",
+  "sendMessageSuccess": "Mensagem enviada com sucesso!",
+  "sendMessageError": "Não foi possível enviar a mensagem.",
+  "emptyFieldErrorMessage": "O campo não pode ser vazio!",
+  "invalidNameMessage": "Preencha o nome completo!",
+  "invalidEmailMessage": "Preencha com um email válido!"
 }

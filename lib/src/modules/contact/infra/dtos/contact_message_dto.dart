@@ -1,13 +1,13 @@
 class ContactMessageDto {
   String? name;
-  String? recipientEmail;
+  String? recipientMemberId;
   String? senderEmail;
   String? message;
 
   ContactMessageDto({
     this.name,
     this.senderEmail,
-    this.recipientEmail,
+    this.recipientMemberId,
     this.message,
   });
 }

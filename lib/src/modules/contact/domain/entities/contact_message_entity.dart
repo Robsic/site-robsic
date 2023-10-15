@@ -2,25 +2,25 @@ import '../../../../core/core.dart';
 
 class ContactMessageEntity {
   final String name;
-  final String? recipientEmail;
+  final String? recipientMemberId;
   final String senderEmail;
   final String message;
 
   ContactMessageEntity({
     required this.name,
-    this.recipientEmail,
+    this.recipientMemberId,
     required this.senderEmail,
     required this.message,
   });
 
   bool validate() {
     bool isValidName = _validName();
-    bool isValidRecipientEmail = _validRecipientEmail();
+    bool isValidRecipientMemberId = _validRecipientMemberId();
     bool isValidSenderEmail = _validSenderEmail();
     bool isValidMessage = _validMessage();
 
     return isValidName &&
-        isValidRecipientEmail &&
+        isValidRecipientMemberId &&
         isValidSenderEmail &&
         isValidMessage;
   }
@@ -36,11 +36,15 @@ class ContactMessageEntity {
     return _validateEmailPattern(senderEmail);
   }
 
-  bool _validRecipientEmail() {
-    if (recipientEmail == null) {
+  bool _validRecipientMemberId() {
+    if (recipientMemberId == null) {
       return true;
     } else {
-      return _validateEmailPattern(recipientEmail!);
+      int? integerRecipientMemberId = int.tryParse(recipientMemberId!);
+      if (integerRecipientMemberId == null) {
+        return false;
+      }
+      return integerRecipientMemberId > 0;
     }
   }
 
