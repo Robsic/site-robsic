@@ -33,7 +33,9 @@
   "emptyFieldErrorMessage": "The field cannot be empty!",
   "invalidNameMessage": "Fill in the full name!",
   "invalidEmailMessage": "Fill in a valid email!",
+  "searchLabel": "Search",
   "noMembersFound": "No members found.",
   "noProjectsFound": "No projects found.",
-  "noPublicationsFound": "No publications found."
+  "noPublicationsFound": "No publications found.",
+  "loadImageError": "Error loading image."
 }

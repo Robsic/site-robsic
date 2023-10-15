@@ -12,27 +12,51 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: Routes.home,
-      builder: (context, state) => const HomePage(),
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: const HomePage(),
+      ),
     ),
     GoRoute(
       path: Routes.about,
-      builder: (context, state) => const AboutPage(),
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: const AboutPage(),
+      ),
     ),
     GoRoute(
       path: Routes.members,
-      builder: (context, state) => const MembersPage(),
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: const MembersPage(),
+      ),
     ),
     GoRoute(
       path: Routes.projects,
-      builder: (context, state) => const ProjectsPage(),
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: const ProjectsPage(),
+      ),
     ),
     GoRoute(
       path: Routes.publications,
-      builder: (context, state) => const PublicationsPage(),
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: const PublicationsPage(),
+      ),
     ),
     GoRoute(
       path: Routes.contact,
-      builder: (context, state) => const ContactPage(),
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: const ContactPage(),
+      ),
     ),
   ],
 );

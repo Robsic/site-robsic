@@ -13,4 +13,5 @@ class ImagesPaths {
   static const logoLinkedIn = '$_basePath/logo_linkedin.png';
   static const logoOrcid = '$_basePath/logo_orcid.png';
   static const defaultPublication = '$_basePath/default_publication.jpeg';
+  static const defaultUser = '$_basePath/default_user.png';
 }

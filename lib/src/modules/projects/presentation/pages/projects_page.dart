@@ -19,10 +19,12 @@ class ProjectsPage extends StatefulWidget {
 class _ProjectsPageState extends State<ProjectsPage> {
   late final ProjectsStore _projectsStore;
   late final AppStore _appStore;
+  late String searchTerm;
 
   @override
   void initState() {
     super.initState();
+    searchTerm = '';
     _appStore = serviceLocator.get<AppStore>();
     _appStore.addListener(_reloadData);
     _projectsStore = serviceLocator.get<ProjectsStore>();
@@ -63,8 +65,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
                     builder: (context, stateList, _) {
                       if (stateList is ProjectsListStateFailure) {
                         return PageError(
-                            errorMessage: AppLocalizations.of(context)!
-                                .errorLoadingProjectsList);
+                          errorMessage: AppLocalizations.of(context)!
+                              .errorLoadingProjectsList,
+                          reloadAction: () => _projectsStore.getProjectsList(),
+                        );
                       } else if (stateList is ProjectsListStateSuccess) {
                         List<ProjectEntity> projects = stateList.projects;
                         return Container(
@@ -75,17 +79,59 @@ class _ProjectsPageState extends State<ProjectsPage> {
                           width: double.infinity,
                           child: FractionallySizedBox(
                             widthFactor: 0.9,
-                            child: Wrap(
-                              spacing: TokenSpaces.md,
-                              runSpacing: TokenSpaces.md,
-                              alignment: WrapAlignment.center,
-                              runAlignment: WrapAlignment.start,
-                              children: List.generate(
-                                projects.length,
-                                (index) => Projectcard(
-                                  project: projects[index],
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: SizedBox(
+                                    width: 367.0,
+                                    child: CustomTextFormField(
+                                      labelText: AppLocalizations.of(context)!
+                                          .searchLabel,
+                                      onChanged: (searchTerm) {
+                                        this.searchTerm = searchTerm;
+                                        _projectsStore.searchTerm(searchTerm);
+                                      },
+                                      onEditingComplete: () =>
+                                          _projectsStore.searchTerm(searchTerm),
+                                      sufixIcon: GestureDetector(
+                                        onTap: () {
+                                          _projectsStore.searchTerm(searchTerm);
+                                        },
+                                        child: const Icon(
+                                          Icons.search,
+                                          color: TokenColors.primary,
+                                        ),
+                                      ),
+                                      maxLines: 1,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                const SpaceAtom(
+                                    spaceType: SpaceType.vertical,
+                                    value: TokenSpaces.md),
+                                projects.isEmpty
+                                    ? SizedBox(
+                                        height: 200.0,
+                                        child: BodyTextAtom(
+                                            text: AppLocalizations.of(context)!
+                                                .noProjectsFound),
+                                      )
+                                    : Wrap(
+                                        spacing: TokenSpaces.md,
+                                        runSpacing: TokenSpaces.md,
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.start,
+                                        alignment: WrapAlignment.start,
+                                        runAlignment: WrapAlignment.start,
+                                        children: List.generate(
+                                          projects.length,
+                                          (index) => Projectcard(
+                                            project: projects[index],
+                                          ),
+                                        ),
+                                      ),
+                              ],
                             ),
                           ),
                         );

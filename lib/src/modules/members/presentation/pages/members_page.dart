@@ -75,7 +75,7 @@ class _MembersPageState extends State<MembersPage> {
                           return Container(
                             color: Colors.transparent,
                             padding: const EdgeInsets.symmetric(
-                              vertical: 32.0,
+                              vertical: TokenSpaces.xl,
                             ),
                             width: double.infinity,
                             child: FractionallySizedBox(
@@ -88,7 +88,7 @@ class _MembersPageState extends State<MembersPage> {
                                       width: 367.0,
                                       child: CustomTextFormField(
                                         labelText: AppLocalizations.of(context)!
-                                            .nameLabel,
+                                            .searchLabel,
                                         onChanged: (searchTerm) {
                                           this.searchTerm = searchTerm;
                                           _membersStore.searchTerm(searchTerm);
@@ -113,10 +113,13 @@ class _MembersPageState extends State<MembersPage> {
                                       spaceType: SpaceType.vertical,
                                       value: TokenSpaces.md),
                                   members.isEmpty
-                                      ? const SizedBox(
-                                          height: 100.0,
+                                      ? SizedBox(
+                                          height: 200.0,
                                           child: BodyTextAtom(
-                                              text: 'Membros não encontrados!'))
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .noMembersFound),
+                                        )
                                       : Wrap(
                                           spacing: TokenSpaces.md,
                                           runSpacing: TokenSpaces.md,

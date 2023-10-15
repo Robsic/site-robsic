@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/modules/core/core.dart';
 
@@ -60,7 +61,6 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   void _handleSendMessageStates(BuildContext context) {
-    Navigator.popUntil(context, ModalRoute.withName(Routes.contact));
     if (_contactStore.value is SendContactMessageStateLoading) {
       showDialog(
           context: context,
@@ -69,6 +69,7 @@ class _ContactPageState extends State<ContactPage> {
             return const Center(child: CircularLoadingAtom());
           });
     } else if (_contactStore.value is SendContactMessageStateSuccess) {
+      context.pop();
       ScaffoldMessenger.of(context).showSnackBar(
         customSnackBar(
           context,
@@ -77,6 +78,7 @@ class _ContactPageState extends State<ContactPage> {
         ),
       );
     } else if (_contactStore.value is SendContactMessageStateFailure) {
+      context.pop();
       ScaffoldMessenger.of(context).showSnackBar(
         customSnackBar(
           context,
@@ -217,11 +219,12 @@ class _ContactPageState extends State<ContactPage> {
                             child: SizedBox(
                               height: double.infinity,
                               child: CachedNetworkImage(
-                                imageUrl: EndPoints.baseUrl +
-                                    (contactPageData.image?.url ?? ''),
-                                fit: BoxFit.fitHeight,
-                                alignment: Alignment.centerLeft,
-                              ),
+                                  imageUrl: EndPoints.baseUrl +
+                                      (contactPageData.image?.url ?? ''),
+                                  fit: BoxFit.fitHeight,
+                                  alignment: Alignment.centerLeft,
+                                  errorWidget: (context, _, __) =>
+                                      const LoadImageError()),
                             ),
                           )
                       ],

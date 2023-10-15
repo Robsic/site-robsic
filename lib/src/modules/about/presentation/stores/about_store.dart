@@ -12,7 +12,7 @@ class AboutStore extends ValueNotifier<AboutState> {
     final result = await _getAboutPageDataUsecase();
     result.fold(
       (entity) => value = AboutStateSuccess(entity),
-      (failure) => AboutStateFailure(failure),
+      (failure) => value = AboutStateFailure(failure),
     );
   }
 }

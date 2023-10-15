@@ -14,4 +14,5 @@ class ImagesAsset {
   static const logoLinkedIn = AssetImage(ImagesPaths.logoLinkedIn);
   static const logoOrcid = AssetImage(ImagesPaths.logoOrcid);
   static const defaultPublication = AssetImage(ImagesPaths.defaultPublication);
+  static const defaultUser = AssetImage(ImagesPaths.defaultUser);
 }

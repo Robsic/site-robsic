@@ -78,9 +78,10 @@ class _CarouselWidgetState extends State<CarouselWidget> {
                     return Container(
                       padding: const EdgeInsets.all(TokenSpaces.md),
                       child: CachedNetworkImage(
-                        imageUrl: EndPoints.baseUrl + images[index].url,
-                        fit: BoxFit.cover,
-                      ),
+                          imageUrl: '${EndPoints.baseUrl}${images[index].url}',
+                          fit: BoxFit.cover,
+                          errorWidget: (context, _, __) =>
+                              const LoadImageError()),
                     );
                   },
                   onPageChanged: (currentImage) {

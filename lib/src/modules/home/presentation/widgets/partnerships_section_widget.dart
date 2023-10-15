@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../resources/resources.dart';
+import '../../../core/core.dart';
 import '../../domain/domain.dart';
 
 class PartnershipsSection extends StatelessWidget {
@@ -50,6 +51,8 @@ class PartnershipsSection extends StatelessWidget {
                               imageUrl:
                                   '${EndPoints.baseUrl}${partner?.url ?? ''}',
                               fit: BoxFit.contain,
+                              errorWidget: (context, _, __) =>
+                                  const LoadImageError(),
                             ),
                           );
                         },

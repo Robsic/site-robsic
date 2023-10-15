@@ -33,7 +33,9 @@
   "emptyFieldErrorMessage": "O campo não pode ser vazio!",
   "invalidNameMessage": "Preencha o nome completo!",
   "invalidEmailMessage": "Preencha com um email válido!",
+  "searchLabel": "Buscar",
   "noMembersFound": "Não foram encontrados membros.",
   "noProjectsFound": "Não foram encontrados projetos.",
-  "noPublicationsFound": "Não foram encontradas publicações."
+  "noPublicationsFound": "Não foram encontradas publicações.",
+  "loadImageError": "Erro ao carregar a imagem."
 }

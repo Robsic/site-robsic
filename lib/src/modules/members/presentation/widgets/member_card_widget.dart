@@ -58,10 +58,13 @@ class _MembercardState extends State<Membercard> {
                   height: 78.0,
                   child: ClipOval(
                     child: CachedNetworkImage(
-                      imageUrl: EndPoints.baseUrl + widget.member.photo.url,
+                      imageUrl:
+                          '${EndPoints.baseUrl}${widget.member.photo.url}',
                       fit: BoxFit.cover,
                       width: 75.0,
                       height: 75.0,
+                      errorWidget: (context, _, __) =>
+                          const Image(image: ImagesAsset.defaultUser),
                     ),
                   ),
                 ),

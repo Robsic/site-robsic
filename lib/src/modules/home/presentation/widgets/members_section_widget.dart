@@ -48,8 +48,10 @@ class MembersSection extends StatelessWidget {
                             height: 250.0,
                             child: ClipOval(
                               child: CachedNetworkImage(
-                                imageUrl: EndPoints.baseUrl +
-                                    (membersSectionData!.image?.url ?? ''),
+                                imageUrl:
+                                    '${EndPoints.baseUrl}${membersSectionData!.image?.url ?? ''}',
+                                errorWidget: (context, _, __) =>
+                                    const Image(image: ImagesAsset.defaultUser),
                                 fit: BoxFit.cover,
                                 width: 245.0,
                                 height: 245.0,

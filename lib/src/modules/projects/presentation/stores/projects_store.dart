@@ -13,6 +13,20 @@ class ProjectsStore extends ValueNotifier<ProjectsState> {
 
   ProjectsEntity? _entity;
   List<ProjectEntity> _projects = [];
+  List<ProjectEntity> _filtredProjectsBySeachTerm = [];
+
+  void searchTerm(String searchTerm) {
+    value = ProjectsListStateLoading(_entity!);
+    if (searchTerm.length > 3) {
+      _filtredProjectsBySeachTerm = _projects.where((project) {
+        String projectName = project.name.toLowerCase();
+        return projectName.startsWith(searchTerm.toLowerCase());
+      }).toList();
+      value = ProjectsListStateSuccess(_entity!, _filtredProjectsBySeachTerm);
+    } else {
+      value = ProjectsListStateSuccess(_entity!, _projects);
+    }
+  }
 
   Future<void> getProjectsPageData() async {
     value = const ProjectsStateLoading();

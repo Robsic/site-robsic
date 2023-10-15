@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../resources/resources.dart';
+import '../../../core/core.dart';
 import '../../domain/domain.dart';
 
 class Projectcard extends StatelessWidget {
@@ -14,7 +15,7 @@ class Projectcard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        constraints: const BoxConstraints(maxHeight: 295.0, maxWidth: 628.0),
+        constraints: const BoxConstraints(maxHeight: 295.0, maxWidth: 500.0),
         padding: const EdgeInsets.all(TokenSpaces.lg),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,6 +27,7 @@ class Projectcard extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: EndPoints.baseUrl + project.image.url,
                   fit: BoxFit.contain,
+                  errorWidget: (context, _, __) => const LoadImageError(),
                 ),
               ),
             ),
