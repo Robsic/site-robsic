@@ -1,11 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/modules/core/core.dart';
-import 'package:robsic/src/modules/members/domain/entities/member_entity.dart';
 
 import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
+import 'member_details_dialog.dart';
+import 'social_link.dart';
 
 class Membercard extends StatefulWidget {
   const Membercard({super.key, required this.member});
@@ -44,29 +45,9 @@ class _MembercardState extends State<Membercard> {
           children: [
             Row(
               children: [
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      strokeAlign: BorderSide.strokeAlignOutside,
-                      color: TokenColors.primary,
-                      width: 2.0,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  width: 78.0,
-                  height: 78.0,
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          '${EndPoints.baseUrl}${widget.member.photo.url}',
-                      fit: BoxFit.cover,
-                      width: 75.0,
-                      height: 75.0,
-                      errorWidget: (context, _, __) =>
-                          const Image(image: ImagesAsset.defaultUser),
-                    ),
-                  ),
+                CircleUserAvatar(
+                  url: '${EndPoints.baseUrl}${widget.member.photo.url}',
+                  size: 78,
                 ),
                 const SpaceAtom(
                   spaceType: SpaceType.horizontal,
@@ -132,67 +113,24 @@ class _MembercardState extends State<Membercard> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Visibility(
+                SocialLink(
                   visible: widget.member.lattesUrl.isNotEmpty,
-                  child: InkWell(
-                    onTap: () =>
-                        _urlLauncher.launchUrl(widget.member.lattesUrl),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Image(image: ImagesAsset.logoLattes),
-                        const SpaceAtom(
-                          spaceType: SpaceType.horizontal,
-                          value: TokenSpaces.xxs,
-                        ),
-                        LabelAtom(
-                          text: AppLocalizations.of(context)!.lattesLabel,
-                          textStyle: TokenTextStyles.titleSmall,
-                        ),
-                      ],
-                    ),
-                  ),
+                  label: AppLocalizations.of(context)!.lattesLabel,
+                  image: ImagesAsset.logoLattes,
+                  onTap: () => _urlLauncher.launchUrl(widget.member.lattesUrl),
                 ),
-                Visibility(
+                SocialLink(
                   visible: widget.member.orcidUrl.isNotEmpty,
-                  child: InkWell(
-                    onTap: () => _urlLauncher.launchUrl(widget.member.orcidUrl),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Image(image: ImagesAsset.logoOrcid),
-                        const SpaceAtom(
-                          spaceType: SpaceType.horizontal,
-                          value: TokenSpaces.xxs,
-                        ),
-                        LabelAtom(
-                          text: AppLocalizations.of(context)!.orcidLabel,
-                          textStyle: TokenTextStyles.titleSmall,
-                        ),
-                      ],
-                    ),
-                  ),
+                  label: AppLocalizations.of(context)!.orcidLabel,
+                  image: ImagesAsset.logoOrcid,
+                  onTap: () => _urlLauncher.launchUrl(widget.member.orcidUrl),
                 ),
-                Visibility(
+                SocialLink(
                   visible: widget.member.linkedinUrl.isNotEmpty,
-                  child: InkWell(
-                    onTap: () =>
-                        _urlLauncher.launchUrl(widget.member.linkedinUrl),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Image(image: ImagesAsset.logoLinkedIn),
-                        const SpaceAtom(
-                          spaceType: SpaceType.horizontal,
-                          value: TokenSpaces.xxs,
-                        ),
-                        LabelAtom(
-                          text: AppLocalizations.of(context)!.linkedinLabel,
-                          textStyle: TokenTextStyles.titleSmall,
-                        ),
-                      ],
-                    ),
-                  ),
+                  label: AppLocalizations.of(context)!.linkedinLabel,
+                  image: ImagesAsset.logoLinkedIn,
+                  onTap: () =>
+                      _urlLauncher.launchUrl(widget.member.linkedinUrl),
                 ),
               ],
             ),
@@ -200,17 +138,32 @@ class _MembercardState extends State<Membercard> {
               spaceType: SpaceType.vertical,
               value: TokenSpaces.md,
             ),
-            if (widget.member.canReceiveEmail)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
+            Column(
+              children: [
+                ElevatedButtonMolecule(
+                  label: LabelAtom(
+                    text: AppLocalizations.of(context)!.moreDetailsLabel,
+                  ),
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      child: MemberDetailsDialog(member: widget.member),
+                    ),
+                  ),
+                ),
+                const SpaceAtom(
+                  spaceType: SpaceType.vertical,
+                  value: TokenSpaces.md,
+                ),
+                if (widget.member.canReceiveEmail)
                   OutlinedButtonMolecule(
                     label: LabelAtom(
-                        text: AppLocalizations.of(context)!.sendEmailLabel),
+                      text: AppLocalizations.of(context)!.sendEmailLabel,
+                    ),
                     onPressed: () {},
-                  )
-                ],
-              ),
+                  ),
+              ],
+            ),
           ],
         ),
       ),

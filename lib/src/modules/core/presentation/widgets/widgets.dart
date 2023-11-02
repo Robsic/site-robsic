@@ -1,3 +1,4 @@
+export './circle_user_avatar.dart';
 export './custom_app_bar.dart';
 export './custom_end_drawer.dart';
 export './custom_snackbar.dart';
