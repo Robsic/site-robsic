@@ -46,7 +46,9 @@ class _MembercardState extends State<Membercard> {
             Row(
               children: [
                 CircleUserAvatar(
-                  url: '${EndPoints.baseUrl}${widget.member.photo.url}',
+                  url: widget.member.photo?.url != null
+                      ? '${EndPoints.baseUrl}${widget.member.photo!.url}'
+                      : '',
                   size: 78,
                 ),
                 const SpaceAtom(

@@ -45,7 +45,9 @@ class _MemberDetailsDialogState extends State<MemberDetailsDialog> {
                 ),
               ),
               CircleUserAvatar(
-                url: '${EndPoints.baseUrl}${widget.member.photo.url}',
+                url: widget.member.photo?.url != null
+                    ? '${EndPoints.baseUrl}${widget.member.photo!.url}'
+                    : '',
                 size: 200,
               ),
               Row(
