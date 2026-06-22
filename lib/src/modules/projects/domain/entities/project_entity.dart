@@ -7,7 +7,7 @@ class ProjectEntity {
   final DateTime startDate;
   final DateTime? endDate;
   final String description;
-  final ImageEntity image;
+  final ImageEntity? image;
 
   ProjectEntity({
     this.id,
@@ -16,6 +16,6 @@ class ProjectEntity {
     required this.startDate,
     this.endDate,
     required this.description,
-    required this.image,
+    this.image,
   });
 }

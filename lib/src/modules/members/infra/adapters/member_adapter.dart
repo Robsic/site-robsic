@@ -9,15 +9,15 @@ class MemberAdapter {
   static MemberEntity fromMap(Map<String, dynamic> map) {
     try {
       return MemberEntity(
-        name: map['name'],
-        role: map['role'],
-        description: map['description'],
+        name: map['name'] ?? '',
+        role: map['role'] ?? '',
+        description: map['description'] ?? '',
         lattesUrl: map['lattes'] ?? '',
         orcidUrl: map['orcid'] ?? '',
         linkedinUrl: map['linkedin'] ?? '',
         email: map['email'] ?? '',
         canReceiveEmail: map['can_receive_email'] ?? false,
-        photo: map['photo']?['data']?['attibutes'] != null
+        photo: map['photo']?['data']?['attributes'] != null
             ? ImageAdapter.fromMap(map['photo']['data']['attributes'])
             : null,
       );

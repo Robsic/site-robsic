@@ -1,5 +1,5 @@
 import 'package:robsic/src/modules/projects/domain/entities/project_entity.dart';
-
+import '../../../core/domain/entities/image_entity.dart';
 import '../../../core/domain/failures/failures.dart';
 import '../../../core/infra/adapters/image_adapter.dart';
 
@@ -8,14 +8,19 @@ class ProjectAdapter {
 
   static ProjectEntity fromMap(Map<String, dynamic> map) {
     try {
+      final imageList = map['images']?['data'] != null
+          ? ImageAdapter.fromList(map['images']['data'])
+          : <ImageEntity>[];
       return ProjectEntity(
         name: map['name'] ?? '',
         category: map['category'] ?? '',
         description: map['description'] ?? '',
-        startDate: DateTime.parse(map['start_date']),
+        startDate: map['start_date'] != null
+            ? DateTime.parse(map['start_date'])
+            : DateTime.now(),
         endDate:
             map['end_date'] != null ? DateTime.parse(map['end_date']) : null,
-        image: ImageAdapter.fromList(map['images']['data']).first,
+        image: imageList.isNotEmpty ? imageList.first : null,
       );
     } on AppFailure {
       rethrow;

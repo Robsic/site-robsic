@@ -11,7 +11,9 @@ class PublicationAdapter {
         title: map['title'] ?? '',
         autors: map['authors'] ?? '',
         resume: map['abstract'] ?? '',
-        publicationDate: DateTime.parse(map['publication_date']),
+        publicationDate: map['publication_date'] != null
+            ? DateTime.parse(map['publication_date'])
+            : DateTime.now(),
         image: map['image']?['data']?['attributes'] != null
             ? ImageAdapter.fromMap(map['image']?['data']?['attributes'])
             : null,
