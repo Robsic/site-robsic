@@ -117,6 +117,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchLabel => 'Search';
 
   @override
+  String get professorsLabel => 'Professors';
+
+  @override
+  String get studentsLabel => 'Students';
+
+  @override
   String get noMembersFound => 'No members found.';
 
   @override

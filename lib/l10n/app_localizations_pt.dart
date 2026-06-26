@@ -119,6 +119,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get searchLabel => 'Buscar';
 
   @override
+  String get professorsLabel => 'Professores';
+
+  @override
+  String get studentsLabel => 'Alunos';
+
+  @override
   String get noMembersFound => 'Não foram encontrados membros.';
 
   @override

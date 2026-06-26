@@ -37,68 +37,70 @@ class _MembercardState extends State<Membercard> {
       ),
       child: Container(
         padding: const EdgeInsets.all(TokenSpaces.lg),
-        constraints: const BoxConstraints(
-          maxWidth: 350.0,
-        ),
+        width: 350.0,
+        height: 540.0,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            Row(
-              children: [
-                CircleUserAvatar(
-                  url: widget.member.photo?.url != null
-                      ? '${EndPoints.baseUrl}${widget.member.photo!.url}'
-                      : '',
-                  size: 78,
-                ),
-                const SpaceAtom(
-                  spaceType: SpaceType.horizontal,
-                  value: TokenSpaces.sm,
-                ),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: LabelAtom(
-                              text: widget.member.name,
-                              textStyle: TokenTextStyles.titleLarge.apply(
-                                color: TokenColors.emphasis,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: LabelAtom(
-                              text: widget.member.role,
-                              textStyle: TokenTextStyles.labelSmall.apply(
-                                color: TokenColors.primary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
+            SizedBox(
+              height: 110.0,
+              child: Row(
+                children: [
+                  CircleUserAvatar(
+                    url: widget.member.photo?.url != null
+                        ? '${EndPoints.baseUrl}${widget.member.photo!.url}'
+                        : '',
+                    size: 78,
                   ),
-                ),
-              ],
+                  const SpaceAtom(
+                    spaceType: SpaceType.horizontal,
+                    value: TokenSpaces.sm,
+                  ),
+                  Flexible(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: LabelAtom(
+                                text: widget.member.name,
+                                textStyle: TokenTextStyles.titleLarge.apply(
+                                  color: TokenColors.emphasis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: LabelAtom(
+                                text: widget.member.role,
+                                textStyle: TokenTextStyles.labelSmall.apply(
+                                  color: TokenColors.primary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 600.0),
+            SizedBox(
+              height: 220.0,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: TokenSpaces.md),
                 child: BodyTextAtom(
                   text: widget.member.description,
                   textStyle: TokenTextStyles.bodyLarge,
-                  maxLines: 10,
+                  maxLines: 8,
                   textOverflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -136,35 +138,35 @@ class _MembercardState extends State<Membercard> {
                 ),
               ],
             ),
-            const SpaceAtom(
-              spaceType: SpaceType.vertical,
-              value: TokenSpaces.md,
-            ),
-            Column(
-              children: [
-                ElevatedButtonMolecule(
-                  label: LabelAtom(
-                    text: AppLocalizations.of(context)!.moreDetailsLabel,
-                  ),
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (context) => Dialog(
-                      child: MemberDetailsDialog(member: widget.member),
-                    ),
-                  ),
-                ),
-                const SpaceAtom(
-                  spaceType: SpaceType.vertical,
-                  value: TokenSpaces.md,
-                ),
-                if (widget.member.canReceiveEmail)
-                  OutlinedButtonMolecule(
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButtonMolecule(
                     label: LabelAtom(
-                      text: AppLocalizations.of(context)!.sendEmailLabel,
+                      text: AppLocalizations.of(context)!.moreDetailsLabel,
                     ),
-                    onPressed: () {},
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        child: MemberDetailsDialog(member: widget.member),
+                      ),
+                    ),
                   ),
-              ],
+                  if (widget.member.canReceiveEmail) ...[
+                    const SpaceAtom(
+                      spaceType: SpaceType.vertical,
+                      value: TokenSpaces.md,
+                    ),
+                    OutlinedButtonMolecule(
+                      label: LabelAtom(
+                        text: AppLocalizations.of(context)!.sendEmailLabel,
+                      ),
+                      onPressed: () => _urlLauncher.launchUrl('mailto:${widget.member.email}'),
+                    ),
+                  ],
+                ],
+              ),
             ),
           ],
         ),

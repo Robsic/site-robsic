@@ -71,7 +71,6 @@ class _MembersPageState extends State<MembersPage> {
                             reloadAction: () => _membersStore.getMembersList(),
                           );
                         } else if (stateList is MembersListStateSuccess) {
-                          List<MemberEntity> members = stateList.members;
                           return Container(
                             color: Colors.transparent,
                             padding: const EdgeInsets.symmetric(
@@ -112,30 +111,62 @@ class _MembersPageState extends State<MembersPage> {
                                   const SpaceAtom(
                                       spaceType: SpaceType.vertical,
                                       value: TokenSpaces.md),
-                                  members.isEmpty
-                                      ? SizedBox(
-                                          height: 200.0,
-                                          child: BodyTextAtom(
-                                              text:
-                                                  AppLocalizations.of(context)!
-                                                      .noMembersFound),
-                                        )
-                                      : Wrap(
-                                          spacing: TokenSpaces.md,
-                                          runSpacing: TokenSpaces.md,
-                                          crossAxisAlignment:
-                                              WrapCrossAlignment.start,
-                                          alignment: WrapAlignment.start,
-                                          runAlignment: WrapAlignment.start,
-                                          children: List.generate(
-                                            members.length,
-                                            (index) {
-                                              MemberEntity member =
-                                                  members[index];
-                                              return Membercard(member: member);
-                                            },
-                                          ),
-                                        ),
+                                  if (stateList.professors.isEmpty && stateList.students.isEmpty)
+                                    SizedBox(
+                                      height: 200.0,
+                                      child: BodyTextAtom(
+                                          text: AppLocalizations.of(context)!
+                                              .noMembersFound),
+                                    )
+                                  else
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        if (stateList.professors.isNotEmpty) ...
+                                          [
+                                            SectionTitleMolecule(
+                                              title: AppLocalizations.of(context)!.professorsLabel,
+                                              sectionTitleStyle: SectionTitleStyle.onLightBackground,
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.md),
+                                            Wrap(
+                                              spacing: TokenSpaces.md,
+                                              runSpacing: TokenSpaces.md,
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              children: stateList.professors
+                                                  .map((member) => Membercard(member: member))
+                                                  .toList(),
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.xl),
+                                          ],
+                                        if (stateList.students.isNotEmpty) ...
+                                          [
+                                            SectionTitleMolecule(
+                                              title: AppLocalizations.of(context)!.studentsLabel,
+                                              sectionTitleStyle: SectionTitleStyle.onLightBackground,
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.md),
+                                            Wrap(
+                                              spacing: TokenSpaces.md,
+                                              runSpacing: TokenSpaces.md,
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              children: stateList.students
+                                                  .map((member) => Membercard(member: member))
+                                                  .toList(),
+                                            ),
+                                          ],
+                                      ],
+                                    ),
                                 ],
                               ),
                             ),

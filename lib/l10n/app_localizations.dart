@@ -314,6 +314,18 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get searchLabel;
 
+  /// No description provided for @professorsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Professors'**
+  String get professorsLabel;
+
+  /// No description provided for @studentsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get studentsLabel;
+
   /// No description provided for @noMembersFound.
   ///
   /// In en, this message translates to:

@@ -35,6 +35,8 @@
   "invalidNameMessage": "Fill in the full name!",
   "invalidEmailMessage": "Fill in a valid email!",
   "searchLabel": "Search",
+  "professorsLabel": "Professors",
+  "studentsLabel": "Students",
   "noMembersFound": "No members found.",
   "noProjectsFound": "No projects found.",
   "noPublicationsFound": "No publications found.",

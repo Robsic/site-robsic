@@ -4,7 +4,7 @@ import 'package:robsic/src/modules/members/domain/entities/members_entity.dart';
 import 'package:robsic/src/modules/members/domain/usecases/get_members_data_usecase.dart';
 import 'package:robsic/src/modules/members/domain/usecases/get_members_list_usecase.dart';
 import 'package:robsic/src/modules/members/presentation/stores/members_states.dart';
-
+import 'package:diacritic/diacritic.dart';
 class MembersStore extends ValueNotifier<MembersState> {
   MembersStore(this._getMembersDataUsecase, this._getMembersListUsecase)
       : super(const MembersStateIdle());
@@ -46,6 +46,11 @@ class MembersStore extends ValueNotifier<MembersState> {
     final result = await _getMembersListUsecase();
     result.fold(
       (members) {
+        members.sort((a, b) {
+  final nameA = removeDiacritics(a.name).toLowerCase();
+  final nameB = removeDiacritics(b.name).toLowerCase();
+  return nameA.compareTo(nameB);
+});
         _members = members;
         value = MembersListStateSuccess(_entity!, _members);
       },

@@ -30,10 +30,18 @@ class MembersListStateLoading extends MembersStateSuccess {
 
 class MembersListStateSuccess extends MembersStateSuccess {
   final List<MemberEntity> members;
+  static const _professorRoles = {'pesquisador', 'diretor'};
   const MembersListStateSuccess(
     super.membersEntity,
     this.members,
   );
+
+  List<MemberEntity> get professors =>
+    members.where((m) => _professorRoles.contains(m.role.trim().toLowerCase())).toList();
+    
+  List<MemberEntity> get students =>
+    members.where((m) => !_professorRoles.contains(m.role.trim().toLowerCase())).toList();
+    
 }
 
 class MembersListStateFailure extends MembersStateSuccess {

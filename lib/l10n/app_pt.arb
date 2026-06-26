@@ -35,6 +35,8 @@
   "invalidNameMessage": "Preencha o nome completo!",
   "invalidEmailMessage": "Preencha com um email válido!",
   "searchLabel": "Buscar",
+  "professorsLabel": "Professores",
+  "studentsLabel": "Alunos",
   "noMembersFound": "Não foram encontrados membros.",
   "noProjectsFound": "Não foram encontrados projetos.",
   "noPublicationsFound": "Não foram encontradas publicações.",
