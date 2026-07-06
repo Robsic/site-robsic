@@ -36,6 +36,7 @@ firebase.json
 .pub-cache/
 .pub/
 /build/
+*.zip
 
 # Symbolication related
 app.*.symbols
