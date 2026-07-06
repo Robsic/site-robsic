@@ -162,7 +162,9 @@ class _MembercardState extends State<Membercard> {
                       label: LabelAtom(
                         text: AppLocalizations.of(context)!.sendEmailLabel,
                       ),
-                      onPressed: () => _urlLauncher.launchUrl('mailto:${widget.member.email}'),
+                      onPressed: () => _urlLauncher.launchUrl(
+                        'https://mail.google.com/mail/?view=cm&fs=1&to=${widget.member.email}',
+                      ),
                     ),
                   ],
                 ],
