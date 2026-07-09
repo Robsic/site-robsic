@@ -27,10 +27,10 @@ class MembersRepositoryImpl implements MembersRepository {
   }
 
   @override
-  AsyncResult<List<MemberEntity>, AppFailure> getMembersList() async {
+  AsyncResult<List<MemberEntity>, AppFailure> getMembersList({String preferredLocale = 'pt-BR'}) async {
     try {
       final result = await _membersDatasource.getMembersList();
-      final membersList = MemberAdapter.fromList(result['data']);
+      final membersList = MemberAdapter.fromList(result['data'], preferredLocale: preferredLocale);
       return Success(membersList);
     } on AppFailure catch (error) {
       log(error.toString());

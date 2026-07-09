@@ -8,8 +8,8 @@ class GetProjectsListUsecase {
   final ProjectsRepository _projectsRepository;
 
   GetProjectsListUsecase(this._projectsRepository);
-  AsyncResult<List<ProjectEntity>, AppFailure> call() async {
-    final result = await _projectsRepository.getProjectsList();
+  AsyncResult<List<ProjectEntity>, AppFailure> call({String preferredLocale = 'pt-BR'}) async {
+    final result = await _projectsRepository.getProjectsList(preferredLocale: preferredLocale);
     return result;
   }
 }

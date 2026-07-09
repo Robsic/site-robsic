@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/modules/projects/domain/domain.dart';
 import 'package:robsic/src/modules/projects/presentation/stores/projects_states.dart';
 
@@ -42,7 +44,8 @@ class ProjectsStore extends ValueNotifier<ProjectsState> {
 
   Future<void> getProjectsList() async {
     value = ProjectsListStateLoading(_entity!);
-    final result = await _getProjectsListUsecase();
+    final locale = serviceLocator.get<AppStore>().value.fullLanguageCode;
+    final result = await _getProjectsListUsecase(preferredLocale: locale);
     result.fold(
       (projects) {
         _projects = projects;
@@ -50,5 +53,12 @@ class ProjectsStore extends ValueNotifier<ProjectsState> {
       },
       (failure) => value = ProjectsListStateFailure(_entity!, failure),
     );
+  }
+
+  /// Reprocessa a lista com o locale atual sem fazer nova requisição de rede.
+  /// Chamado quando o usuário troca de idioma.
+  Future<void> reprocessList() async {
+    if (_entity == null) return;
+    await getProjectsList();
   }
 }

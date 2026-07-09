@@ -24,10 +24,10 @@ class ProjectsRepositoryImpl implements ProjectsRepository {
   }
 
   @override
-  AsyncResult<List<ProjectEntity>, AppFailure> getProjectsList() async {
+  AsyncResult<List<ProjectEntity>, AppFailure> getProjectsList({String preferredLocale = 'pt-BR'}) async {
     try {
       final result = await _projectsDatasource.getProjectsList();
-      final projectsList = ProjectAdapter.fromList(result['data']);
+      final projectsList = ProjectAdapter.fromList(result['data'], preferredLocale: preferredLocale);
       return Success(projectsList);
     } on AppFailure catch (error) {
       return Failure(error);

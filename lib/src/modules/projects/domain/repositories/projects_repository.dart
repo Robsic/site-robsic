@@ -6,5 +6,5 @@ import '../../../core/domain/failures/failures.dart';
 
 abstract class ProjectsRepository {
   AsyncResult<ProjectsEntity, AppFailure> getProjectsData();
-  AsyncResult<List<ProjectEntity>, AppFailure> getProjectsList();
+  AsyncResult<List<ProjectEntity>, AppFailure> getProjectsList({String preferredLocale = 'pt-BR'});
 }

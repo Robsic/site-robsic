@@ -16,8 +16,11 @@ class LanguageInteceptor extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final AppStore appStore = serviceLocator.get<AppStore>();
     final String language = appStore.value.fullLanguageCode;
-    String url = '${options.path}&locale=$language';
-    options.path = url;
+    // Não sobrescreve se o endpoint já define o locale explicitamente
+    if (!options.path.contains('locale=')) {
+      String url = '${options.path}&locale=$language';
+      options.path = url;
+    }
     return super.onRequest(options, handler);
   }
 }

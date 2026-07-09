@@ -32,10 +32,34 @@ class ProjectAdapter {
     }
   }
 
-  static List<ProjectEntity> fromList(List list) {
+  static List<ProjectEntity> fromList(List list, {String preferredLocale = 'pt-BR'}) {
     try {
-      return list.map((project) {
-        return fromMap(project['attributes']);
+      return list.map((item) {
+        final baseAttributes = item['attributes'] as Map<String, dynamic>;
+
+        if (preferredLocale == 'pt-BR') return fromMap(baseAttributes);
+
+        final localizations =
+            baseAttributes['localizations']?['data'] as List? ?? [];
+        final translated = localizations.cast<Map<String, dynamic>>().firstWhere(
+              (loc) => loc['attributes']['locale'] == preferredLocale,
+              orElse: () => <String, dynamic>{},
+            );
+
+        if (translated.isNotEmpty) {
+          final translatedAttrs =
+              translated['attributes'] as Map<String, dynamic>;
+          return fromMap({
+            ...baseAttributes,
+            'name': translatedAttrs['name'] ?? baseAttributes['name'],
+            'category':
+                translatedAttrs['category'] ?? baseAttributes['category'],
+            'description':
+                translatedAttrs['description'] ?? baseAttributes['description'],
+          });
+        }
+
+        return fromMap(baseAttributes);
       }).toList();
     } on AppFailure {
       rethrow;

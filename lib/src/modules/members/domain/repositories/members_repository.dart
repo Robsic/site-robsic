@@ -5,5 +5,5 @@ import 'package:robsic/src/modules/members/domain/entities/members_entity.dart';
 
 abstract class MembersRepository {
   AsyncResult<MembersEntity, AppFailure> getMembersData();
-  AsyncResult<List<MemberEntity>, AppFailure> getMembersList();
+  AsyncResult<List<MemberEntity>, AppFailure> getMembersList({String preferredLocale = 'pt-BR'});
 }

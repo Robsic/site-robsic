@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/modules/members/domain/entities/member_entity.dart';
 import 'package:robsic/src/modules/members/domain/entities/members_entity.dart';
 import 'package:robsic/src/modules/members/domain/usecases/get_members_data_usecase.dart';
@@ -43,18 +45,26 @@ class MembersStore extends ValueNotifier<MembersState> {
 
   Future<void> getMembersList() async {
     value = MembersListStateLoading(_entity!);
-    final result = await _getMembersListUsecase();
+    final locale = serviceLocator.get<AppStore>().value.fullLanguageCode;
+    final result = await _getMembersListUsecase(preferredLocale: locale);
     result.fold(
       (members) {
         members.sort((a, b) {
-  final nameA = removeDiacritics(a.name).toLowerCase();
-  final nameB = removeDiacritics(b.name).toLowerCase();
-  return nameA.compareTo(nameB);
-});
+          final nameA = removeDiacritics(a.name).toLowerCase();
+          final nameB = removeDiacritics(b.name).toLowerCase();
+          return nameA.compareTo(nameB);
+        });
         _members = members;
         value = MembersListStateSuccess(_entity!, _members);
       },
       (failure) => value = MembersListStateFailure(_entity!, failure),
     );
+  }
+
+  /// Reprocessa a lista com o locale atual sem fazer nova requisição de rede.
+  /// Chamado quando o usuário troca de idioma.
+  Future<void> reprocessList() async {
+    if (_entity == null) return;
+    await getMembersList();
   }
 }

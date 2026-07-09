@@ -31,9 +31,39 @@ class MemberAdapter {
     }
   }
 
-  static List<MemberEntity> fromList(List list) {
+  static List<MemberEntity> fromList(List list, {String preferredLocale = 'pt-BR'}) {
     try {
-      return list.map((member) => fromMap(member['attributes'])).toList();
+      return list.map((item) {
+        final baseAttributes = item['attributes'] as Map<String, dynamic>;
+
+        // Se o locale preferido for pt-BR, usa a base diretamente
+        if (preferredLocale == 'pt-BR') return fromMap(baseAttributes);
+
+        // Procura a tradução no idioma preferido dentro de localizations
+        final localizations =
+            baseAttributes['localizations']?['data'] as List? ?? [];
+        final translated = localizations.cast<Map<String, dynamic>>().firstWhere(
+              (loc) => loc['attributes']['locale'] == preferredLocale,
+              orElse: () => <String, dynamic>{},
+            );
+
+        if (translated.isNotEmpty) {
+          // Mescla: campos traduzíveis vêm da tradução; campos não-localizáveis
+          // (photo, lattes, orcid, linkedin, email) vêm da base (pt-BR)
+          final translatedAttrs =
+              translated['attributes'] as Map<String, dynamic>;
+          return fromMap({
+            ...baseAttributes,
+            'name': translatedAttrs['name'] ?? baseAttributes['name'],
+            'role': translatedAttrs['role'] ?? baseAttributes['role'],
+            'description':
+                translatedAttrs['description'] ?? baseAttributes['description'],
+          });
+        }
+
+        // Fallback: usa pt-BR
+        return fromMap(baseAttributes);
+      }).toList();
     } on AppFailure {
       rethrow;
     } on FormatException catch (error, stackTrace) {

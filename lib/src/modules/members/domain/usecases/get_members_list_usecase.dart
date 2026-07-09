@@ -8,8 +8,8 @@ class GetMembersListUsecase {
 
   GetMembersListUsecase(this._membersRepository);
 
-  AsyncResult<List<MemberEntity>, AppFailure> call() async {
-    final result = await _membersRepository.getMembersList();
+  AsyncResult<List<MemberEntity>, AppFailure> call({String preferredLocale = 'pt-BR'}) async {
+    final result = await _membersRepository.getMembersList(preferredLocale: preferredLocale);
     return result;
   }
 }
