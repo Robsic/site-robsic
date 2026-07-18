@@ -122,6 +122,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get professorsLabel => 'Professores';
 
   @override
+  String get phdStudentsLabel => 'Doutorado';
+
+  @override
+  String get masterStudentsLabel => 'Mestrado';
+
+  @override
+  String get undergraduateStudentsLabel => 'Graduação';
+
+  @override
   String get studentsLabel => 'Alunos';
 
   @override
@@ -135,4 +144,30 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get loadImageError => 'Erro ao carregar a imagem.';
+
+  @override
+  String get cnpqGroupLabel => 'Grupo de Pesquisa CNPq';
+
+  @override
+  String get youtubeChannelLabel => 'Canal no YouTube';
+
+  @override
+  String get githubLabel => 'Repositório no GitHub';
+
+  @override
+  String get ourGroupAndMediaLabel => 'GRUPO E MÍDIAS';
+
+  @override
+  String get cnpqDescLabel =>
+      'Acesse a página oficial do grupo de pesquisa RobSIC no CNPq.';
+
+  @override
+  String get youtubeDescLabel =>
+      'Assista aos nossos vídeos de projetos, demonstrações e pesquisas.';
+
+  @override
+  String get accessPageLabel => 'Acessar Página';
+
+  @override
+  String get watchChannelLabel => 'Assistir no YouTube';
 }

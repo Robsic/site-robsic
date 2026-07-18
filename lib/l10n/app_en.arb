@@ -36,9 +36,20 @@
   "invalidEmailMessage": "Fill in a valid email!",
   "searchLabel": "Search",
   "professorsLabel": "Professors",
+  "phdStudentsLabel": "Ph.D. Students",
+  "masterStudentsLabel": "Master's Students",
+  "undergraduateStudentsLabel": "Undergraduate Students",
   "studentsLabel": "Students",
   "noMembersFound": "No members found.",
   "noProjectsFound": "No projects found.",
   "noPublicationsFound": "No publications found.",
-  "loadImageError": "Error loading image."
+  "loadImageError": "Error loading image.",
+  "cnpqGroupLabel": "CNPq Research Group",
+  "youtubeChannelLabel": "YouTube Channel",
+  "githubLabel": "GitHub Repository",
+  "ourGroupAndMediaLabel": "OUR GROUP & MEDIA",
+  "cnpqDescLabel": "Access the official page of the RobSIC research group on CNPq.",
+  "youtubeDescLabel": "Watch our project videos, demonstrations, and research.",
+  "accessPageLabel": "Access Page",
+  "watchChannelLabel": "Watch on YouTube"
 }

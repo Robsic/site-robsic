@@ -48,3 +48,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Python & Environment variables
+.env
+*.env
+scripts/.venv/
+

@@ -8,10 +8,12 @@ class FooterLinkMolecule extends StatefulWidget {
     super.key,
     required this.label,
     this.onPressed,
+    this.icon,
   });
 
   final String label;
   final VoidCallback? onPressed;
+  final Widget? icon;
 
   @override
   State<FooterLinkMolecule> createState() => _FooterLinkMoleculeState();
@@ -23,6 +25,9 @@ class _FooterLinkMoleculeState extends State<FooterLinkMolecule> {
     return TextButton(
       onPressed: widget.onPressed,
       style: ButtonStyle(
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+        ),
         foregroundColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.hovered) ||
               states.contains(MaterialState.focused)) {
@@ -35,8 +40,18 @@ class _FooterLinkMoleculeState extends State<FooterLinkMolecule> {
         textStyle:
             MaterialStateProperty.all<TextStyle>(TokenTextStyles.titleSmall),
       ),
-      child: LabelAtom(
-        text: widget.label,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (widget.icon != null) ...[
+            widget.icon!,
+            const SizedBox(width: TokenSpaces.xs),
+          ],
+          LabelAtom(
+            text: widget.label,
+          ),
+        ],
       ),
     );
   }

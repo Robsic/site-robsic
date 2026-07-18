@@ -320,6 +320,24 @@ abstract class AppLocalizations {
   /// **'Professors'**
   String get professorsLabel;
 
+  /// No description provided for @phdStudentsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ph.D. Students'**
+  String get phdStudentsLabel;
+
+  /// No description provided for @masterStudentsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Master\'s Students'**
+  String get masterStudentsLabel;
+
+  /// No description provided for @undergraduateStudentsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Undergraduate Students'**
+  String get undergraduateStudentsLabel;
+
   /// No description provided for @studentsLabel.
   ///
   /// In en, this message translates to:
@@ -349,6 +367,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading image.'**
   String get loadImageError;
+
+  /// No description provided for @cnpqGroupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'CNPq Research Group'**
+  String get cnpqGroupLabel;
+
+  /// No description provided for @youtubeChannelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'YouTube Channel'**
+  String get youtubeChannelLabel;
+
+  /// No description provided for @githubLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub Repository'**
+  String get githubLabel;
+
+  /// No description provided for @ourGroupAndMediaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'OUR GROUP & MEDIA'**
+  String get ourGroupAndMediaLabel;
+
+  /// No description provided for @cnpqDescLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Access the official page of the RobSIC research group on CNPq.'**
+  String get cnpqDescLabel;
+
+  /// No description provided for @youtubeDescLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch our project videos, demonstrations, and research.'**
+  String get youtubeDescLabel;
+
+  /// No description provided for @accessPageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Access Page'**
+  String get accessPageLabel;
+
+  /// No description provided for @watchChannelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch on YouTube'**
+  String get watchChannelLabel;
 }
 
 class _AppLocalizationsDelegate

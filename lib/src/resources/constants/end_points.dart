@@ -3,6 +3,11 @@ class EndPoints {
 
   static const String baseUrl = String.fromEnvironment('BASE_URL');
   static const String unifeiSiteUrl = 'https://unifei.edu.br/';
+  static const String youtubeChannelUrl =
+      'https://www.youtube.com/channel/UCu8nF1VzeyF5s1NpWG293Eg';
+  static const String cnpqGroupUrl =
+      'http://dgp.cnpq.br/dgp/espelhogrupo/189820';
+  static const String githubUrl = 'https://github.com/Robsic';
 
   static const String about = '/api/about-page?populate=header&populate=images';
   static const String contact =

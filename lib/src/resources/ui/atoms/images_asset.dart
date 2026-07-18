@@ -13,6 +13,9 @@ class ImagesAsset {
   static const logoLattes = AssetImage(ImagesPaths.logoLattes);
   static const logoLinkedIn = AssetImage(ImagesPaths.logoLinkedIn);
   static const logoOrcid = AssetImage(ImagesPaths.logoOrcid);
+  static const logoCnpq = AssetImage(ImagesPaths.logoCnpq);
+  static const logoYoutube = AssetImage(ImagesPaths.logoYoutube);
+  static const logoGithub = AssetImage(ImagesPaths.logoGithub);
   static const defaultPublication = AssetImage(ImagesPaths.defaultPublication);
   static const defaultUser = AssetImage(ImagesPaths.defaultUser);
 }

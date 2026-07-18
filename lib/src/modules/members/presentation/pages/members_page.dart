@@ -145,10 +145,10 @@ class _MembersPageState extends State<MembersPage> {
                                                 spaceType: SpaceType.vertical,
                                                 value: TokenSpaces.xl),
                                           ],
-                                        if (stateList.students.isNotEmpty) ...
+                                        if (stateList.phdStudents.isNotEmpty) ...
                                           [
                                             SectionTitleMolecule(
-                                              title: AppLocalizations.of(context)!.studentsLabel,
+                                              title: AppLocalizations.of(context)!.phdStudentsLabel,
                                               sectionTitleStyle: SectionTitleStyle.onLightBackground,
                                             ),
                                             const SpaceAtom(
@@ -160,7 +160,53 @@ class _MembersPageState extends State<MembersPage> {
                                               crossAxisAlignment: WrapCrossAlignment.start,
                                               alignment: WrapAlignment.start,
                                               runAlignment: WrapAlignment.start,
-                                              children: stateList.students
+                                              children: stateList.phdStudents
+                                                  .map((member) => Membercard(member: member))
+                                                  .toList(),
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.xl),
+                                          ],
+                                        if (stateList.masterStudents.isNotEmpty) ...
+                                          [
+                                            SectionTitleMolecule(
+                                              title: AppLocalizations.of(context)!.masterStudentsLabel,
+                                              sectionTitleStyle: SectionTitleStyle.onLightBackground,
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.md),
+                                            Wrap(
+                                              spacing: TokenSpaces.md,
+                                              runSpacing: TokenSpaces.md,
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              children: stateList.masterStudents
+                                                  .map((member) => Membercard(member: member))
+                                                  .toList(),
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.xl),
+                                          ],
+                                        if (stateList.undergraduateStudents.isNotEmpty) ...
+                                          [
+                                            SectionTitleMolecule(
+                                              title: AppLocalizations.of(context)!.undergraduateStudentsLabel,
+                                              sectionTitleStyle: SectionTitleStyle.onLightBackground,
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.md),
+                                            Wrap(
+                                              spacing: TokenSpaces.md,
+                                              runSpacing: TokenSpaces.md,
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              children: stateList.undergraduateStudents
                                                   .map((member) => Membercard(member: member))
                                                   .toList(),
                                             ),

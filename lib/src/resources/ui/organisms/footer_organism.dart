@@ -36,7 +36,7 @@ class _FooterOrganismState extends State<FooterOrganism> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: TokenSpaces.xxl),
       constraints: BoxConstraints(
-          minWidth: double.maxFinite, maxHeight: isMobile ? 650 : 280),
+          minWidth: double.maxFinite, maxHeight: isMobile ? 800 : 380),
       color: TokenColors.gray900,
       child: FractionallySizedBox(
         widthFactor: 0.9,
@@ -89,18 +89,11 @@ class _FooterOrganismState extends State<FooterOrganism> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: TokenSpaces.xs,
-                          right: TokenSpaces.xxs,
-                          bottom: TokenSpaces.xxs,
-                        ),
-                        child: LabelAtom(
-                          text: AppLocalizations.of(context)!.linksLabel,
-                          textStyle: TokenTextStyles.titleMedium.copyWith(
-                            color: TokenColors.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      LabelAtom(
+                        text: AppLocalizations.of(context)!.linksLabel,
+                        textStyle: TokenTextStyles.titleMedium.copyWith(
+                          color: TokenColors.primary,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       FooterLinkMolecule(
@@ -163,6 +156,47 @@ class _FooterOrganismState extends State<FooterOrganism> {
                             'Rua irmã Ivone Drummond, 200 - Distrito Industrial II. Itabira-MG',
                         textStyle: TokenTextStyles.titleSmall
                             .copyWith(color: TokenColors.gray300),
+                      ),
+                      const SizedBox(height: TokenSpaces.md),
+                      LabelAtom(
+                        text: AppLocalizations.of(context)!.ourGroupAndMediaLabel,
+                        textStyle: TokenTextStyles.titleMedium.copyWith(
+                          color: TokenColors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      FooterLinkMolecule(
+                        onPressed: () {
+                          _urlLauncher.launchUrl(EndPoints.cnpqGroupUrl);
+                        },
+                        label: AppLocalizations.of(context)!.cnpqGroupLabel,
+                        icon: const Image(
+                          image: ImagesAsset.logoCnpq,
+                          width: 20,
+                          height: 20,
+                        ),
+                      ),
+                      FooterLinkMolecule(
+                        onPressed: () {
+                          _urlLauncher.launchUrl(EndPoints.youtubeChannelUrl);
+                        },
+                        label: AppLocalizations.of(context)!.youtubeChannelLabel,
+                        icon: const Image(
+                          image: ImagesAsset.logoYoutube,
+                          width: 20,
+                          height: 20,
+                        ),
+                      ),
+                      FooterLinkMolecule(
+                        onPressed: () {
+                          _urlLauncher.launchUrl(EndPoints.githubUrl);
+                        },
+                        label: AppLocalizations.of(context)!.githubLabel,
+                        icon: const Image(
+                          image: ImagesAsset.logoGithub,
+                          width: 20,
+                          height: 20,
+                        ),
                       ),
                       const Spacer(),
                       LabelAtom(

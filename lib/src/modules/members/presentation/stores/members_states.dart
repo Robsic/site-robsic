@@ -30,18 +30,41 @@ class MembersListStateLoading extends MembersStateSuccess {
 
 class MembersListStateSuccess extends MembersStateSuccess {
   final List<MemberEntity> members;
-  static const _professorRoles = {'pesquisador', 'diretor'};
+  static const _professorRoles = {'pesquisador', 'diretor', 'professor'};
   const MembersListStateSuccess(
     super.membersEntity,
     this.members,
   );
 
   List<MemberEntity> get professors =>
-    members.where((m) => _professorRoles.contains(m.role.trim().toLowerCase())).toList();
-    
+    members.where((m) {
+      final role = m.role.trim().toLowerCase();
+      return _professorRoles.contains(role) || role.contains('professor');
+    }).toList();
+
+  List<MemberEntity> get phdStudents =>
+    members.where((m) {
+      final role = m.role.trim().toLowerCase();
+      return role.contains('doutoran') || role.contains('doutorado') || role.contains('phd');
+    }).toList();
+
+  List<MemberEntity> get masterStudents =>
+    members.where((m) {
+      final role = m.role.trim().toLowerCase();
+      return role.contains('mestran') || role.contains('mestrado') || role.contains('master');
+    }).toList();
+
+  List<MemberEntity> get undergraduateStudents =>
+    members.where((m) {
+      final role = m.role.trim().toLowerCase();
+      final isProf = _professorRoles.contains(role) || role.contains('professor');
+      final isPhd = role.contains('doutoran') || role.contains('doutorado') || role.contains('phd');
+      final isMaster = role.contains('mestran') || role.contains('mestrado') || role.contains('master');
+      return !isProf && !isPhd && !isMaster;
+    }).toList();
+
   List<MemberEntity> get students =>
     members.where((m) => !_professorRoles.contains(m.role.trim().toLowerCase())).toList();
-    
 }
 
 class MembersListStateFailure extends MembersStateSuccess {
