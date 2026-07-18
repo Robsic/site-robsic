@@ -15,10 +15,13 @@ class PapersSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = ResponsiveUtils.isMobile(context);
     return papersSectionData != null
         ? Container(
-            constraints: const BoxConstraints(
-                minWidth: double.maxFinite, maxHeight: 428.0),
+            constraints: isMobile
+                ? const BoxConstraints(minWidth: double.maxFinite)
+                : const BoxConstraints(
+                    minWidth: double.maxFinite, maxHeight: 428.0),
             padding: const EdgeInsets.symmetric(vertical: TokenSpaces.xxl),
             child: FractionallySizedBox(
               widthFactor: 0.9,
@@ -33,7 +36,7 @@ class PapersSection extends StatelessWidget {
                     text: papersSectionData!.content,
                     textStyle: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  const Spacer(),
+                  SizedBox(height: isMobile ? TokenSpaces.xl : TokenSpaces.xxl),
                   ElevatedButton(
                     onPressed: () => context.go(Routes.publications),
                     child: Text(

@@ -36,13 +36,17 @@ class _AppbarTemplateState extends State<AppbarTemplate> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(height: TokenSpaces.xxl, child: widget.leading),
-            const Spacer(),
-            if (widget.child != null) widget.child!,
-            const SpaceAtom(
-              spaceType: SpaceType.horizontal,
-              value: TokenSpaces.xl,
+            Flexible(
+              child: SizedBox(height: TokenSpaces.xxl, child: widget.leading),
             ),
+            if (widget.child != null) ...[
+              const Spacer(),
+              widget.child!,
+              const SpaceAtom(
+                spaceType: SpaceType.horizontal,
+                value: TokenSpaces.xl,
+              ),
+            ],
             if (widget.trailing != null) widget.trailing!,
           ],
         ),

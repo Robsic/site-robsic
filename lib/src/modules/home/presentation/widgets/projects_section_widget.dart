@@ -19,64 +19,101 @@ class ProjectsSectionWidget extends StatelessWidget {
         ? Container(
             alignment: Alignment.center,
             width: double.infinity,
-            constraints: const BoxConstraints(maxHeight: 428.0),
+            constraints: isMobile
+                ? const BoxConstraints(minWidth: double.maxFinite)
+                : const BoxConstraints(maxHeight: 428.0),
             padding: const EdgeInsets.symmetric(vertical: TokenSpaces.xxl),
             child: FractionallySizedBox(
               widthFactor: 0.9,
-              child: Flex(
-                  direction: isMobile ? Axis.vertical : Axis.horizontal,
-                  children: [
-                    Expanded(
-                      flex: 62,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: TokenSpaces.md),
-                        child: Column(
-                          children: [
-                            SectionTitleMolecule(
-                              title: projectsSectionData!.title,
-                              sectionTitleStyle:
-                                  SectionTitleStyle.onLightBackground,
-                            ),
-                            const SizedBox(height: TokenSpaces.xxl),
-                            BodyTextAtom(
-                              text: projectsSectionData!.content,
-                              textStyle:
-                                  Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            const Spacer(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () => context.go(Routes.projects),
-                                  child: Text(
-                                    AppLocalizations.of(context)!
-                                        .seeProjectsLabel
-                                        .toUpperCase(),
-                                  ),
+              child: isMobile
+                  ? Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: TokenSpaces.md),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SectionTitleMolecule(
+                            title: projectsSectionData!.title,
+                            sectionTitleStyle:
+                                SectionTitleStyle.onLightBackground,
+                          ),
+                          const SizedBox(height: TokenSpaces.xxl),
+                          BodyTextAtom(
+                            text: projectsSectionData!.content,
+                            textStyle:
+                                Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: TokenSpaces.xl),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () => context.go(Routes.projects),
+                                child: Text(
+                                  AppLocalizations.of(context)!
+                                      .seeProjectsLabel
+                                      .toUpperCase(),
                                 ),
-                              ],
-                            )
-                          ],
-                        ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                    ),
-                    if (!isMobile)
-                      Expanded(
-                        flex: 38,
-                        child: SizedBox(
-                          height: double.infinity,
-                          child: CachedNetworkImage(
-                            imageUrl: EndPoints.baseUrl +
-                                (projectsSectionData?.image!.url ?? ""),
-                            fit: BoxFit.cover,
-                            errorWidget: (context, _, __) =>
-                                const LoadImageError(),
+                    )
+                  : Flex(
+                      direction: Axis.horizontal,
+                      children: [
+                        Expanded(
+                          flex: 62,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: TokenSpaces.md),
+                            child: Column(
+                              children: [
+                                SectionTitleMolecule(
+                                  title: projectsSectionData!.title,
+                                  sectionTitleStyle:
+                                      SectionTitleStyle.onLightBackground,
+                                ),
+                                const SizedBox(height: TokenSpaces.xxl),
+                                BodyTextAtom(
+                                  text: projectsSectionData!.content,
+                                  textStyle:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                const Spacer(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () => context.go(Routes.projects),
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .seeProjectsLabel
+                                            .toUpperCase(),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                  ]),
+                        Expanded(
+                          flex: 38,
+                          child: SizedBox(
+                            height: double.infinity,
+                            child: CachedNetworkImage(
+                              imageUrl: EndPoints.baseUrl +
+                                  (projectsSectionData?.image!.url ?? ""),
+                              fit: BoxFit.cover,
+                              errorWidget: (context, _, __) =>
+                                  const LoadImageError(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
             ),
           )
         : const SizedBox();
