@@ -42,10 +42,11 @@ class _AppbarTemplateState extends State<AppbarTemplate> {
             if (widget.child != null) ...[
               const Spacer(),
               widget.child!,
-              const SpaceAtom(
-                spaceType: SpaceType.horizontal,
-                value: TokenSpaces.xl,
-              ),
+              if (widget.trailing != null)
+                const SpaceAtom(
+                  spaceType: SpaceType.horizontal,
+                  value: TokenSpaces.xl,
+                ),
             ],
             if (widget.trailing != null) widget.trailing!,
           ],

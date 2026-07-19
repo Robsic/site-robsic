@@ -155,7 +155,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get githubLabel => 'Repositório no GitHub';
 
   @override
-  String get ourGroupAndMediaLabel => 'GRUPO E MÍDIAS';
+  String get ourGroupAndMediaLabel => 'Grupo e Mídias';
 
   @override
   String get cnpqDescLabel =>

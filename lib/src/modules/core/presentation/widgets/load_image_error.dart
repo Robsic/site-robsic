@@ -11,19 +11,25 @@ class LoadImageError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.broken_image_outlined,
-            size: TokenSpaces.xxl,
+      child: Padding(
+        padding: const EdgeInsets.all(TokenSpaces.xs),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.broken_image_outlined,
+                size: TokenSpaces.xxl,
+              ),
+              const SpaceAtom(
+                spaceType: SpaceType.vertical,
+                value: TokenSpaces.xs,
+              ),
+              BodyTextAtom(text: AppLocalizations.of(context)!.loadImageError)
+            ],
           ),
-          const SpaceAtom(
-            spaceType: SpaceType.vertical,
-            value: TokenSpaces.md,
-          ),
-          BodyTextAtom(text: AppLocalizations.of(context)!.loadImageError)
-        ],
+        ),
       ),
     );
   }

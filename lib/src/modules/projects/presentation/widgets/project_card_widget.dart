@@ -11,34 +11,45 @@ class Projectcard extends StatelessWidget {
 
   final ProjectEntity project;
 
+  String get _formattedDate =>
+      '${project.startDate.year.toString().padLeft(4, '0')}-'
+      '${project.startDate.month.toString().padLeft(2, '0')}-'
+      '${project.startDate.day.toString().padLeft(2, '0')}';
+
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = ResponsiveUtils.isMobile(context);
     return Card(
       child: Container(
-        constraints: const BoxConstraints(maxHeight: 295.0, maxWidth: 500.0),
+        constraints: BoxConstraints(
+          maxHeight: isMobile ? 520.0 : 420.0,
+          maxWidth: 500.0,
+        ),
         padding: const EdgeInsets.all(TokenSpaces.lg),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 2,
-              child: SizedBox(
-                height: double.infinity,
-                child: CachedNetworkImage(
-                  imageUrl: project.image?.url == null
-                      ? ''
-                      : (project.image!.url.startsWith('http')
-                          ? project.image!.url
-                          : EndPoints.baseUrl + project.image!.url),
-                  fit: BoxFit.contain,
-                  errorWidget: (context, _, __) => const LoadImageError(),
+            if (!isMobile) ...[
+              Expanded(
+                flex: 2,
+                child: SizedBox(
+                  height: double.infinity,
+                  child: CachedNetworkImage(
+                    imageUrl: project.image?.url == null
+                        ? ''
+                        : (project.image!.url.startsWith('http')
+                            ? project.image!.url
+                            : EndPoints.baseUrl + project.image!.url),
+                    fit: BoxFit.contain,
+                    errorWidget: (context, _, __) => const LoadImageError(),
+                  ),
                 ),
               ),
-            ),
-            const SpaceAtom(
-              spaceType: SpaceType.horizontal,
-              value: TokenSpaces.sm,
-            ),
+              const SpaceAtom(
+                spaceType: SpaceType.horizontal,
+                value: TokenSpaces.sm,
+              ),
+            ],
             Expanded(
               flex: 3,
               child: Column(
@@ -87,7 +98,7 @@ class Projectcard extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: LabelAtom(
-                                  text: project.startDate.toString(),
+                                  text: _formattedDate,
                                   textStyle: TokenTextStyles.labelSmall.apply(
                                     color: TokenColors.gray300,
                                   ),

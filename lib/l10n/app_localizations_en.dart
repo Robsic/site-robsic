@@ -153,7 +153,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get githubLabel => 'GitHub Repository';
 
   @override
-  String get ourGroupAndMediaLabel => 'OUR GROUP & MEDIA';
+  String get ourGroupAndMediaLabel => 'Our Group & Media';
 
   @override
   String get cnpqDescLabel =>

@@ -389,7 +389,7 @@ abstract class AppLocalizations {
   /// No description provided for @ourGroupAndMediaLabel.
   ///
   /// In en, this message translates to:
-  /// **'OUR GROUP & MEDIA'**
+  /// **'Our Group & Media'**
   String get ourGroupAndMediaLabel;
 
   /// No description provided for @cnpqDescLabel.
