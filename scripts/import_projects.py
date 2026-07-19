@@ -2,20 +2,25 @@
 """
 Script de importação de projetos do RobSIC para o Strapi.
 
-Credenciais via arquivo .env (recomendado):
+Configuração via arquivo scripts/.env (recomendado):
     STRAPI_URL=https://robsic.unifei.edu.br
-    STRAPI_EMAIL=admin@email.com
-    STRAPI_PASSWORD=suasenha
+    STRAPI_API_TOKEN=seu_token_aqui
+
+Como gerar o token:
+    1. Acesse https://robsic.unifei.edu.br/admin
+    2. Vá em Settings → API Tokens → Create new API Token
+    3. Tipo: Full Access | Duration: Unlimited
+    4. Copie o token gerado e cole no scripts/.env
 
 Uso:
-    # Com .env (recomendado):
-    python import_projects.py --file ~/Downloads/projetos_robsic.md
+    # Importar e publicar imediatamente:
+    uv run --with-requirements scripts/requirements.txt scripts/import_projects.py --file ~/Downloads/projetos_robsic.md
 
-    # Sobrescrevendo credenciais via argumento:
-    python import_projects.py --file projetos_robsic.md --url http://... --email x --password y
+    # Importar como rascunho (para revisar antes de publicar):
+    uv run --with-requirements scripts/requirements.txt scripts/import_projects.py --file ~/Downloads/projetos_robsic.md --draft
 
     # Simulação sem alterar nada no Strapi:
-    python import_projects.py --file projetos_robsic.md --dry-run
+    uv run --with-requirements scripts/requirements.txt scripts/import_projects.py --file ~/Downloads/projetos_robsic.md --dry-run
 """
 
 import argparse
@@ -142,19 +147,9 @@ def parse_md(filepath: str) -> list[dict]:
     return projects
 
 
-def get_auth_token(base_url: str, email: str, password: str) -> str:
-    resp = requests.post(
-        f"{base_url}/api/auth/local",
-        json={"identifier": email, "password": password},
-        timeout=15,
-    )
-    resp.raise_for_status()
-    token = resp.json().get("jwt")
-    if not token:
-        raise RuntimeError(f"Login falhou: {resp.json()}")
-    print("✅ Login realizado com sucesso.")
-    return token
-
+# ──────────────────────────────────────────────
+# Strapi API
+# ──────────────────────────────────────────────
 
 def get_all_project_names(base_url: str, token: str) -> set[str]:
     """Busca todos os nomes de projetos cadastrados no Strapi com paginação."""
@@ -164,7 +159,7 @@ def get_all_project_names(base_url: str, token: str) -> set[str]:
     page_size = 100
 
     while True:
-        url = f"{base_url}/api/projects?fields[0]=name&pagination[page]={page}&pagination[pageSize]={page_size}"
+        url = f"{base_url}/api/projects?fields[0]=name&pagination[page]={page}&pagination[pageSize]={page_size}&publicationState=preview"
         resp = requests.get(url, headers=headers, timeout=15)
         resp.raise_for_status()
         data = resp.json()
@@ -183,15 +178,19 @@ def get_all_project_names(base_url: str, token: str) -> set[str]:
     return names
 
 
-def create_project(base_url: str, token: str, project: dict) -> dict:
+def create_project(base_url: str, token: str, project: dict, publish: bool = True) -> dict:
+    """Cria um projeto no Strapi e opcionalmente publica-o."""
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
     }
+    # Remove campos com valor None para não causar ValidationError no Strapi
+    payload = {k: v for k, v in project.items() if v is not None}
+
     resp = requests.post(
         f"{base_url}/api/projects",
         headers=headers,
-        data=json.dumps({"data": project}),
+        data=json.dumps({"data": payload}),
         timeout=15,
     )
     if not resp.ok:
@@ -201,16 +200,22 @@ def create_project(base_url: str, token: str, project: dict) -> dict:
     created = resp.json().get("data", {})
     project_id = created.get("id") or created.get("documentId")
 
-    if project_id:
-        requests.put(
+    if project_id and publish:
+        pub_resp = requests.put(
             f"{base_url}/api/projects/{project_id}",
             headers=headers,
             data=json.dumps({"data": {"publishedAt": "now"}}),
             timeout=15,
         )
+        if not pub_resp.ok:
+            print(f"    ⚠️  Criado mas falhou ao publicar: {pub_resp.text[:150]}")
 
     return created
 
+
+# ──────────────────────────────────────────────
+# Main
+# ──────────────────────────────────────────────
 
 def main():
     parser = argparse.ArgumentParser(
@@ -218,17 +223,18 @@ def main():
         formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument("--file", required=True, help="Caminho para o .md com os projetos")
-    parser.add_argument("--url", default=os.getenv("STRAPI_URL"), help="URL base do Strapi")
-    parser.add_argument("--email", default=os.getenv("STRAPI_EMAIL"), help="E-mail admin")
-    parser.add_argument("--password", default=os.getenv("STRAPI_PASSWORD"), help="Senha admin")
+    parser.add_argument("--url", default=os.getenv("STRAPI_URL"), help="URL base do Strapi (ou STRAPI_URL no .env)")
+    parser.add_argument("--token", default=os.getenv("STRAPI_API_TOKEN"), help="API Token do Strapi (ou STRAPI_API_TOKEN no .env)")
     parser.add_argument("--dry-run", action="store_true", help="Simula sem criar nada")
+    parser.add_argument("--draft", action="store_true", help="Cria registros como RASCUNHO (sem publicar no site)")
     args = parser.parse_args()
 
     if not args.dry_run:
-        missing = [k for k, v in {"--url": args.url, "--email": args.email, "--password": args.password}.items() if not v]
+        missing = [k for k, v in {"--url": args.url, "--token": args.token}.items() if not v]
         if missing:
-            print(f"❌ Credenciais faltando: {', '.join(missing)}")
-            print("   Configure o arquivo scripts/.env ou passe os argumentos na linha de comando.")
+            print(f"❌ Configuração faltando: {', '.join(missing)}")
+            print("   Configure o arquivo scripts/.env com STRAPI_URL e STRAPI_API_TOKEN.")
+            print("   Gere um token em: Settings → API Tokens no painel do Strapi.")
             sys.exit(1)
 
     print(f"\n📄 Lendo arquivo: {args.file}")
@@ -244,11 +250,14 @@ def main():
                 print(f"      Descrição: {p['description'][:90]}...")
         return
 
-    token = get_auth_token(args.url, args.email, args.password)
+    token = args.token
 
-    print("\n🔍 Buscando projetos já existentes no Strapi...")
+    print("🔍 Buscando projetos já existentes no Strapi...")
     existing_names = get_all_project_names(args.url, token)
     print(f"   → {len(existing_names)} projetos já cadastrados.\n")
+
+    if args.draft:
+        print("📝 MODO DRAFT ATIVADO — Os registros serão criados como Rascunho (invisíveis no site).\n")
 
     created_count = 0
     skipped_count = 0
@@ -263,9 +272,10 @@ def main():
             skipped_count += 1
             continue
 
-        result = create_project(args.url, token, project)
+        result = create_project(args.url, token, project, publish=not args.draft)
         if result:
-            print(f"     ✅ Criado! (ID: {result.get('id', '?')})")
+            status = "📝 Rascunho" if args.draft else "🌐 Publicado"
+            print(f"     ✅ Criado! (ID: {result.get('id', '?')}) — {status}")
             created_count += 1
         else:
             error_count += 1

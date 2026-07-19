@@ -2,24 +2,25 @@
 """
 Script de importação de membros do RobSIC para o Strapi.
 
-Credenciais via arquivo .env (recomendado):
+Configuração via arquivo scripts/.env (recomendado):
     STRAPI_URL=https://robsic.unifei.edu.br
-    STRAPI_EMAIL=admin@email.com
-    STRAPI_PASSWORD=suasenha
+    STRAPI_API_TOKEN=seu_token_aqui
+
+Como gerar o token:
+    1. Acesse https://robsic.unifei.edu.br/admin
+    2. Vá em Settings → API Tokens → Create new API Token
+    3. Tipo: Full Access | Duration: Unlimited
+    4. Copie o token gerado e cole no scripts/.env
 
 Uso:
-    # Com .env (recomendado):
-    python import_members.py --file ~/Downloads/pesquisadores.md
+    # Importar e publicar imediatamente:
+    uv run --with-requirements scripts/requirements.txt scripts/import_members.py --file ~/Downloads/pesquisadores.md
 
-    # Sobrescrevendo credenciais via argumento:
-    python import_members.py --file pesquisadores.md --url http://... --email x --password y
+    # Importar como rascunho (para revisar antes de publicar):
+    uv run --with-requirements scripts/requirements.txt scripts/import_members.py --file ~/Downloads/pesquisadores.md --draft
 
     # Simulação sem alterar nada no Strapi:
-    python import_members.py --file pesquisadores.md --dry-run
-
-Fontes de dados suportadas:
-    - Arquivo .md  (via --file)
-    - CSV do Google Sheets (futuro, via --csv)
+    uv run --with-requirements scripts/requirements.txt scripts/import_members.py --file ~/Downloads/pesquisadores.md --dry-run
 """
 
 import argparse
@@ -58,9 +59,12 @@ def clean_value(value: str) -> str | None:
     """Limpa anotações e retorna None para valores inválidos."""
     if not value:
         return None
-    cleaned = value.strip().strip("*").strip()
+    cleaned = value.strip()
     # Remove observações entre parênteses como "*(provável, não verificado)*"
-    cleaned = re.sub(r"\s*\*\(.*?\)\*", "", cleaned).strip()
+    # O regex roda ANTES do strip("*") para preservar o padrão de fechamento
+    cleaned = re.sub(r"\s*\*\(.*?\)\*?", "", cleaned).strip()
+    # Remove asteriscos residuais nas bordas
+    cleaned = cleaned.strip("*").strip()
     if cleaned.lower() in SKIP_VALUES:
         return None
     return cleaned or None
@@ -143,21 +147,6 @@ def parse_md(filepath: str) -> list[dict]:
 # Strapi API
 # ──────────────────────────────────────────────
 
-def get_auth_token(base_url: str, email: str, password: str) -> str:
-    """Autentica no Strapi e retorna o token JWT."""
-    resp = requests.post(
-        f"{base_url}/api/auth/local",
-        json={"identifier": email, "password": password},
-        timeout=15,
-    )
-    resp.raise_for_status()
-    token = resp.json().get("jwt")
-    if not token:
-        raise RuntimeError(f"Login falhou: {resp.json()}")
-    print("✅ Login realizado com sucesso.")
-    return token
-
-
 def get_all_member_names(base_url: str, token: str) -> set[str]:
     """
     Busca todos os nomes de membros já cadastrados no Strapi.
@@ -169,7 +158,7 @@ def get_all_member_names(base_url: str, token: str) -> set[str]:
     page_size = 100
 
     while True:
-        url = f"{base_url}/api/members?fields[0]=name&pagination[page]={page}&pagination[pageSize]={page_size}"
+        url = f"{base_url}/api/members?fields[0]=name&pagination[page]={page}&pagination[pageSize]={page_size}&publicationState=preview"
         resp = requests.get(url, headers=headers, timeout=15)
         resp.raise_for_status()
         data = resp.json()
@@ -193,16 +182,19 @@ def get_all_member_names(base_url: str, token: str) -> set[str]:
     return names
 
 
-def create_member(base_url: str, token: str, member: dict) -> dict:
-    """Cria um membro no Strapi e tenta publicá-lo."""
+def create_member(base_url: str, token: str, member: dict, publish: bool = True) -> dict:
+    """Cria um membro no Strapi e opcionalmente publica-o."""
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
     }
+    # Remove campos com valor None para não causar ValidationError no Strapi
+    payload = {k: v for k, v in member.items() if v is not None}
+
     resp = requests.post(
         f"{base_url}/api/members",
         headers=headers,
-        data=json.dumps({"data": member}),
+        data=json.dumps({"data": payload}),
         timeout=15,
     )
     if not resp.ok:
@@ -212,14 +204,16 @@ def create_member(base_url: str, token: str, member: dict) -> dict:
     created = resp.json().get("data", {})
     member_id = created.get("id") or created.get("documentId")
 
-    # Publica o registro recém-criado
-    if member_id:
-        requests.put(
+    # Publica o registro recém-criado apenas se publish=True
+    if member_id and publish:
+        pub_resp = requests.put(
             f"{base_url}/api/members/{member_id}",
             headers=headers,
             data=json.dumps({"data": {"publishedAt": "now"}}),
             timeout=15,
         )
+        if not pub_resp.ok:
+            print(f"    ⚠️  Criado mas falhou ao publicar: {pub_resp.text[:150]}")
 
     return created
 
@@ -235,17 +229,18 @@ def main():
     )
     parser.add_argument("--file", required=True, help="Caminho para o .md com os membros")
     parser.add_argument("--url", default=os.getenv("STRAPI_URL"), help="URL base do Strapi (ou STRAPI_URL no .env)")
-    parser.add_argument("--email", default=os.getenv("STRAPI_EMAIL"), help="E-mail admin (ou STRAPI_EMAIL no .env)")
-    parser.add_argument("--password", default=os.getenv("STRAPI_PASSWORD"), help="Senha (ou STRAPI_PASSWORD no .env)")
+    parser.add_argument("--token", default=os.getenv("STRAPI_API_TOKEN"), help="API Token do Strapi (ou STRAPI_API_TOKEN no .env)")
     parser.add_argument("--dry-run", action="store_true", help="Simula sem criar nada no Strapi")
+    parser.add_argument("--draft", action="store_true", help="Cria registros como RASCUNHO (sem publicar no site)")
     args = parser.parse_args()
 
-    # Valida credenciais
+    # Valida configuração
     if not args.dry_run:
-        missing = [k for k, v in {"--url": args.url, "--email": args.email, "--password": args.password}.items() if not v]
+        missing = [k for k, v in {"--url": args.url, "--token": args.token}.items() if not v]
         if missing:
-            print(f"❌ Credenciais faltando: {', '.join(missing)}")
-            print("   Configure o arquivo scripts/.env ou passe os argumentos na linha de comando.")
+            print(f"❌ Configuração faltando: {', '.join(missing)}")
+            print("   Configure o arquivo scripts/.env com STRAPI_URL e STRAPI_API_TOKEN.")
+            print("   Gere um token em: Settings → API Tokens no painel do Strapi.")
             sys.exit(1)
 
     print(f"\n📄 Lendo arquivo: {args.file}")
@@ -261,11 +256,14 @@ def main():
                     print(f"      {k}: {str(v)[:90]}")
         return
 
-    token = get_auth_token(args.url, args.email, args.password)
+    token = args.token
 
-    print("\n🔍 Buscando membros já existentes no Strapi...")
+    print("🔍 Buscando membros já existentes no Strapi...")
     existing_names = get_all_member_names(args.url, token)
     print(f"   → {len(existing_names)} membros já cadastrados.\n")
+
+    if args.draft:
+        print("📝 MODO DRAFT ATIVADO — Os registros serão criados como Rascunho (invisíveis no site).\n")
 
     created_count = 0
     skipped_count = 0
@@ -281,9 +279,10 @@ def main():
             skipped_count += 1
             continue
 
-        result = create_member(args.url, token, member)
+        result = create_member(args.url, token, member, publish=not args.draft)
         if result:
-            print(f"     ✅ Criado! (ID: {result.get('id', '?')})")
+            status = "📝 Rascunho" if args.draft else "🌐 Publicado"
+            print(f"     ✅ Criado! (ID: {result.get('id', '?')}) — {status}")
             created_count += 1
         else:
             error_count += 1
