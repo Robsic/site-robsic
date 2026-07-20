@@ -31,7 +31,12 @@ class _ProjectsPageState extends State<ProjectsPage> {
     _projectsStore.getProjectsPageData();
   }
 
-  void _reloadData() => _projectsStore.reprocessList();
+  void _reloadData() {
+    if (mounted) {
+      setState(() {});
+    }
+    _projectsStore.getProjectsPageData();
+  }
 
   @override
   void dispose() {

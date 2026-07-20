@@ -32,7 +32,12 @@ class _MembersPageState extends State<MembersPage> {
     _membersStore.getMembersData();
   }
 
-  void _reloadData() => _membersStore.reprocessList();
+  void _reloadData() {
+    if (mounted) {
+      setState(() {});
+    }
+    _membersStore.getMembersData();
+  }
 
   @override
   void dispose() {
