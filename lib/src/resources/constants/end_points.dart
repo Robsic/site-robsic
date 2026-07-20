@@ -17,10 +17,11 @@ class EndPoints {
       '/api/home-page?populate[header][populate]=*&populate[expertise_areas_section][populate]=*&populate[projects_section][populate]=*&populate[members_section][populate]=*&populate[publications_section][populate]=*&populate[partnerships_section][populate]=*';
   static const String members = '/api/members-page?populate=header';
   static const String membersList =
-      '/api/members?populate[photo]=*&populate[localizations][populate]=photo&locale=pt-BR';
+      '/api/members?populate[photo]=*&populate[localizations][populate]=photo&locale=pt-BR&pagination[pageSize]=500';
   static const String projects = '/api/projects-page?populate=header';
   static const String projectsList =
-      '/api/projects?populate[images]=*&populate[localizations][populate]=images&locale=pt-BR';
+      '/api/projects?populate[images]=*&populate[localizations][populate]=images&locale=pt-BR&pagination[pageSize]=500';
   static const String publications = '/api/publications-page?populate=header';
-  static const String publicationsList = '/api/publications?populate=image';
+  static const String publicationsList =
+      '/api/publications?populate[image]=*&pagination[pageSize]=500';
 }

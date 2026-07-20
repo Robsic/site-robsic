@@ -271,10 +271,12 @@ def create_member(base_url: str, token: str, member: dict, publish: bool = True)
 
     # Publica o registro recém-criado apenas se publish=True
     if member_id and publish:
+        from datetime import datetime, timezone
+        iso_now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         pub_resp = requests.put(
             f"{base_url}/api/members/{member_id}",
             headers=headers,
-            data=json.dumps({"data": {"publishedAt": "now"}}),
+            data=json.dumps({"data": {"publishedAt": iso_now}}),
             timeout=15,
         )
         if not pub_resp.ok:
