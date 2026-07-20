@@ -18,6 +18,7 @@ class PublicationAdapter {
             ? ImageAdapter.fromMap(map['image']?['data']?['attributes'])
             : null,
         urlLink: map['url'] ?? '',
+        resultType: ResultType.fromString(map['result_type']),
       );
     } on AppFailure {
       rethrow;

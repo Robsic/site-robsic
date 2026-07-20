@@ -119,7 +119,7 @@ abstract class AppLocalizations {
   /// No description provided for @publicationsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Publications'**
+  /// **'Results'**
   String get publicationsLabel;
 
   /// No description provided for @contactUsLabel.
@@ -415,6 +415,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Watch on YouTube'**
   String get watchChannelLabel;
+
+  /// No description provided for @resultsAllLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get resultsAllLabel;
+
+  /// No description provided for @resultsDatasetsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Datasets'**
+  String get resultsDatasetsLabel;
+
+  /// No description provided for @resultsSoftwaresLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Software'**
+  String get resultsSoftwaresLabel;
+
+  /// No description provided for @resultsWebSystemsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Web Systems'**
+  String get resultsWebSystemsLabel;
+
+  /// No description provided for @resultsVideosLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Experiment Videos'**
+  String get resultsVideosLabel;
+
+  /// No description provided for @resultsPrototypesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Prototypes'**
+  String get resultsPrototypesLabel;
+
+  /// No description provided for @resultsPatentsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Patents'**
+  String get resultsPatentsLabel;
+
+  /// No description provided for @resultsPublicationsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Publications'**
+  String get resultsPublicationsLabel;
+
+  /// No description provided for @resultsDemonstrationsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Demonstrations'**
+  String get resultsDemonstrationsLabel;
+
+  /// No description provided for @noResultsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found.'**
+  String get noResultsFound;
 }
 
 class _AppLocalizationsDelegate

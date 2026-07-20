@@ -5,5 +5,5 @@ class Routes {
   static const String home = '/';
   static const String members = '/members';
   static const String projects = '/projects';
-  static const String publications = '/publications';
+  static const String publications = '/resultados';
 }

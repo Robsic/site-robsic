@@ -16,40 +16,49 @@ class AreasOfExpertiseSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveUtils.isMobile(context);
+    final hasDescription = expertiseAreasSectionData?.description != null &&
+        expertiseAreasSectionData!.description!.isNotEmpty;
+
     return expertiseAreasSectionData != null
         ? Container(
             alignment: Alignment.center,
-            constraints: const BoxConstraints(
-                minWidth: double.maxFinite, maxHeight: 600),
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              if (!isMobile)
-                Expanded(
-                  flex: 60,
-                  child: SizedBox(
-                    height: double.maxFinite,
-                    child: CachedNetworkImage(
-                      imageUrl: EndPoints.baseUrl +
-                          (expertiseAreasSectionData?.image?.url ?? ''),
-                      fit: BoxFit.cover,
-                      errorWidget: (context, _, __) => const LoadImageError(),
+            constraints: BoxConstraints(
+              minWidth: double.maxFinite,
+              maxHeight: isMobile ? 750 : 650,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!isMobile)
+                  Expanded(
+                    flex: 55,
+                    child: SizedBox(
+                      height: double.maxFinite,
+                      child: CachedNetworkImage(
+                        imageUrl: EndPoints.baseUrl +
+                            (expertiseAreasSectionData?.image?.url ?? ''),
+                        fit: BoxFit.cover,
+                        errorWidget: (context, _, __) => const LoadImageError(),
+                      ),
                     ),
                   ),
-                ),
-              Expanded(
-                flex: 40,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 60.0),
-                  decoration: const BoxDecoration(
-                    color: TokenColors.gray900,
-                  ),
-                  child: FractionallySizedBox(
-                    widthFactor: 0.7,
+                Expanded(
+                  flex: 45,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: TokenSpaces.xl,
+                      horizontal: TokenSpaces.lg,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: TokenColors.gray900,
+                    ),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          expertiseAreasSectionData?.title.toUpperCase() ?? '',
+                          expertiseAreasSectionData?.title ?? 'As áreas de atuação',
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge
@@ -57,31 +66,51 @@ class AreasOfExpertiseSection extends StatelessWidget {
                         ),
                         const SpaceAtom(
                           spaceType: SpaceType.vertical,
-                          value: TokenSpaces.xxl,
+                          value: TokenSpaces.md,
                         ),
                         Expanded(
-                            child: ListView.builder(
-                          itemCount:
-                              expertiseAreasSectionData?.expertiseAreas?.length,
-                          itemBuilder: (context, index) {
-                            final item = expertiseAreasSectionData
-                                ?.expertiseAreas![index];
-                            return _ExpertiseAreaItem(text: item!);
-                          },
-                        )),
-                        OutlinedButtonMolecule(
-                          label: LabelAtom(
-                              text: AppLocalizations.of(context)!
-                                  .aboutUsLabel
-                                  .toUpperCase()),
-                          onPressed: () => context.go(Routes.about),
+                          child: ListView.builder(
+                            itemCount: expertiseAreasSectionData
+                                ?.expertiseAreas?.length,
+                            itemBuilder: (context, index) {
+                              final item = expertiseAreasSectionData
+                                  ?.expertiseAreas![index];
+                              return _ExpertiseAreaItem(text: item!);
+                            },
+                          ),
+                        ),
+                        if (hasDescription) ...[
+                          const SpaceAtom(
+                            spaceType: SpaceType.vertical,
+                            value: TokenSpaces.sm,
+                          ),
+                          Text(
+                            expertiseAreasSectionData!.description!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.apply(color: TokenColors.gray200),
+                          ),
+                        ],
+                        const SpaceAtom(
+                          spaceType: SpaceType.vertical,
+                          value: TokenSpaces.md,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: OutlinedButtonMolecule(
+                            label: LabelAtom(
+                                text: AppLocalizations.of(context)!
+                                    .aboutUsLabel),
+                            onPressed: () => context.go(Routes.about),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           )
         : const SizedBox();
   }
@@ -97,20 +126,26 @@ class _ExpertiseAreaItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(TokenSpaces.xs),
+      padding: const EdgeInsets.symmetric(vertical: TokenSpaces.xxs),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.check,
-            color: TokenColors.primary,
+          const Text(
+            '- ',
+            style: TextStyle(
+              color: TokenColors.primary,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
           const SpaceAtom(
-              spaceType: SpaceType.horizontal, value: TokenSpaces.xs),
+            spaceType: SpaceType.horizontal,
+            value: TokenSpaces.xxs,
+          ),
           Flexible(
             child: LabelAtom(
               text: text,
-              textStyle: TokenTextStyles.titleLarge
+              textStyle: TokenTextStyles.titleMedium
                   .apply(color: TokenColors.secondary),
             ),
           ),

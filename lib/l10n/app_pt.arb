@@ -2,7 +2,7 @@
   "aboutUsLabel": "Sobre Nós", 
   "membersLabel": "Membros", 
   "projectsLabel": "Projetos", 
-  "publicationsLabel": "Publicações",
+  "publicationsLabel": "Resultados",
   "contactUsLabel": "Contate-nos",
   "linksLabel": "Links",
   "addressLabel": "Endereço",
@@ -51,5 +51,15 @@
   "cnpqDescLabel": "Acesse a página oficial do grupo de pesquisa RobSIC no CNPq.",
   "youtubeDescLabel": "Assista aos nossos vídeos de projetos, demonstrações e pesquisas.",
   "accessPageLabel": "Acessar Página",
-  "watchChannelLabel": "Assistir no YouTube"
+  "watchChannelLabel": "Assistir no YouTube",
+  "resultsAllLabel": "Todos",
+  "resultsDatasetsLabel": "Datasets",
+  "resultsSoftwaresLabel": "Softwares",
+  "resultsWebSystemsLabel": "Sistemas Web",
+  "resultsVideosLabel": "Vídeos de Experimentos",
+  "resultsPrototypesLabel": "Protótipos",
+  "resultsPatentsLabel": "Patentes",
+  "resultsPublicationsLabel": "Publicações",
+  "resultsDemonstrationsLabel": "Demonstrações",
+  "noResultsFound": "Nenhum resultado encontrado."
 }

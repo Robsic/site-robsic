@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Script de importação de membros do RobSIC para o Strapi.
+Suporta arquivos .md (pesquisadores/membros) e .csv (exportados do Google Sheets / Google Forms).
 
 Configuração via arquivo scripts/.env (recomendado):
     STRAPI_URL=https://robsic.unifei.edu.br
@@ -12,18 +13,20 @@ Como gerar o token:
     3. Tipo: Full Access | Duration: Unlimited
     4. Copie o token gerado e cole no scripts/.env
 
-Uso:
+Uso (.md):
     # Importar e publicar imediatamente:
     uv run --with-requirements scripts/requirements.txt scripts/import_members.py --file ~/Downloads/pesquisadores.md
 
-    # Importar como rascunho (para revisar antes de publicar):
-    uv run --with-requirements scripts/requirements.txt scripts/import_members.py --file ~/Downloads/pesquisadores.md --draft
+Uso (.csv do Google Forms):
+    # Simulação (dry-run) com cargo padrão "Bolsista":
+    uv run --with-requirements scripts/requirements.txt scripts/import_members.py --file ~/Downloads/respostas.csv --default-role "Bolsista" --dry-run
 
-    # Simulação sem alterar nada no Strapi:
-    uv run --with-requirements scripts/requirements.txt scripts/import_members.py --file ~/Downloads/pesquisadores.md --dry-run
+    # Importar como rascunho (draft) para revisar no Strapi:
+    uv run --with-requirements scripts/requirements.txt scripts/import_members.py --file ~/Downloads/respostas.csv --default-role "Bolsista" --draft
 """
 
 import argparse
+import csv
 import json
 import os
 import re
@@ -143,6 +146,68 @@ def parse_md(filepath: str) -> list[dict]:
     return members
 
 
+def parse_csv(filepath: str, default_role: str | None = None) -> list[dict]:
+    """
+    Lê um arquivo .csv exportado do Google Sheets (Google Forms)
+    e retorna lista de dicts com dados dos membros.
+    """
+    members = []
+    with open(filepath, encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            # Normaliza chaves (remove espaços nas pontas e ':' no final)
+            norm_row = {}
+            for k, v in row.items():
+                if k:
+                    key_clean = k.strip().lower().rstrip(":")
+                    norm_row[key_clean] = v.strip() if v else ""
+
+            # Extrai nome (obrigatório)
+            raw_name = norm_row.get("nome") or norm_row.get("name")
+            name = clean_value(raw_name)
+            if not name:
+                continue
+
+            # Extrai cargo/role (da coluna ou do --default-role)
+            role = (
+                clean_value(norm_row.get("cargo"))
+                or clean_value(norm_row.get("role"))
+                or clean_value(norm_row.get("vínculo"))
+                or clean_value(norm_row.get("vinculo"))
+                or default_role
+            )
+
+            # Extrai autorização de e-mail (Gostaria de receber email? ...)
+            can_receive_email = False
+            for k, v in norm_row.items():
+                if "receber email" in k or "can_receive_email" in k:
+                    if v.lower() in ("sim", "yes", "true", "1"):
+                        can_receive_email = True
+                    break
+
+            # Extrai descrição
+            description = (
+                clean_value(norm_row.get("descrição"))
+                or clean_value(norm_row.get("descricao"))
+                or clean_value(norm_row.get("resumo"))
+                or clean_value(norm_row.get("description"))
+            )
+
+            member = {
+                "name": name,
+                "role": role,
+                "lattes": clean_value(norm_row.get("lattes")),
+                "orcid": clean_value(norm_row.get("orcid")),
+                "linkedin": clean_value(norm_row.get("linkedin")),
+                "description": description,
+                "email": clean_value(norm_row.get("email")),
+                "can_receive_email": can_receive_email,
+            }
+            members.append(member)
+
+    return members
+
+
 # ──────────────────────────────────────────────
 # Strapi API
 # ──────────────────────────────────────────────
@@ -227,12 +292,18 @@ def main():
         description="Importa membros do RobSIC para o Strapi via API REST.",
         formatter_class=argparse.RawTextHelpFormatter,
     )
-    parser.add_argument("--file", required=True, help="Caminho para o .md com os membros")
+    parser.add_argument("--file", required=True, help="Caminho para o arquivo (.md ou .csv) com os membros")
+    parser.add_argument("--default-role", default=None, help="Cargo padrão para membros do CSV (ex: Bolsista, Pesquisador, Mestrando)")
     parser.add_argument("--url", default=os.getenv("STRAPI_URL"), help="URL base do Strapi (ou STRAPI_URL no .env)")
     parser.add_argument("--token", default=os.getenv("STRAPI_API_TOKEN"), help="API Token do Strapi (ou STRAPI_API_TOKEN no .env)")
     parser.add_argument("--dry-run", action="store_true", help="Simula sem criar nada no Strapi")
     parser.add_argument("--draft", action="store_true", help="Cria registros como RASCUNHO (sem publicar no site)")
     args = parser.parse_args()
+
+    file_path = Path(args.file)
+    if not file_path.exists():
+        print(f"❌ Arquivo não encontrado: {args.file}")
+        sys.exit(1)
 
     # Valida configuração
     if not args.dry_run:
@@ -244,15 +315,20 @@ def main():
             sys.exit(1)
 
     print(f"\n📄 Lendo arquivo: {args.file}")
-    members = parse_md(args.file)
+    if file_path.suffix.lower() == ".csv":
+        members = parse_csv(args.file, default_role=args.default_role)
+    else:
+        members = parse_md(args.file)
+
     print(f"   → {len(members)} membros encontrados para importar.\n")
 
     if args.dry_run:
         print("🔍 MODO DRY-RUN — Nenhuma alteração será feita no Strapi:\n")
         for m in members:
-            print(f"  • [{m['role']}] {m['name']}")
+            role_display = m['role'] or "⚠️  Sem cargo (role)"
+            print(f"  • [{role_display}] {m['name']}")
             for k, v in m.items():
-                if k not in ("name", "role", "can_receive_email", "email") and v:
+                if k not in ("name", "role") and v is not None:
                     print(f"      {k}: {str(v)[:90]}")
         return
 
@@ -281,6 +357,7 @@ def main():
 
         result = create_member(args.url, token, member, publish=not args.draft)
         if result:
+            existing_names.add(name.strip().lower())
             status = "📝 Rascunho" if args.draft else "🌐 Publicado"
             print(f"     ✅ Criado! (ID: {result.get('id', '?')}) — {status}")
             created_count += 1

@@ -14,20 +14,36 @@ class PublicationsStore extends ValueNotifier<PublicationsState> {
 
   PublicationsPageEntity? _entity;
   List<PublicationEntity> _publications = [];
-  List<PublicationEntity> _filtredPublicationsBySeachTerm = [];
+  ResultType? _activeFilter;
+  String _searchTerm = '';
+
+  void filterByType(ResultType? type) {
+    _activeFilter = type;
+    _applyFilters();
+  }
 
   void searchTerm(String searchTerm) {
+    _searchTerm = searchTerm;
+    _applyFilters();
+  }
+
+  void _applyFilters() {
     value = PublicationsListStateLoading(_entity!);
-    if (searchTerm.length > 3) {
-      _filtredPublicationsBySeachTerm = _publications.where((publication) {
-        String publicationName = publication.title.toLowerCase();
-        return publicationName.startsWith(searchTerm.toLowerCase());
-      }).toList();
-      value = PublicationsListStateSuccess(
-          _entity!, _filtredPublicationsBySeachTerm);
-    } else {
-      value = PublicationsListStateSuccess(_entity!, _publications);
+    List<PublicationEntity> filtered = _publications;
+
+    if (_activeFilter != null) {
+      filtered =
+          filtered.where((p) => p.resultType == _activeFilter).toList();
     }
+
+    if (_searchTerm.length > 3) {
+      final term = _searchTerm.toLowerCase();
+      filtered = filtered.where((p) {
+        return p.title.toLowerCase().startsWith(term);
+      }).toList();
+    }
+
+    value = PublicationsListStateSuccess(_entity!, filtered);
   }
 
   Future<void> getPublicationsPageData() async {
@@ -48,6 +64,8 @@ class PublicationsStore extends ValueNotifier<PublicationsState> {
     result.fold(
       (publications) {
         _publications = publications;
+        _activeFilter = null;
+        _searchTerm = '';
         value = PublicationsListStateSuccess(_entity!, _publications);
       },
       (failure) => value = PublicationsListStateFailure(_entity!, failure),

@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get projectsLabel => 'Projects';
 
   @override
-  String get publicationsLabel => 'Publications';
+  String get publicationsLabel => 'Results';
 
   @override
   String get contactUsLabel => 'Contact Us';
@@ -168,4 +168,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get watchChannelLabel => 'Watch on YouTube';
+
+  @override
+  String get resultsAllLabel => 'All';
+
+  @override
+  String get resultsDatasetsLabel => 'Datasets';
+
+  @override
+  String get resultsSoftwaresLabel => 'Software';
+
+  @override
+  String get resultsWebSystemsLabel => 'Web Systems';
+
+  @override
+  String get resultsVideosLabel => 'Experiment Videos';
+
+  @override
+  String get resultsPrototypesLabel => 'Prototypes';
+
+  @override
+  String get resultsPatentsLabel => 'Patents';
+
+  @override
+  String get resultsPublicationsLabel => 'Publications';
+
+  @override
+  String get resultsDemonstrationsLabel => 'Demonstrations';
+
+  @override
+  String get noResultsFound => 'No results found.';
 }

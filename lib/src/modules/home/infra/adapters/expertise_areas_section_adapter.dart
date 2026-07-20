@@ -8,6 +8,7 @@ class ExpertiseAreasSectionAdapter {
     try {
       return ExpertiseAreasSectionEntity(
         title: map['title'] ?? '',
+        description: map['description'] ?? map['content'],
         expertiseAreas: map['expertise_areas'] != null
             ? ExpertiseAreasAdapter.fromList(map['expertise_areas'])
             : null,
@@ -35,10 +36,10 @@ class ExpertiseAreasAdapter {
     } on AppFailure {
       rethrow;
     } on FormatException catch (error, stackTrace) {
-      throw (FormatExceptionFailure(
+      throw FormatExceptionFailure(
         error: error,
         stackTrace: stackTrace,
-      ));
+      );
     }
   }
 
@@ -48,10 +49,10 @@ class ExpertiseAreasAdapter {
     } on AppFailure {
       rethrow;
     } on FormatException catch (error, stackTrace) {
-      throw (FormatExceptionFailure(
+      throw FormatExceptionFailure(
         error: error,
         stackTrace: stackTrace,
-      ));
+      );
     }
   }
 }
