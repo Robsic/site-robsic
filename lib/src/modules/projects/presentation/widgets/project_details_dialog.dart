@@ -33,7 +33,7 @@ class ProjectDetailsDialog extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Alignment(
+                Align(
                   alignment: Alignment.topRight,
                   child: IconButton(
                     onPressed: () => Navigator.of(context).maybePop(),

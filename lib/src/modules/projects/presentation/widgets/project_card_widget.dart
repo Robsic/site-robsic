@@ -5,6 +5,7 @@ import 'package:robsic/l10n/app_localizations.dart';
 import '../../../../resources/resources.dart';
 import '../../../core/core.dart';
 import '../../domain/domain.dart';
+import 'project_details_dialog.dart';
 
 class Projectcard extends StatelessWidget {
   const Projectcard({super.key, required this.project});
