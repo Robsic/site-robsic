@@ -17,13 +17,40 @@ class ProjectsStore extends ValueNotifier<ProjectsState> {
   List<ProjectEntity> _projects = [];
   List<ProjectEntity> _filtredProjectsBySeachTerm = [];
 
+  static const List<String> _customOrderKeywords = [
+    'vision parking',
+    'vr mining',
+    'digital twin',
+    'ferramenta de realidade virtual',
+    'simod',
+    'protótipo de hardware',
+    'veículo terrestre',
+    'prestação de contas',
+  ];
+
+  int _getSortOrderIndex(String name) {
+    final lower = name.toLowerCase();
+    for (int i = 0; i < _customOrderKeywords.length; i++) {
+      if (lower.contains(_customOrderKeywords[i])) {
+        return i;
+      }
+    }
+    return 999;
+  }
+
+  void _sortProjects(List<ProjectEntity> list) {
+    list.sort((a, b) => _getSortOrderIndex(a.name).compareTo(_getSortOrderIndex(b.name)));
+  }
+
   void searchTerm(String searchTerm) {
     value = ProjectsListStateLoading(_entity!);
-    if (searchTerm.length > 3) {
+    if (searchTerm.trim().length >= 2) {
+      final term = searchTerm.toLowerCase();
       _filtredProjectsBySeachTerm = _projects.where((project) {
-        String projectName = project.name.toLowerCase();
-        return projectName.startsWith(searchTerm.toLowerCase());
+        return project.name.toLowerCase().contains(term) ||
+               project.category.toLowerCase().contains(term);
       }).toList();
+      _sortProjects(_filtredProjectsBySeachTerm);
       value = ProjectsListStateSuccess(_entity!, _filtredProjectsBySeachTerm);
     } else {
       value = ProjectsListStateSuccess(_entity!, _projects);
@@ -49,6 +76,7 @@ class ProjectsStore extends ValueNotifier<ProjectsState> {
     result.fold(
       (projects) {
         _projects = projects;
+        _sortProjects(_projects);
         value = ProjectsListStateSuccess(_entity!, _projects);
       },
       (failure) => value = ProjectsListStateFailure(_entity!, failure),

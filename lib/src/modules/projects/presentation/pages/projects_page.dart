@@ -117,19 +117,19 @@ class _ProjectsPageState extends State<ProjectsPage> {
                                             text: AppLocalizations.of(context)!
                                                 .noProjectsFound),
                                       )
-                                    : Wrap(
-                                        spacing: TokenSpaces.md,
-                                        runSpacing: TokenSpaces.md,
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.start,
-                                        alignment: WrapAlignment.start,
-                                        runAlignment: WrapAlignment.start,
-                                        children: List.generate(
-                                          projects.length,
-                                          (index) => Projectcard(
-                                            project: projects[index],
-                                          ),
-                                        ),
+                                    : Column(
+                                        children: projects
+                                            .map(
+                                              (project) => Padding(
+                                                padding: const EdgeInsets.only(
+                                                  bottom: TokenSpaces.md,
+                                                ),
+                                                child: Projectcard(
+                                                  project: project,
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
                                       ),
                               ],
                             ),
