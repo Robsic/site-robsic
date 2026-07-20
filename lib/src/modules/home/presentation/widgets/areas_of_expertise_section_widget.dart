@@ -20,12 +20,16 @@ class AreasOfExpertiseSection extends StatelessWidget {
         expertiseAreasSectionData!.description!.isNotEmpty;
     final items = expertiseAreasSectionData?.expertiseAreas ?? [];
 
+    final half = (items.length / 2).ceil();
+    final col1 = items.take(half).toList();
+    final col2 = items.skip(half).toList();
+
     return expertiseAreasSectionData != null
         ? Container(
             alignment: Alignment.center,
             constraints: BoxConstraints(
               minWidth: double.maxFinite,
-              maxHeight: isMobile ? 700 : 500,
+              maxHeight: isMobile ? 700 : 480,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,10 +47,7 @@ class AreasOfExpertiseSection extends StatelessWidget {
                 Expanded(
                   flex: 50,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: TokenSpaces.xl,
-                      horizontal: TokenSpaces.xl,
-                    ),
+                    padding: const EdgeInsets.all(TokenSpaces.xl),
                     decoration: const BoxDecoration(
                       color: TokenColors.gray900,
                     ),
@@ -73,7 +74,6 @@ class AreasOfExpertiseSection extends StatelessWidget {
                               spaceType: SpaceType.vertical,
                               value: TokenSpaces.md,
                             ),
-                            // Items in a clean 2-column or list flow
                             if (isMobile)
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,15 +82,34 @@ class AreasOfExpertiseSection extends StatelessWidget {
                                     .toList(),
                               )
                             else
-                              Wrap(
-                                spacing: TokenSpaces.lg,
-                                runSpacing: TokenSpaces.xs,
-                                children: items.map((item) {
-                                  return SizedBox(
-                                    width: 220,
-                                    child: _ExpertiseAreaItem(text: item),
-                                  );
-                                }).toList(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: col1
+                                          .map((item) =>
+                                              _ExpertiseAreaItem(text: item))
+                                          .toList(),
+                                    ),
+                                  ),
+                                  const SpaceAtom(
+                                    spaceType: SpaceType.horizontal,
+                                    value: TokenSpaces.md,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: col2
+                                          .map((item) =>
+                                              _ExpertiseAreaItem(text: item))
+                                          .toList(),
+                                    ),
+                                  ),
+                                ],
                               ),
                           ],
                         ),
@@ -143,10 +162,11 @@ class _ExpertiseAreaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0),
+    return Container(
+      height: 40.0,
+      alignment: Alignment.centerLeft,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Icon(
@@ -158,12 +178,14 @@ class _ExpertiseAreaItem extends StatelessWidget {
             spaceType: SpaceType.horizontal,
             value: TokenSpaces.xs,
           ),
-          Flexible(
+          Expanded(
             child: Text(
               text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TokenTextStyles.titleMedium.copyWith(
                 color: TokenColors.gray100,
-                fontSize: 15,
+                fontSize: 14,
               ),
             ),
           ),
