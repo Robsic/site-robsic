@@ -21,26 +21,32 @@ class PapersSection extends StatelessWidget {
             constraints: isMobile
                 ? const BoxConstraints(minWidth: double.maxFinite)
                 : const BoxConstraints(
-                    minWidth: double.maxFinite, maxHeight: 428.0),
-            padding: const EdgeInsets.symmetric(vertical: TokenSpaces.xxl),
+                    minWidth: double.maxFinite, maxHeight: 260.0),
+            padding: const EdgeInsets.symmetric(vertical: TokenSpaces.lg),
             child: FractionallySizedBox(
               widthFactor: 0.9,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SectionTitleMolecule(
                     title: papersSectionData!.title,
                     sectionTitleStyle: SectionTitleStyle.onLightBackground,
                   ),
-                  const SizedBox(height: TokenSpaces.xxl),
+                  const SizedBox(height: TokenSpaces.sm),
                   BodyTextAtom(
                     text: papersSectionData!.content,
-                    textStyle: Theme.of(context).textTheme.headlineSmall,
+                    textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontSize: 16,
+                          color: TokenColors.gray700,
+                        ),
                   ),
-                  SizedBox(height: isMobile ? TokenSpaces.xl : TokenSpaces.xxl),
+                  const SizedBox(height: TokenSpaces.md),
                   ElevatedButton(
                     onPressed: () => context.go(Routes.publications),
                     child: Text(
-                      AppLocalizations.of(context)!.papersLabel.toUpperCase(),
+                      AppLocalizations.of(context)!
+                          .publicationsLabel
+                          .toUpperCase(),
                     ),
                   )
                 ],
