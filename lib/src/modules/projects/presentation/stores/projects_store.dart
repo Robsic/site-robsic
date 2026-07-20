@@ -17,24 +17,17 @@ class ProjectsStore extends ValueNotifier<ProjectsState> {
   List<ProjectEntity> _projects = [];
   List<ProjectEntity> _filtredProjectsBySeachTerm = [];
 
-  static const List<String> _customOrderKeywords = [
-    'vision parking',
-    'vr mining',
-    'digital twin',
-    'ferramenta de realidade virtual',
-    'simod',
-    'protótipo de hardware',
-    'veículo terrestre',
-    'prestação de contas',
-  ];
-
   int _getSortOrderIndex(String name) {
     final lower = name.toLowerCase();
-    for (int i = 0; i < _customOrderKeywords.length; i++) {
-      if (lower.contains(_customOrderKeywords[i])) {
-        return i;
-      }
-    }
+    if (lower.contains('vision parking') || lower.contains('estacionamento')) return 0;
+    if (lower.contains('vr mining') || lower.contains('789d')) return 1;
+    if (lower.contains('digital twin')) return 2;
+    if (lower.contains('ferramenta de realidade virtual') ||
+        (lower.contains('realidade virtual') && !lower.contains('hardware'))) return 3;
+    if (lower.contains('simod') || lower.contains('disjuntores')) return 4;
+    if (lower.contains('hardware') || lower.contains('protótipo') || lower.contains('prototipo')) return 5;
+    if (lower.contains('veículo terrestre') || lower.contains('veiculo terrestre') || lower.contains('autônomo') || lower.contains('autonomo')) return 6;
+    if (lower.contains('contrato') || lower.contains('prestação') || lower.contains('prestacao')) return 7;
     return 999;
   }
 
@@ -79,7 +72,7 @@ class ProjectsStore extends ValueNotifier<ProjectsState> {
         _sortProjects(_projects);
         value = ProjectsListStateSuccess(_entity!, _projects);
       },
-      (failure) => value = ProjectsListStateFailure(_entity!, failure),
+      (failure) => value = ProjectsStateFailure(_entity!, failure),
     );
   }
 

@@ -27,13 +27,13 @@ class Projectcard extends StatelessWidget {
       elevation: 2,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(10.0),
       ),
       child: Container(
         width: double.infinity,
         constraints: BoxConstraints(
-          minHeight: isMobile ? 320.0 : 200.0,
-          maxHeight: isMobile ? 550.0 : 220.0,
+          minHeight: isMobile ? 360.0 : 220.0,
+          maxHeight: isMobile ? 580.0 : 240.0,
         ),
         padding: const EdgeInsets.all(TokenSpaces.lg),
         child: isMobile
@@ -43,7 +43,7 @@ class Projectcard extends StatelessWidget {
                   if (hasImage)
                     Center(
                       child: Container(
-                        height: 140,
+                        height: 180,
                         padding: const EdgeInsets.only(bottom: TokenSpaces.sm),
                         child: CachedNetworkImage(
                           imageUrl: imageUrl.startsWith('http')
@@ -67,18 +67,26 @@ class Projectcard extends StatelessWidget {
                   const SizedBox(height: TokenSpaces.xs),
                   Row(
                     children: [
-                      Chip(
-                        label: Text(
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: TokenColors.primary.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: TokenColors.primary.withOpacity(0.4),
+                          ),
+                        ),
+                        child: Text(
                           project.category,
                           style: const TextStyle(
-                            color: TokenColors.gray900,
-                            fontSize: 11,
+                            color: TokenColors.emphasis,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        backgroundColor: TokenColors.primary,
-                        visualDensity: VisualDensity.compact,
-                        padding: EdgeInsets.zero,
                       ),
                       const SizedBox(width: TokenSpaces.sm),
                       Text(
@@ -122,14 +130,14 @@ class Projectcard extends StatelessWidget {
                 children: [
                   if (hasImage) ...[
                     Container(
-                      width: 180,
+                      width: 290,
                       height: double.infinity,
                       decoration: BoxDecoration(
                         color: TokenColors.gray50,
-                        borderRadius: BorderRadius.circular(6.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         child: CachedNetworkImage(
                           imageUrl: imageUrl.startsWith('http')
                               ? imageUrl
@@ -158,18 +166,26 @@ class Projectcard extends StatelessWidget {
                         const SizedBox(height: TokenSpaces.xs),
                         Row(
                           children: [
-                            Chip(
-                              label: Text(
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: TokenColors.primary.withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                  color: TokenColors.primary.withOpacity(0.4),
+                                ),
+                              ),
+                              child: Text(
                                 project.category,
                                 style: const TextStyle(
-                                  color: TokenColors.gray900,
-                                  fontSize: 11,
+                                  color: TokenColors.emphasis,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              backgroundColor: TokenColors.primary,
-                              visualDensity: VisualDensity.compact,
-                              padding: EdgeInsets.zero,
                             ),
                             const SizedBox(width: TokenSpaces.md),
                             Text(
