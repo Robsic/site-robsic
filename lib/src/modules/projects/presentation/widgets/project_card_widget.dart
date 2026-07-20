@@ -135,7 +135,12 @@ class Projectcard extends StatelessWidget {
                             text: AppLocalizations.of(context)!
                                 .seeDetailsLabel
                                 .toUpperCase()),
-                        onPressed: () {},
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                            child: ProjectDetailsDialog(project: project),
+                          ),
+                        ),
                       ),
                     ],
                   ),
