@@ -72,7 +72,7 @@ class ProjectsStore extends ValueNotifier<ProjectsState> {
         _sortProjects(_projects);
         value = ProjectsListStateSuccess(_entity!, _projects);
       },
-      (failure) => value = ProjectsStateFailure(_entity!, failure),
+      (failure) => value = ProjectsListStateFailure(_entity!, failure),
     );
   }
 
