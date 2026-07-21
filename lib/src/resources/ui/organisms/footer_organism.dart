@@ -136,7 +136,7 @@ class _FooterOrganismState extends State<FooterOrganism> {
                         ),
                         const SizedBox(height: TokenSpaces.xs),
                         LabelAtom(
-                          text: 'Anexo I - Sala 4, Laboratório RobSIC\nRua Irmã Ivone Drummond, 200 - Distrito Industrial II. Itabira-MG',
+                          text: 'Rua Irmã Ivone Drummond, 200 - Distrito Industrial II. Itabira-MG\nAnexo I - Sala 4, Laboratório RobSIC',
                           textStyle: TokenTextStyles.titleSmall
                               .copyWith(color: TokenColors.gray300, height: 1.3),
                         ),
@@ -287,7 +287,7 @@ class _FooterOrganismState extends State<FooterOrganism> {
                               const SizedBox(height: TokenSpaces.xs),
                               LabelAtom(
                                 text:
-                                    'Anexo I - Sala 4, Laboratório RobSIC\nRua Irmã Ivone Drummond, 200 - Distrito Industrial II. Itabira-MG',
+                                    'Rua Irmã Ivone Drummond, 200 - Distrito Industrial II. Itabira-MG\nAnexo I - Sala 4, Laboratório RobSIC',
                                 textStyle: TokenTextStyles.titleSmall.copyWith(
                                   color: TokenColors.gray300,
                                   height: 1.3,
