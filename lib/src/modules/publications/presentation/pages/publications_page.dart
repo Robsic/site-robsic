@@ -33,7 +33,12 @@ class _PublicationsPageState extends State<PublicationsPage> {
     _publicationsStore.getPublicationsPageData();
   }
 
-  void _reloadData() => _publicationsStore.getPublicationsPageData();
+  void _reloadData() {
+    if (mounted) {
+      setState(() {});
+    }
+    _publicationsStore.getPublicationsPageData();
+  }
 
   @override
   void dispose() {
