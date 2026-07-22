@@ -253,6 +253,15 @@ def create_publication(base_url: str, token: str, pub: dict, publish: bool = Tru
         "Content-Type": "application/json",
     }
     payload = {k: v for k, v in pub.items() if v is not None}
+    
+    # Strapi tipo string limita em 255 caracteres
+    if "title" in payload and len(payload["title"]) > 250:
+        full_title = payload["title"]
+        payload["title"] = full_title[:247] + "..."
+        payload["abstract"] = f"{full_title}\n\n{payload.get('abstract', '')}".strip()
+
+    if "authors" in payload and len(payload["authors"]) > 250:
+        payload["authors"] = payload["authors"][:247] + "..."
 
     resp = requests.post(
         f"{base_url}/api/publications",
