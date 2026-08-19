@@ -43,19 +43,22 @@ class _CustomAppBarState extends State<CustomAppBar> {
         children: [
           InkWell(
             child: const Image(
-                image: ImagesAsset.assinHorUnifeiPos, fit: BoxFit.fitHeight),
-            onTap: () => _urlLauncher.launchUrl(EndPoints.unifeiSiteUrl),
-          ),
-          const SpaceAtom(
-              spaceType: SpaceType.horizontal, value: TokenSpaces.lg),
-          InkWell(
-            child: const Image(
                 image: ImagesAsset.robsicLogo, fit: BoxFit.fitHeight),
             onTap: () {
               _appMenusStore.setMenu(AppMenus.home);
               context.go(Routes.home);
             },
           ),
+          const SpaceAtom(spaceType: SpaceType.horizontal, value: TokenSpaces.lg),
+          SizedBox(
+            height: 35.0,
+            child: InkWell(
+              child: const Image(
+                image: ImagesAsset.assinHorUnifeiPos, fit: BoxFit.fitHeight
+              ),
+              onTap: () => _urlLauncher.launchUrl(EndPoints.unifeiSiteUrl),
+            ),
+          )
         ],
       ),
       trailing: Visibility(

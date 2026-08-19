@@ -5,15 +5,21 @@ import 'package:intl/intl.dart';
 import 'package:robsic/main.dart';
 import 'package:robsic/src/app_store.dart';
 import 'package:robsic/src/modules/publications/presentation/widgets/video_player_dialog.dart';
+import '../stores/publications_store.dart';
 
 import '../../../../resources/resources.dart';
 import '../../../core/core.dart';
 import '../../domain/domain.dart';
 
 class Publicationcard extends StatefulWidget {
-  const Publicationcard({super.key, required this.publication});
+  const Publicationcard({
+    super.key,
+    required this.publication,
+    this.onReferenceTap,
+  });
 
   final PublicationEntity publication;
+  final void Function(String code)? onReferenceTap;
 
   @override
   State<Publicationcard> createState() => _PublicationcardState();
@@ -43,8 +49,35 @@ class _PublicationcardState extends State<Publicationcard> {
   @override
   Widget build(BuildContext context) {
     final bool isMobile = ResponsiveUtils.isMobile(context);
-    final String? youtubeVideoId = _getYouTubeVideoId(widget.publication.urlLink);
-    final bool isVideo = widget.publication.resultType == ResultType.video || youtubeVideoId != null;
+    final codes = _extractCodes(widget.publication.resume);
+    String urlLink = widget.publication.urlLink;
+    String? inheritedFromCode;
+
+    if (urlLink.isEmpty) {
+      final publicationsStore = serviceLocator.get<PublicationsStore>();
+      final allPubs = publicationsStore.allPublications;
+
+      for (final code in codes) {
+        final keyword = _codeToTitleKeyword[code];
+        if (keyword != null) {
+          PublicationEntity? found;
+          for (final p in allPubs) {
+            if (p.title.toLowerCase().contains(keyword.toLowerCase()) && p.urlLink.isNotEmpty) {
+              found = p;
+              break;
+            }
+          }
+          if (found != null) {
+            urlLink = found.urlLink;
+            inheritedFromCode = code;
+            break;
+          }
+        }
+      }
+    }
+
+    final String? youtubeVideoId = _getYouTubeVideoId(urlLink);
+    final bool isVideo = widget.publication.resultType == ResultType.video;
 
     // Imagem do card
     String? imageUrl;
@@ -61,8 +94,7 @@ class _PublicationcardState extends State<Publicationcard> {
     return Card(
       child: Container(
         constraints: BoxConstraints(
-          minHeight: 180.0,
-          maxHeight: isMobile ? 550.0 : 380.0,
+          minHeight: 140.0,
         ),
         padding: const EdgeInsets.all(TokenSpaces.lg),
         child: Row(
@@ -71,8 +103,8 @@ class _PublicationcardState extends State<Publicationcard> {
             if (hasImage && ResponsiveUtils.isDesktop(context))
               Expanded(
                 flex: 3,
-                child: SizedBox(
-                  height: double.infinity,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -91,7 +123,7 @@ class _PublicationcardState extends State<Publicationcard> {
                       ),
                       if (isVideo)
                         GestureDetector(
-                          onTap: () => _openVideoOrLink(context, youtubeVideoId),
+                          onTap: () => _openVideoOrLink(context, youtubeVideoId, urlLink),
                           child: Container(
                             padding: const EdgeInsets.all(TokenSpaces.sm),
                             decoration: const BoxDecoration(
@@ -120,11 +152,11 @@ class _PublicationcardState extends State<Publicationcard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,  
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                         Row(
                           children: [
                             Flexible(
@@ -178,36 +210,44 @@ class _PublicationcardState extends State<Publicationcard> {
                           value: TokenSpaces.sm,
                         ),
                         if (widget.publication.resume.isNotEmpty)
-                          Expanded(
-                            child: ListView(
-                              padding: EdgeInsets.zero,
-                              children: [
-                                BodyTextAtom(
-                                  text: widget.publication.resume,
-                                  textStyle: TokenTextStyles.bodyLarge,
-                                ),
-                              ],
-                            ),
+                        BodyTextAtom(
+                          text: widget.publication.resume,
+                          textStyle: TokenTextStyles.bodyLarge,
+                          maxLines: 4,
+                          textOverflow: TextOverflow.ellipsis,
+                        ),
+                              
+                        if (codes.isNotEmpty) ...[
+                          const SpaceAtom(
+                            spaceType: SpaceType.vertical,
+                            value: TokenSpaces.xs,
                           ),
+                          Wrap(
+                            spacing: TokenSpaces.xs,
+                            runSpacing: TokenSpaces.xs,
+                            children: codes.map((c) => _buildBadge(c)).toList(),
+                          ),
+                        ],
                       ],
                     ),
-                  ),
                   const SpaceAtom(
                     spaceType: SpaceType.vertical,
                     value: TokenSpaces.md,
                   ),
-                  Row(
+                   Row(
                     children: [
-                      if (widget.publication.urlLink.isNotEmpty)
+                      if (urlLink.isNotEmpty)
                         ElevatedButtonMolecule(
                           label: LabelAtom(
                             text: isVideo
                                 ? 'ASSISTIR VÍDEO'
-                                : AppLocalizations.of(context)!
-                                    .getAccessLabel
-                                    .toUpperCase(),
+                                : (inheritedFromCode != null
+                                    ? 'ACESSAR ($inheritedFromCode)'
+                                    : AppLocalizations.of(context)!
+                                        .getAccessLabel
+                                        .toUpperCase()),
                           ),
-                          onPressed: () => _openVideoOrLink(context, youtubeVideoId),
+                          onPressed: () => _openVideoOrLink(context, youtubeVideoId, urlLink),
                         ),
                     ],
                   ),
@@ -220,7 +260,7 @@ class _PublicationcardState extends State<Publicationcard> {
     );
   }
 
-  void _openVideoOrLink(BuildContext context, String? youtubeVideoId) {
+  void _openVideoOrLink(BuildContext context, String? youtubeVideoId, String targetUrl) {
     if (youtubeVideoId != null) {
       showDialog(
         context: context,
@@ -229,13 +269,121 @@ class _PublicationcardState extends State<Publicationcard> {
           videoId: youtubeVideoId,
         ),
       );
-    } else if (widget.publication.urlLink.isNotEmpty) {
-      _urlLauncher.launchUrl(widget.publication.urlLink);
+    } else if (targetUrl.isNotEmpty) {
+      _urlLauncher.launchUrl(targetUrl);
     }
   }
 
   String _formattedDate(DateTime date, [AppLocale? locale]) {
     return DateFormat.yMd(locale?.fullLanguageCode ?? AppLocale.ptBR)
         .format(date);
+  }
+
+  static const Map<String, String> _codeToTitleKeyword = {
+    'D1': 'Banco de imagens de esmeraldas',
+    'D2': 'Dataset de imagens/mapas georreferenciados',
+    'S1': 'GRaSP-web',
+    'W1': 'GRaSP-web',
+    'S2': 'GASS-WEB',
+    'S3': 'GASS-Metal',
+    'S4': 'VR-Mining Inspection',
+    'DM1': 'VR-Mining Inspection',
+    'S5': 'Onto4ALL Editor',
+    'W3': 'Onto4ALL Editor',
+    'S6': 'VisGreMLIN 2.0',
+    'S9': 'SRAM',
+    'PT7': 'SRAM',
+    'S14': 'SRAM',
+    'S10': 'Plataforma Robótica',
+    'P17': 'Plataforma Robótica',
+    'P1': 'Máquina de Classificação de Esmeraldas',
+    'P2': 'Simulador 3D do Caminhão',
+    'P3': 'Veículo Terrestre Autônomo',
+    'P4': 'Veículo Elétrico Teleoperado',
+    'P5': 'Drone Autônomo para Rastreamento',
+    'P6': 'Robô Seguidor de Linha',
+    'P7': 'Comunicação VLC',
+    'P8': 'Manipulador Robótico KUKA',
+    'P11': 'Sistema Embarcado para emulação',
+    'PT1': '2015 0203462',
+    'PT2': '2019 0226477',
+    'PT3': '2022 0256160',
+    'PT4': '2025 0074052',
+    'PT5': '2025 0178729',
+    'PT6': '2019 0028360',
+    'DM2': 'Mina Conceição',
+    'DM3': 'Simulador CAT793F',
+    'DM4': 'Localização Topológica sem GPS',
+    'DM5': 'GRaSP-web / GASS-WEB',
+  };
+
+  List<String> _extractCodes(String text) {
+    final codes = <String>[];
+    final regExp = RegExp(r'\b(S\d+|P\d+|PT\d+|W\d+|D\d+|DM\d+)\b');
+    final matches = regExp.allMatches(text);
+    for (final m in matches) {
+      final code = m.group(1);
+      if (code != null && _codeToTitleKeyword.containsKey(code)) {
+        if (!codes.contains(code)) {
+          codes.add(code);
+        }
+      }
+    }
+    return codes;
+  }
+
+  Widget _buildBadge(String code) {
+    String label = code;
+    if (code.startsWith('P') && !code.startsWith('PT')) {
+      label = 'Protótipo $code';
+    } else if (code.startsWith('PT')) {
+      label = 'Patente $code';
+    } else if (code.startsWith('S')) {
+      label = 'Software $code';
+    } else if (code.startsWith('W')) {
+      label = 'Sistema Web $code';
+    } else if (code.startsWith('D') && !code.startsWith('DM')) {
+      label = 'Dataset $code';
+    } else if (code.startsWith('DM')) {
+      label = 'Demonstração $code';
+    }
+
+    return GestureDetector(
+      onTap: () {
+        if (widget.onReferenceTap != null) {
+          widget.onReferenceTap!(code);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: TokenColors.primary.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: TokenColors.primary.withOpacity(0.5),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.link,
+              size: 14,
+              color: TokenColors.primary,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: const TextStyle(
+                color: TokenColors.primary,
+                fontWeight: FontWeight.bold,
+                fontSize: 11,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

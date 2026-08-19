@@ -24,7 +24,7 @@ class HeaderSectionOrganism extends StatelessWidget {
       ),
       constraints: const BoxConstraints(
         minWidth: double.maxFinite,
-        maxHeight: 400,
+        maxHeight: 205,
       ),
       decoration: const BoxDecoration(
         color: TokenColors.secondary20,

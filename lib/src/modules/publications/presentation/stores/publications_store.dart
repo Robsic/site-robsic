@@ -17,6 +17,8 @@ class PublicationsStore extends ValueNotifier<PublicationsState> {
   ResultType? _activeFilter;
   String _searchTerm = '';
 
+  List<PublicationEntity> get allPublications => _publications;
+
   void filterByType(ResultType? type) {
     _activeFilter = type;
     _applyFilters();
@@ -36,10 +38,12 @@ class PublicationsStore extends ValueNotifier<PublicationsState> {
           filtered.where((p) => p.resultType == _activeFilter).toList();
     }
 
-    if (_searchTerm.length > 3) {
-      final term = _searchTerm.toLowerCase();
+    if (_searchTerm.isNotEmpty) {
+      final term = _searchTerm.toLowerCase().trim();
       filtered = filtered.where((p) {
-        return p.title.toLowerCase().startsWith(term);
+        return p.title.toLowerCase().contains(term) ||
+               p.resume.toLowerCase().contains(term) ||
+               p.autors.toLowerCase().contains(term);
       }).toList();
     }
 
