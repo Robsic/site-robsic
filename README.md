@@ -1,74 +1,116 @@
-# RobSIC
+# 🤖 RobSIC — Portal Web Institucional
 
-Site web desenvolvido para a equipe RobSIC, com o objetivo de garantir a presença digital do grupo, listar artigos/projetos desenvolvidos pela equipe e captar novas parcerias.
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white)](https://dart.dev)
+[![Architecture](https://img.shields.io/badge/Architecture-Clean%20Dart-green)](https://github.com/Flutterando/Clean-Dart)
+[![Documentation](https://img.shields.io/badge/Docs-Di%C3%A1taxis%20Framework-blueviolet)](docs/README.md)
+[![Organization](https://img.shields.io/badge/Org-RobSIC%20UNIFEI-red)](https://github.com/Robsic)
 
-## 1. Funcionalidades
+Portal web oficial do **Laboratório de Robótica, Sistemas Inteligentes e Complexos (RobSIC)** da **Universidade Federal de Itajubá (UNIFEI) — Campus Itabira**.
 
-1. Landing Page
-2. Página sobre o projeto
-3. Lista de membros
-4. Lista de publicações
-5. Lista de projetos
-6. Página de contato
+🌐 **Acesse em Produção:** [https://robsic.unifei.edu.br](https://robsic.unifei.edu.br)
 
-### 1.1 Landing Page
+---
 
-O site contará com uma página inicial no estilo Landing Page, com chamadas para as principais funcionalidades do site.
+## 📑 Índice
 
-### 1.2 Página sobre o projeto
+- [Visão Geral](#-visão-geral)
+- [Funcionalidades Principais](#-funcionalidades-principais)
+- [Stack Tecnológica](#-stack-tecnológica)
+- [Início Rápido](#-início-rápido)
+- [Documentação Técnica (Framework Diátaxis)](#-documentação-técnica-framework-diátaxis)
+- [Fluxo de Desenvolvimento e Contribuição](#-fluxo-de-desenvolvimento-e-contribuição)
+- [Licença e Contato](#-licença-e-contato)
 
-Irá conter textos e fotos com detalhes sobre a equipe do RobSIC.
-### 1.3 Lista de membros
+---
 
-Irá conter uma lista com os membros participantes do projeto.
-### 1.4 Lista de publicações
+## 🔭 Visão Geral
 
-Irá conter uma lista com as publicações de artigos realizadas pelos membros da equipe.
-### 1.5 Lista de projetos
+O site atua como a vitrine digital do laboratório, com os objetivos de:
+- Consolidar a presença digital e a identidade do grupo de pesquisa.
+- Catalogar e dar visibilidade aos resultados científicos (artigos, patentes, sistemas web, softwares e vídeos de experimentos).
+- Apresentar o corpo de pesquisadores, docentes, mestrandos e bolsistas do grupo.
+- Facilitar a captação de novas parcerias com a indústria, instituições de fomento e comunidade acadêmica.
 
-Irá conter a lista dos projetos atualmente desenvolvidos pela equipe.
-### 1.6 Página de contato
+---
 
-Irá conter um formulário que permita que usuários do site entre em contato com a equipe.
+## ✨ Funcionalidades Principais
 
-## 2. Experiência do Usuário
+- **🏠 Landing Page Interativa:** Apresentação visual moderna do laboratório, objetivos e destaques.
+- **👥 Equipe & Membros:** Listagem de pesquisadores organizada por categorias acadêmicas (Docentes, Doutorandos, Mestrandos e Bolsistas) com links diretos para Lattes, ORCID e LinkedIn.
+- **🔬 Resultados & Publicações:** Catálogo dinâmico de produção científica com player modal integrado para vídeos do YouTube, agrupamento por playlists temáticas e filtros de busca.
+- **🚀 Projetos de P&D:** Galeria dos projetos desenvolvidos pela equipe com fotos e resumos executivos.
+- **✉️ Canal de Contato:** Formulário com envio de email direto via SMTP institucional.
+- **🌐 Internacionalização (i18n):** Suporte nativo a Português (`pt-BR`) e Inglês (`en-US`) com sincronização em tempo real.
 
-Toda interface será feita seguindo as boas práticas de UI/UX, usando componentes pré-construidos do Material Design, e componentes customizados quando necessário. Informações de mockup, fonte e assets estão disponíveis no Figma.
+---
 
-[Link do Figma](https://www.figma.com/file/mUrd5r0E1DmPG5qH4A0Omd/Robsic?node-id=519%3A405&t=04h0iTtWmAYK3c3N-1)
+## 🛠️ Stack Tecnológica
 
-## 3. Arquitetura
+| Componente | Tecnologia | Papel |
+|---|---|---|
+| **Frontend** | Flutter Web / Dart | Single Page Application (SPA) responsiva |
+| **Backend** | Strapi CMS v4 (Node.js) | Headless CMS para gestão dinâmica de conteúdo |
+| **Banco de Dados** | PostgreSQL | Persistência relacional em produção |
+| **Servidor Web** | NGINX | Servidor de borda, terminação SSL e reverse proxy |
+| **Automação** | Python 3.10+ | Scripts de sincronização em lote com o Strapi |
 
-Nesta seção será definida os detalhes de arquitetura a serem considerados durante o desenvolvimento.
+---
 
-# Regras iniciais, limite e Análise
+## ⚡ Início Rápido
 
-Pontos a serem levados em consideração antes de introduzir uma nova feature:
+### 1. Clonar e Instalar Dependências
+```bash
+git clone git@github.com:Robsic/site-robsic.git
+cd site-robsic
+flutter pub get
+```
 
-- Todo projeto precisará respeitar as regras de Lint padrão definido no pacote flutter_lint.
-- O projeto será desenvolvido com seguindo boas práticas como os princípios S.O.L.I.D. sempre que possível. Será adotado um modelo de arquitetura baseado na Proposta do [Clean Dart](https://github.com/Flutterando/Clean-Dart).
-- Camadas globais devem ter um lugar específico na aplicação, por tanto, devem estar na pasta Core.
-- Cada feature deverá ter sua própria pasta onde conterá todas as camadas necessárias para a execução dos casos de uso da feature.
-- Todos os designs patterns usados no projeto devem estar listados na sessão “Design Patterns” desse documento, caso contrário será considerado implementação errônea.
-- Packages e plugins novos só poderão ser usados nos projetos após avaliação, levando em consideração a necessidade do uso dos mesmos. Quando utilizados,deverão ser observadas questões de segurança, estabilidade, popularidade e frequência de atualizações.
-- Não é permitido ter uma classe concreta como dependência de uma camada. Só será aceita coesão com classes abstratas ou interfaces. Com exceção da Store.
-- Cada camada deve ter apenas uma responsabilidade.
+### 2. Executar Localmente
+```bash
+flutter run -d chrome --dart-define=BASE_URL=https://robsic.unifei.edu.br
+```
 
-# Entidades
+Para instruções passo a passo detalhadas, veja o [Tutorial de Primeiros Passos](docs/tutorials/01-getting-started.md).
 
-# Casos de Uso
+---
 
-# Design Pattens
+## 📚 Documentação Técnica (Framework Diátaxis)
 
-- Service Pattern: Para isolar trechos de códigos com outras responsabilidades.
-- Dependency Injection: Resolver dependências das classes.
-- State pattern: Padrão que auxilia no gerenciamento estados.
-- Adapter: Converter um objeto em outro.
-- Result: Trabalhar com retorno Múltiplo.
+A documentação do projeto está estruturada seguindo o **Framework Diátaxis** em quatro quadrantes cognitivos:
 
-# Packages Externos
+| Quadrante | Propósito | Principais Guias |
+|---|---|---|
+| 🎓 **[Tutoriais](docs/tutorials/)** | *Aprender* | • [Primeiros Passos](docs/tutorials/01-getting-started.md)<br/>• [Primeira Contribuição e Git](docs/tutorials/02-first-contribution.md) |
+| 🛠️ **[Guias Práticos](docs/how-to-guides/)** | *Fazer* | • [Deploy em Produção (SSH/NGINX)](docs/how-to-guides/01-manual-deployment.md)<br/>• [Importação de Dados via Python](docs/how-to-guides/02-data-import-scripts.md)<br/>• [Internacionalização (i18n)](docs/how-to-guides/03-internationalization.md) |
+| 🏛️ **[Explicações](docs/explanations/)** | *Entender* | • [Arquitetura Clean Dart](docs/explanations/01-clean-dart-architecture.md)<br/>• [Gerenciamento de Estado e DI](docs/explanations/02-state-management-and-di.md)<br/>• [Arquitetura Geral do Sistema](docs/explanations/03-system-architecture.md) |
+| 📖 **[Referências](docs/reference/)** | *Consultar* | • [Estrutura de Pastas e Módulos](docs/reference/01-directory-structure.md)<br/>• [Variáveis de Ambiente e Flags](docs/reference/02-environment-variables.md)<br/>• [Endpoints da API Strapi](docs/reference/03-strapi-api-endpoints.md) |
 
-- [get_it](https://pub.dev/packages/get_it): Para injeção de dependências
-- [go_router](https://pub.dev/packages/go_router): Para navegação entre as telas da aplicação
-- [mocktail](https://pub.dev/packages/mocktail): Para testes de unidade.
-- [result_dart](https://pub.dev/packages/result_dart): Retorno múltiplo no formato Failure e Success.
+Consulte o [Portal Central de Documentação](docs/README.md) para navegar por todo o acervo.
+
+---
+
+## 🌿 Fluxo de Desenvolvimento e Contribuição
+
+Adotamos a especificação **Conventional Commits** e branches baseadas na `development`:
+
+```
+main (produção)  ◄──  development (integração)  ◄──  feature/* ou bugfix/*
+```
+
+### Regras de Ouro:
+1. Trabalhe sempre a partir da branch `development`.
+2. Escreva commits descritivos no formato: `feat: adiciona card de resultados`, `fix: corrige alinhamento do rodapé`.
+3. Garanta que a suíte passe antes de abrir o Pull Request:
+   ```bash
+   flutter analyze
+   flutter test
+   ```
+
+---
+
+## 📄 Licença e Contato
+
+- **Organização:** [RobSIC — Laboratório de Robótica, Sistemas Inteligentes e Complexos](https://github.com/Robsic)
+- **Instituição:** Universidade Federal de Itajubá (UNIFEI) — Campus Itabira
+- **Contato:** `robsic@unifei.edu.br`
