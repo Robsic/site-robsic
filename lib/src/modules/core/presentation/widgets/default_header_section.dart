@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/atoms/body_text_atom.dart';
-import 'package:robsic/src/core/ui/molecules/section_title_molecule.dart';
-import 'package:robsic/src/core/ui/organisms/header_section_organism.dart';
+
+import '../../../../resources/resources.dart';
 
 class DefaultHeaderSection extends StatelessWidget {
   const DefaultHeaderSection(

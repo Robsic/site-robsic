@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/custom_app_bar.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/default_header_section.dart';
-import 'package:robsic/src/modules/projects/domain/entities/project_entity.dart';
-import 'package:robsic/src/modules/projects/presentation/widgets/project_card_widget.dart';
+import 'package:robsic/l10n/app_localizations.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
-import '../../../../core/core.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
+import '../stores/stores.dart';
+import '../widgets/widgets.dart';
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -14,52 +17,143 @@ class ProjectsPage extends StatefulWidget {
 }
 
 class _ProjectsPageState extends State<ProjectsPage> {
-  final project = ProjectEntity(
-      name: 'Golfinho',
-      category: 'Authonomus Vehicle',
-      startDate: DateTime(2020, 04),
-      description:
-          'Concept and development of a inteligent and authonomus Land vehicle.',
-      imageUrl:
-          'https://images.unsplash.com/photo-1559758045-8ce743f79096?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+  late final ProjectsStore _projectsStore;
+  late final AppStore _appStore;
+  late String searchTerm;
+
+  @override
+  void initState() {
+    super.initState();
+    searchTerm = '';
+    _appStore = serviceLocator.get<AppStore>();
+    _appStore.addListener(_reloadData);
+    _projectsStore = serviceLocator.get<ProjectsStore>();
+    _projectsStore.getProjectsPageData();
+  }
+
+  void _reloadData() {
+    if (mounted) {
+      setState(() {});
+    }
+    _projectsStore.getProjectsPageData();
+  }
+
+  @override
+  void dispose() {
+    _appStore.removeListener(_reloadData);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
-      appBar: const CustomAppBar(),
-      child: SingleChildScrollView(
-          child: Column(
-        children: [
-          const DefaultHeaderSection(
-            title: 'Projects',
-            text:
-                'It is a interdisciplinary team, composed of researchers with solid klowledge in Robotics, Electronics, and Computing.',
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: TokenSpaces.xl,
-            ),
-            color: TokenColors.gray100,
-            width: double.infinity,
-            child: FractionallySizedBox(
-              widthFactor: 0.9,
-              child: Wrap(
-                spacing: TokenSpaces.md,
-                runSpacing: TokenSpaces.md,
-                alignment: WrapAlignment.center,
-                runAlignment: WrapAlignment.start,
+    return DefaultPageScaffold(
+      child: ValueListenableBuilder<ProjectsState>(
+        valueListenable: _projectsStore,
+        builder: (context, state, _) {
+          if (state is ProjectsStateFailure) {
+            return PageError(
+              errorMessage: AppLocalizations.of(context)!.errorLoadingPage,
+              reloadAction: () => _projectsStore.getProjectsPageData(),
+            );
+          } else if (state is ProjectsStateSuccess) {
+            ProjectsEntity projectsPageData = state.projectsEntity;
+            HeaderSectionEntity? headerSection = projectsPageData.header;
+            return SingleChildScrollView(
+              child: Column(
                 children: [
-                  for (int i = 0; i < 10; i++)
-                    Projectcard(
-                      project: project,
-                    ),
+                  DefaultHeaderSection(
+                    title: headerSection?.title ?? '',
+                    text: headerSection?.content ?? '',
+                  ),
+                  ValueListenableBuilder<ProjectsState>(
+                    valueListenable: _projectsStore,
+                    builder: (context, stateList, _) {
+                      if (stateList is ProjectsListStateFailure) {
+                        return PageError(
+                          errorMessage: AppLocalizations.of(context)!
+                              .errorLoadingProjectsList,
+                          reloadAction: () => _projectsStore.getProjectsList(),
+                        );
+                      } else if (stateList is ProjectsListStateSuccess) {
+                        List<ProjectEntity> projects = stateList.projects;
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: TokenSpaces.xl,
+                          ),
+                          color: TokenColors.gray100,
+                          width: double.infinity,
+                          child: FractionallySizedBox(
+                            widthFactor: 0.9,
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: SizedBox(
+                                    width: 367.0,
+                                    child: CustomTextFormField(
+                                      labelText: AppLocalizations.of(context)!
+                                          .searchLabel,
+                                      onChanged: (searchTerm) {
+                                        this.searchTerm = searchTerm;
+                                        _projectsStore.searchTerm(searchTerm);
+                                      },
+                                      onEditingComplete: () =>
+                                          _projectsStore.searchTerm(searchTerm),
+                                      sufixIcon: GestureDetector(
+                                        onTap: () {
+                                          _projectsStore.searchTerm(searchTerm);
+                                        },
+                                        child: const Icon(
+                                          Icons.search,
+                                          color: TokenColors.primary,
+                                        ),
+                                      ),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ),
+                                const SpaceAtom(
+                                    spaceType: SpaceType.vertical,
+                                    value: TokenSpaces.md),
+                                projects.isEmpty
+                                    ? SizedBox(
+                                        height: 200.0,
+                                        child: BodyTextAtom(
+                                            text: AppLocalizations.of(context)!
+                                                .noProjectsFound),
+                                      )
+                                    : Column(
+                                        children: projects
+                                            .map(
+                                              (project) => Padding(
+                                                padding: const EdgeInsets.only(
+                                                  bottom: TokenSpaces.md,
+                                                ),
+                                                child: Projectcard(
+                                                  project: project,
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const PageLoading();
+                      }
+                    },
+                  ),
+                  const FooterOrganism(),
                 ],
               ),
-            ),
-          ),
-          const FooterOrganism(),
-        ],
-      )),
+            );
+          } else {
+            return const PageLoading();
+          }
+        },
+      ),
     );
   }
 }

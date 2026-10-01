@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
-import 'package:robsic/src/core/ui/templates/page_template.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/default_header_section.dart';
-import 'package:robsic/src/modules/members/domain/entities/member_entity.dart';
-import 'package:robsic/src/modules/members/presentation/widgets/member_card_widget.dart';
+import 'package:robsic/l10n/app_localizations.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/app_store.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
+import '../stores/stores.dart';
+import '../widgets/widgets.dart';
 
 class MembersPage extends StatefulWidget {
   const MembersPage({super.key});
@@ -15,66 +17,224 @@ class MembersPage extends StatefulWidget {
 }
 
 class _MembersPageState extends State<MembersPage> {
-  final member = MemberEntity(
-    name: 'Member Name',
-    role: 'Cientista da computação',
-    phothoUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-    description:
-        'Head of the Laboratory of Robotics, intelligent and Complex Systems - RobSIC and Associate Professor in computer Engineering at Federal University ofItajubá (UNIFEI - Advanced Campus of Itabira). Head of the Laboratory of Robotics, intelligent and Complex Systems - RobSIC.',
-    orcidUrl: '',
-    lattesUrl: '',
-    linkedinUrl: '',
-  );
-  final member2 = MemberEntity(
-    name: 'Member Name',
-    role: 'Cientista da computação',
-    phothoUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-    description:
-        'Head of the Laboratory of Robotics, intelligent and Complex Systems - RobSIC and Associate Professor in computer Engineering at Federal University ofItajubá (UNIFEI - Advanced Campus of Itabira).',
-    orcidUrl: '',
-    lattesUrl: '',
-    linkedinUrl: '',
-  );
+  late final MembersStore _membersStore;
+  late final AppStore _appStore;
+
+  late String searchTerm;
+
+  @override
+  void initState() {
+    super.initState();
+    searchTerm = '';
+    _appStore = serviceLocator.get<AppStore>();
+    _appStore.addListener(_reloadData);
+    _membersStore = serviceLocator.get<MembersStore>();
+    _membersStore.getMembersData();
+  }
+
+  void _reloadData() {
+    if (mounted) {
+      setState(() {});
+    }
+    _membersStore.getMembersData();
+  }
+
+  @override
+  void dispose() {
+    _appStore.removeListener(_reloadData);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(
-      child: SingleChildScrollView(
-          child: Column(
-        children: [
-          const DefaultHeaderSection(
-            title: 'Members',
-            text:
-                'It is a interdisciplinary team, composed of researchers with solid klowledge in Robotics, Electronics, and Computing.',
-          ),
-          Container(
-            color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(
-              vertical: 32.0,
-            ),
-            width: double.infinity,
-            child: FractionallySizedBox(
-              widthFactor: 0.9,
-              child: Wrap(
-                spacing: TokenSpaces.md,
-                runSpacing: TokenSpaces.md,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                alignment: WrapAlignment.center,
-                runAlignment: WrapAlignment.start,
-                children: [
-                  for (int i = 0; i < 10; i++)
-                    Membercard(
-                      member: i % 2 == 0 ? member : member2,
+    return DefaultPageScaffold(
+      child: ValueListenableBuilder<MembersState>(
+          valueListenable: _membersStore,
+          builder: (context, state, _) {
+            if (state is MembersStateFailure) {
+              return PageError(
+                errorMessage: AppLocalizations.of(context)!.errorLoadingPage,
+                reloadAction: () => _membersStore.getMembersData(),
+              );
+            } else if (state is MembersStateSuccess) {
+              MembersEntity membersPageData = state.membersEntity;
+              HeaderSectionEntity? headerSection = membersPageData.header;
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    DefaultHeaderSection(
+                      title: headerSection?.title ?? '',
+                      text: headerSection?.content ?? '',
                     ),
-                ],
-              ),
-            ),
-          ),
-          const FooterOrganism(),
-        ],
-      )),
+                    ValueListenableBuilder<MembersState>(
+                      valueListenable: _membersStore,
+                      builder: (context, stateList, _) {
+                        if (stateList is MembersListStateFailure) {
+                          return PageError(
+                            errorMessage: AppLocalizations.of(context)!
+                                .errorLoadingMembersList,
+                            reloadAction: () => _membersStore.getMembersList(),
+                          );
+                        } else if (stateList is MembersListStateSuccess) {
+                          return Container(
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: TokenSpaces.xl,
+                            ),
+                            width: double.infinity,
+                            child: FractionallySizedBox(
+                              widthFactor: 0.9,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: SizedBox(
+                                      width: 367.0,
+                                      child: CustomTextFormField(
+                                        labelText: AppLocalizations.of(context)!
+                                            .searchLabel,
+                                        onChanged: (searchTerm) {
+                                          this.searchTerm = searchTerm;
+                                          _membersStore.searchTerm(searchTerm);
+                                        },
+                                        onEditingComplete: () => _membersStore
+                                            .searchTerm(searchTerm),
+                                        sufixIcon: GestureDetector(
+                                          onTap: () {
+                                            _membersStore
+                                                .searchTerm(searchTerm);
+                                          },
+                                          child: const Icon(
+                                            Icons.search,
+                                            color: TokenColors.primary,
+                                          ),
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                  const SpaceAtom(
+                                      spaceType: SpaceType.vertical,
+                                      value: TokenSpaces.md),
+                                  if (stateList.professors.isEmpty && stateList.students.isEmpty)
+                                    SizedBox(
+                                      height: 200.0,
+                                      child: BodyTextAtom(
+                                          text: AppLocalizations.of(context)!
+                                              .noMembersFound),
+                                    )
+                                  else
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        if (stateList.professors.isNotEmpty) ...
+                                          [
+                                            SectionTitleMolecule(
+                                              title: AppLocalizations.of(context)!.professorsLabel,
+                                              sectionTitleStyle: SectionTitleStyle.onLightBackground,
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.md),
+                                            Wrap(
+                                              spacing: TokenSpaces.md,
+                                              runSpacing: TokenSpaces.md,
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              children: stateList.professors
+                                                  .map((member) => Membercard(member: member))
+                                                  .toList(),
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.xl),
+                                          ],
+                                        if (stateList.phdStudents.isNotEmpty) ...
+                                          [
+                                            SectionTitleMolecule(
+                                              title: AppLocalizations.of(context)!.phdStudentsLabel,
+                                              sectionTitleStyle: SectionTitleStyle.onLightBackground,
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.md),
+                                            Wrap(
+                                              spacing: TokenSpaces.md,
+                                              runSpacing: TokenSpaces.md,
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              children: stateList.phdStudents
+                                                  .map((member) => Membercard(member: member))
+                                                  .toList(),
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.xl),
+                                          ],
+                                        if (stateList.masterStudents.isNotEmpty) ...
+                                          [
+                                            SectionTitleMolecule(
+                                              title: AppLocalizations.of(context)!.masterStudentsLabel,
+                                              sectionTitleStyle: SectionTitleStyle.onLightBackground,
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.md),
+                                            Wrap(
+                                              spacing: TokenSpaces.md,
+                                              runSpacing: TokenSpaces.md,
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              children: stateList.masterStudents
+                                                  .map((member) => Membercard(member: member))
+                                                  .toList(),
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.xl),
+                                          ],
+                                        if (stateList.undergraduateStudents.isNotEmpty) ...
+                                          [
+                                            SectionTitleMolecule(
+                                              title: AppLocalizations.of(context)!.undergraduateStudentsLabel,
+                                              sectionTitleStyle: SectionTitleStyle.onLightBackground,
+                                            ),
+                                            const SpaceAtom(
+                                                spaceType: SpaceType.vertical,
+                                                value: TokenSpaces.md),
+                                            Wrap(
+                                              spacing: TokenSpaces.md,
+                                              runSpacing: TokenSpaces.md,
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              children: stateList.undergraduateStudents
+                                                  .map((member) => Membercard(member: member))
+                                                  .toList(),
+                                            ),
+                                          ],
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const PageLoading();
+                        }
+                      },
+                    ),
+                    const FooterOrganism(),
+                  ],
+                ),
+              );
+            } else {
+              return const PageLoading();
+            }
+          }),
     );
   }
 }

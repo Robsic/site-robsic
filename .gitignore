@@ -36,6 +36,7 @@ firebase.json
 .pub-cache/
 .pub/
 /build/
+*.zip
 
 # Symbolication related
 app.*.symbols
@@ -47,3 +48,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Python & Environment variables
+.env
+*.env
+scripts/.venv/
+
+# Coverage reports (generated locally, not committed)
+coverage/
+
+# Internal progress/notes files (not for public repo)
+andamento_ajustes.md
+

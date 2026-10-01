@@ -1,3 +1,5 @@
+import 'package:robsic/src/modules/core/core.dart';
+
 class ProjectEntity {
   final String? id;
   final String name;
@@ -5,7 +7,7 @@ class ProjectEntity {
   final DateTime startDate;
   final DateTime? endDate;
   final String description;
-  final String imageUrl;
+  final ImageEntity? image;
 
   ProjectEntity({
     this.id,
@@ -14,6 +16,6 @@ class ProjectEntity {
     required this.startDate,
     this.endDate,
     required this.description,
-    required this.imageUrl,
+    this.image,
   });
 }

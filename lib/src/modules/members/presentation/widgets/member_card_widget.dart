@@ -1,15 +1,30 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/atoms/atoms.dart';
-import 'package:robsic/src/core/ui/molecules/molecules.dart';
-import 'package:robsic/src/modules/members/domain/entities/member_entity.dart';
+import 'package:robsic/l10n/app_localizations.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
+import 'member_details_dialog.dart';
+import 'social_link.dart';
 
-class Membercard extends StatelessWidget {
+class Membercard extends StatefulWidget {
   const Membercard({super.key, required this.member});
 
   final MemberEntity member;
+
+  @override
+  State<Membercard> createState() => _MembercardState();
+}
+
+class _MembercardState extends State<Membercard> {
+  late final UrlLauncherDriver _urlLauncher;
+
+  @override
+  void initState() {
+    super.initState();
+    _urlLauncher = serviceLocator.get<UrlLauncherDriver>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,81 +37,72 @@ class Membercard extends StatelessWidget {
       ),
       child: Container(
         padding: const EdgeInsets.all(TokenSpaces.lg),
-        constraints: const BoxConstraints(
-          maxWidth: 400.0,
-        ),
+        width: 350.0,
+        height: 540.0,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            Row(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      strokeAlign: BorderSide.strokeAlignOutside,
-                      color: TokenColors.primary,
-                      width: 2.0,
-                    ),
-                    shape: BoxShape.circle,
+            SizedBox(
+              height: 110.0,
+              child: Row(
+                children: [
+                  CircleUserAvatar(
+                    url: widget.member.photo?.url != null
+                        ? '${EndPoints.baseUrl}${widget.member.photo!.url}'
+                        : '',
+                    size: 78,
                   ),
-                  width: 78.0,
-                  height: 78.0,
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-                      fit: BoxFit.cover,
-                      width: 75.0,
-                      height: 75.0,
-                    ),
+                  const SpaceAtom(
+                    spaceType: SpaceType.horizontal,
+                    value: TokenSpaces.sm,
                   ),
-                ),
-                const SpaceAtom(
-                  spaceType: SpaceType.horizontal,
-                  value: TokenSpaces.sm,
-                ),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: LabelAtom(
-                              text: member.name,
-                              textStyle: TokenTextStyles.titleLarge.apply(
-                                color: TokenColors.emphasis,
+                  Flexible(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: LabelAtom(
+                                text: widget.member.name,
+                                textStyle: TokenTextStyles.titleLarge.apply(
+                                  color: TokenColors.emphasis,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: LabelAtom(
-                              text: member.role,
-                              textStyle: TokenTextStyles.labelSmall.apply(
-                                color: TokenColors.primary,
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: LabelAtom(
+                                text: widget.member.role,
+                                textStyle: TokenTextStyles.labelSmall.apply(
+                                  color: TokenColors.primary,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: TokenSpaces.md),
-              child: BodyTextAtom(
-                text: member.description,
-                textStyle: TokenTextStyles.bodyLarge,
+            SizedBox(
+              height: 220.0,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: TokenSpaces.md),
+                child: BodyTextAtom(
+                  text: widget.member.description,
+                  textStyle: TokenTextStyles.bodyLarge,
+                  maxLines: 8,
+                  textOverflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
             const Divider(
@@ -111,62 +117,58 @@ class Membercard extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Image(image: ImagesAsset.logoLattes),
-                    SpaceAtom(
-                      spaceType: SpaceType.horizontal,
-                      value: TokenSpaces.xxs,
-                    ),
-                    LabelAtom(
-                      text: 'Lattes',
-                      textStyle: TokenTextStyles.titleSmall,
-                    ),
-                  ],
+                SocialLink(
+                  visible: widget.member.lattesUrl.isNotEmpty,
+                  label: AppLocalizations.of(context)!.lattesLabel,
+                  image: ImagesAsset.logoLattes,
+                  onTap: () => _urlLauncher.launchUrl(widget.member.lattesUrl),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Image(image: ImagesAsset.logoOrcid),
-                    SpaceAtom(
-                      spaceType: SpaceType.horizontal,
-                      value: TokenSpaces.xxs,
-                    ),
-                    LabelAtom(
-                      text: 'Orcid',
-                      textStyle: TokenTextStyles.titleSmall,
-                    ),
-                  ],
+                SocialLink(
+                  visible: widget.member.orcidUrl.isNotEmpty,
+                  label: AppLocalizations.of(context)!.orcidLabel,
+                  image: ImagesAsset.logoOrcid,
+                  onTap: () => _urlLauncher.launchUrl(widget.member.orcidUrl),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Image(image: ImagesAsset.logoLinkedIn),
-                    SpaceAtom(
-                      spaceType: SpaceType.horizontal,
-                      value: TokenSpaces.xxs,
-                    ),
-                    LabelAtom(
-                      text: 'Linkedin',
-                      textStyle: TokenTextStyles.titleSmall,
-                    ),
-                  ],
+                SocialLink(
+                  visible: widget.member.linkedinUrl.isNotEmpty,
+                  label: AppLocalizations.of(context)!.linkedinLabel,
+                  image: ImagesAsset.logoLinkedIn,
+                  onTap: () =>
+                      _urlLauncher.launchUrl(widget.member.linkedinUrl),
                 ),
               ],
             ),
-            const SpaceAtom(
-              spaceType: SpaceType.vertical,
-              value: TokenSpaces.md,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                OutlinedButtonMolecule(
-                  label: const LabelAtom(text: 'Send Email'),
-                  onPressed: () {},
-                )
-              ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButtonMolecule(
+                    label: LabelAtom(
+                      text: AppLocalizations.of(context)!.moreDetailsLabel,
+                    ),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        child: MemberDetailsDialog(member: widget.member),
+                      ),
+                    ),
+                  ),
+                  if (widget.member.canReceiveEmail) ...[
+                    const SpaceAtom(
+                      spaceType: SpaceType.vertical,
+                      value: TokenSpaces.md,
+                    ),
+                    OutlinedButtonMolecule(
+                      label: LabelAtom(
+                        text: AppLocalizations.of(context)!.sendEmailLabel,
+                      ),
+                      onPressed: () => _urlLauncher.launchUrl(
+                        'https://mail.google.com/mail/?view=cm&fs=1&to=${widget.member.email}',
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ),
           ],
         ),

@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:robsic/src/core/ui/atoms/atoms.dart';
-import 'package:robsic/src/core/ui/molecules/elevated_button_molecule.dart';
-import 'package:robsic/src/core/ui/organisms/footer_organism.dart';
-import 'package:robsic/src/core/ui/templates/page_template.dart';
-import 'package:robsic/src/core/ui/tokens/tokens.dart';
-import 'package:robsic/src/core/utils/responsive_utils.dart';
-import 'package:robsic/src/modules/core/presentation/widgets/custom_app_bar.dart';
+import 'package:robsic/l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:robsic/main.dart';
+import 'package:robsic/src/modules/core/core.dart';
 
-import '../../../core/presentation/widgets/default_header_section.dart';
-import '../widgets/custom_text_form_field.dart';
+import '../../../../app_store.dart';
+import '../../../../resources/resources.dart';
+import '../../domain/domain.dart';
+import '../../infra/infra.dart';
+import '../stores/stores.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -19,101 +19,254 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
+  late ContactMessageDto contactMessageDto;
+  late final ContactStore _contactStore;
+  late final AppStore _appStore;
+  late final GlobalKey<FormState> _contactFormkey;
+  late final VoidCallback _handleErrors;
+
+  @override
+  void initState() {
+    super.initState();
+    contactMessageDto = ContactMessageDto();
+    _contactFormkey = GlobalKey<FormState>();
+    _appStore = serviceLocator.get<AppStore>();
+    _appStore.addListener(_reloadData);
+    _contactStore = serviceLocator.get<ContactStore>();
+    _handleErrors = () => _handleSendMessageStates(context);
+    _contactStore.addListener(_handleErrors);
+    _contactStore.getContactPageData();
+  }
+
+  void _reloadData() => _contactStore.getContactPageData();
+
+  bool _validateForm() {
+    return _contactFormkey.currentState?.validate() ?? false;
+  }
+
+  void _sendMessage() {
+    bool isFormValid = _validateForm();
+    if (isFormValid) {
+      final ContactMessageEntity contactMessage =
+          ContactMessageAdapter.fromDto(contactMessageDto);
+      _contactStore.sendContactMessage(contactMessage);
+    }
+  }
+
+  @override
+  void dispose() {
+    _appStore.removeListener(_reloadData);
+    _contactStore.removeListener(_handleErrors);
+    super.dispose();
+  }
+
+  void _handleSendMessageStates(BuildContext context) {
+    if (_contactStore.value is SendContactMessageStateLoading) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return const Center(child: CircularLoadingAtom());
+          });
+    } else if (_contactStore.value is SendContactMessageStateSuccess) {
+      context.pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        customSnackBar(
+          context,
+          snackBarType: SnackBarType.success,
+          message: AppLocalizations.of(context)!.sendMessageSuccess,
+        ),
+      );
+    } else if (_contactStore.value is SendContactMessageStateFailure) {
+      context.pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        customSnackBar(
+          context,
+          snackBarType: SnackBarType.error,
+          message: AppLocalizations.of(context)!.sendMessageError,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isDesktop = ResponsiveUtils.isDesktop(context);
-    return PageTemplate(
-      appBar: const CustomAppBar(),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const DefaultHeaderSection(
-              title: 'Contact Us',
-              text: 'Questions or partnerships? Send a message to our team.',
-            ),
-            Container(
-              constraints: const BoxConstraints(maxHeight: 650.0),
-              child: Row(
+    return DefaultPageScaffold(
+      child: ValueListenableBuilder<ContactState>(
+        valueListenable: _contactStore,
+        builder: (context, state, _) {
+          if (state is ContactStateFailure) {
+            return PageError(
+              errorMessage: AppLocalizations.of(context)!.errorLoadingPage,
+              reloadAction: () => _contactStore.getContactPageData(),
+            );
+          } else if (state is ContactStateSuccess) {
+            ContactPageEntity contactPageData = state.contactPage;
+            HeaderSectionEntity? headerSection = contactPageData.headerSection;
+            return SingleChildScrollView(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 40.0),
-                      child: FractionallySizedBox(
-                        widthFactor: 0.8,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            LabelAtom(
-                              text: 'Send a message'.toUpperCase(),
-                              textStyle: TokenTextStyles.headlineSmall,
-                            ),
-                            const SpaceAtom(
-                                spaceType: SpaceType.vertical,
-                                value: TokenSpaces.lg),
-                            Form(
+                  DefaultHeaderSection(
+                    title: headerSection?.title ?? '',
+                    text: headerSection?.content ?? '',
+                  ),
+                  Container(
+                    constraints: const BoxConstraints(maxHeight: 700.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 40.0),
+                            child: FractionallySizedBox(
+                              widthFactor: 0.8,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const CustomTextFormFIeld(
-                                    labelText: 'Name',
-                                    hintText: 'Your Name',
+                                  LabelAtom(
+                                    text: AppLocalizations.of(context)!
+                                        .sendAMessageLabel
+                                        .toUpperCase(),
+                                    textStyle: TokenTextStyles.headlineSmall,
                                   ),
                                   const SpaceAtom(
                                       spaceType: SpaceType.vertical,
                                       value: TokenSpaces.lg),
-                                  const CustomTextFormFIeld(
-                                    labelText: 'Email',
-                                    hintText: 'youremail@example.com',
-                                  ),
-                                  const SpaceAtom(
-                                      spaceType: SpaceType.vertical,
-                                      value: TokenSpaces.lg),
-                                  const CustomTextFormFIeld(
-                                    labelText: 'Message',
-                                    hintText: 'type your message here...',
-                                    maxLines: 6,
-                                  ),
-                                  const SpaceAtom(
-                                      spaceType: SpaceType.vertical,
-                                      value: TokenSpaces.lg),
-                                  ElevatedButtonMolecule(
-                                    label: LabelAtom(
-                                      text: 'Send Message'.toUpperCase(),
+                                  Form(
+                                    key: _contactFormkey,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomTextFormField(
+                                          initialValue: contactMessageDto.name,
+                                          labelText:
+                                              AppLocalizations.of(context)!
+                                                  .nameLabel,
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .yourNameLabel,
+                                          onChanged: (name) => contactMessageDto
+                                              .name = name.trim(),
+                                          validator: (name) =>
+                                              nameValidator(context, name),
+                                        ),
+                                        const SpaceAtom(
+                                            spaceType: SpaceType.vertical,
+                                            value: TokenSpaces.lg),
+                                        CustomTextFormField(
+                                          initialValue:
+                                              contactMessageDto.senderEmail,
+                                          labelText:
+                                              AppLocalizations.of(context)!
+                                                  .emailLabel,
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .emailPlaceholder,
+                                          onChanged: (senderEmail) =>
+                                              contactMessageDto.senderEmail =
+                                                  senderEmail.trim(),
+                                          validator: (email) =>
+                                              emailValidator(context, email),
+                                        ),
+                                        const SpaceAtom(
+                                            spaceType: SpaceType.vertical,
+                                            value: TokenSpaces.lg),
+                                        CustomTextFormField(
+                                          initialValue:
+                                              contactMessageDto.message,
+                                          labelText:
+                                              AppLocalizations.of(context)!
+                                                  .messageLabel,
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .typeYourMessageHere
+                                                  .toLowerCase(),
+                                          maxLines: 6,
+                                          onChanged: (message) =>
+                                              contactMessageDto.message =
+                                                  message,
+                                          validator: (message) =>
+                                              messageValidator(
+                                                  context, message),
+                                        ),
+                                        const SpaceAtom(
+                                            spaceType: SpaceType.vertical,
+                                            value: TokenSpaces.lg),
+                                        ElevatedButtonMolecule(
+                                          label: LabelAtom(
+                                            text: AppLocalizations.of(context)!
+                                                .sendEmailLabel
+                                                .toUpperCase(),
+                                          ),
+                                          onPressed: () => _sendMessage(),
+                                        )
+                                      ],
                                     ),
-                                    onPressed: () {},
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        if (isDesktop)
+                          Expanded(
+                            child: SizedBox(
+                              height: double.infinity,
+                              child: CachedNetworkImage(
+                                  imageUrl: EndPoints.baseUrl +
+                                      (contactPageData.image?.url ?? ''),
+                                  fit: BoxFit.fitHeight,
+                                  alignment: Alignment.centerLeft,
+                                  errorWidget: (context, _, __) =>
+                                      const LoadImageError()),
+                            ),
+                          )
+                      ],
                     ),
                   ),
-                  if (isDesktop)
-                    Expanded(
-                      child: SizedBox(
-                        height: double.infinity,
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              'https://images.unsplash.com/uploads/141103282695035fa1380/95cdfeef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1730&q=80',
-                          fit: BoxFit.fitHeight,
-                          alignment: Alignment.centerLeft,
-                        ),
-                      ),
-                    )
+                  const FooterOrganism(),
                 ],
               ),
-            ),
-            const FooterOrganism(),
-          ],
-        ),
+            );
+          } else {
+            return const PageLoading();
+          }
+        },
       ),
     );
+  }
+
+  String? nameValidator(BuildContext context, String? name) {
+    FieldValidator validator = Validators.nameValidator(name);
+    if (validator is EmptyField) {
+      return AppLocalizations.of(context)!.emptyFieldErrorMessage;
+    } else if (validator is InvalidName) {
+      return AppLocalizations.of(context)!.invalidNameMessage;
+    }
+    return null;
+  }
+
+  String? emailValidator(BuildContext context, String? email) {
+    FieldValidator validator = Validators.emailValidator(email);
+    if (validator is EmptyField) {
+      return AppLocalizations.of(context)!.emptyFieldErrorMessage;
+    } else if (validator is InvalidEmail) {
+      return AppLocalizations.of(context)!.invalidEmailMessage;
+    }
+    return null;
+  }
+
+  String? messageValidator(BuildContext context, String? message) {
+    FieldValidator validator = Validators.messageValidator(message);
+    if (validator is EmptyField) {
+      return AppLocalizations.of(context)!.emptyFieldErrorMessage;
+    }
+    return null;
   }
 }

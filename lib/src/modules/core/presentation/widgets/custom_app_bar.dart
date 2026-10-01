@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:robsic/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:robsic/src/core/ui/templates/appbar_template.dart';
-import 'package:robsic/src/core/utils/responsive_utils.dart';
+import 'package:robsic/main.dart';
 
-import '../../../../core/constants/routes.dart';
-import '../../../../core/ui/atoms/atoms.dart';
-import '../../../../core/ui/molecules/molecules.dart';
-import '../../../../core/ui/tokens/tokens.dart';
+import '../../../../resources/resources.dart';
+import '../../core.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -25,6 +23,17 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _CustomAppBarState extends State<CustomAppBar> {
   late bool isDesktop;
+
+  late final AppMenusStore _appMenusStore;
+  late final UrlLauncherDriver _urlLauncher;
+
+  @override
+  void initState() {
+    super.initState();
+    _appMenusStore = serviceLocator.get<AppMenusStore>();
+    _urlLauncher = serviceLocator.get<UrlLauncherDriver>();
+  }
+
   @override
   Widget build(BuildContext context) {
     isDesktop = ResponsiveUtils.isDesktop(context);
@@ -35,16 +44,25 @@ class _CustomAppBarState extends State<CustomAppBar> {
           InkWell(
             child: const Image(
                 image: ImagesAsset.robsicLogo, fit: BoxFit.fitHeight),
-            onTap: () => context.go(Routes.home),
+            onTap: () {
+              _appMenusStore.setMenu(AppMenus.home);
+              context.go(Routes.home);
+            },
           ),
-          const SpaceAtom(
-              spaceType: SpaceType.horizontal, value: TokenSpaces.lg),
-          const Image(
-              image: ImagesAsset.assinHorUnifeiPos, fit: BoxFit.fitHeight),
+          const SpaceAtom(spaceType: SpaceType.horizontal, value: TokenSpaces.lg),
+          SizedBox(
+            height: 35.0,
+            child: InkWell(
+              child: const Image(
+                image: ImagesAsset.assinHorUnifeiPos, fit: BoxFit.fitHeight
+              ),
+              onTap: () => _urlLauncher.launchUrl(EndPoints.unifeiSiteUrl),
+            ),
+          )
         ],
       ),
       trailing: Visibility(
-        visible: MediaQuery.of(context).size.width < 1100.0,
+        visible: MediaQuery.of(context).size.width < 1200.0,
         child: IconButton(
           onPressed: () {
             Scaffold.of(context).openEndDrawer();
@@ -52,36 +70,60 @@ class _CustomAppBarState extends State<CustomAppBar> {
           icon: const Icon(Icons.menu),
         ),
       ),
-      child: MediaQuery.of(context).size.width >= 1100.0
+      child: MediaQuery.of(context).size.width >= 1200.0
           ? Row(
               children: [
                 AppbarMenuMolecule(
-                  label: 'About-us',
-                  onPressed: () => context.go(Routes.about),
-                  isSelected: true,
+                  label: AppLocalizations.of(context)!.aboutUsLabel,
+                  onPressed: () {
+                    _appMenusStore.setMenu(AppMenus.about);
+                    context.go(Routes.about);
+                  },
+                  isSelected: _appMenusStore.isAboutPage,
                 ),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
-                    label: 'Members',
-                    onPressed: () => context.go(Routes.members)),
+                    label: AppLocalizations.of(context)!.membersLabel,
+                    onPressed: () {
+                      _appMenusStore.setMenu(AppMenus.members);
+                      context.go(Routes.members);
+                    },
+                    isSelected: _appMenusStore.isMembersPage),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
-                  label: 'Projects',
-                  onPressed: () => context.go(Routes.projects),
-                ),
+                    label: AppLocalizations.of(context)!.projectsLabel,
+                    onPressed: () {
+                      _appMenusStore.setMenu(AppMenus.projects);
+                      context.go(Routes.projects);
+                    },
+                    isSelected: _appMenusStore.isProjectsPage),
                 const SizedBox(width: TokenSpaces.lg),
                 AppbarMenuMolecule(
-                  label: 'Publications',
-                  onPressed: () => context.go(Routes.publications),
-                ),
+                    label: AppLocalizations.of(context)!.publicationsLabel,
+                    onPressed: () {
+                      _appMenusStore.setMenu(AppMenus.publications);
+                      context.go(Routes.publications);
+                    },
+                    isSelected: _appMenusStore.isPublicationsPage),
                 const SpaceAtom(
                   spaceType: SpaceType.horizontal,
                   value: TokenSpaces.md,
                 ),
                 OutlinedButtonMolecule(
-                  label: LabelAtom(text: 'contact us'.toUpperCase()),
-                  onPressed: () => context.go(Routes.contact),
+                  label: LabelAtom(
+                      text: AppLocalizations.of(context)!
+                          .contactUsLabel
+                          .toUpperCase()),
+                  onPressed: () {
+                    _appMenusStore.setMenu(AppMenus.contact);
+                    context.go(Routes.contact);
+                  },
                 ),
+                const SpaceAtom(
+                  spaceType: SpaceType.horizontal,
+                  value: TokenSpaces.md,
+                ),
+                const SelectLanguage(),
               ],
             )
           : null,
