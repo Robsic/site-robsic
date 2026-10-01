@@ -68,5 +68,7 @@ Pontos a serem levados em consideração antes de introduzir uma nova feature:
 
 # Packages Externos
 
-- result: Retorno múltiplo no formato Failure e Success.
-- Mocktail: Para testes de unidade.
+- [get_it](https://pub.dev/packages/get_it): Para injeção de dependências
+- [go_router](https://pub.dev/packages/go_router): Para navegação entre as telas da aplicação
+- [mocktail](https://pub.dev/packages/mocktail): Para testes de unidade.
+- [result_dart](https://pub.dev/packages/result_dart): Retorno múltiplo no formato Failure e Success.
