@@ -1,6 +1,6 @@
 # 🛠️ Guia Prático: Deploy Manual em Produção (Servidor UNIFEI)
 
-> **Finalidade:** Instruções operacionais detalhadas para compilar a versão de produção do frontend e publicá-la no servidor web NGINX do laboratório RobSIC.
+> **Finalidade:** Instruções operacionais detalhadas para compilar a versão de produção do frontend e publicá-la no servidor web Apache (apache2) do laboratório RobSIC.
 > **Destino:** Servidor `robotica@robsic.unifei.edu.br`
 > **Diretório Web:** `/var/www/web/`
 
@@ -12,7 +12,7 @@ O deploy manual é composto por 4 etapas sequenciais:
 1. **Compilação** da aplicação Flutter Web para arquivos estáticos (`HTML`, `JS`, `CSS`, `Wasm/CanvasKit`).
 2. **Compactação** dos artefatos em arquivo `.zip`.
 3. **Transferência** segura via SCP para o servidor.
-4. **Implantação e backup** via SSH com atualização de permissões do NGINX.
+4. **Implantação e backup** via SSH com atualização de permissões do Apache (`www-data:www-data`).
 
 ---
 
@@ -73,7 +73,7 @@ sudo rm -rf /var/www/web/*
 # 3. Descompacta a nova versão diretamente no diretório do servidor
 sudo unzip -o ~/web_prod.zip -d /var/www/web/
 
-# 4. Ajusta as permissões de propriedade para o usuário do NGINX
+# 4. Ajusta as permissões de propriedade para o usuário do Apache (www-data)
 sudo chown -R www-data:www-data /var/www/web/
 
 # 5. Remove o pacote zip temporário da home

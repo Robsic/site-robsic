@@ -8,11 +8,11 @@
 
 ```mermaid
 graph TD
-    User["🌐 Usuário Final (Navegador Web)"] -->|HTTPS / Porta 443| Nginx["🛡️ NGINX (Servidor Web & Proxy Reverso)"]
+    User["🌐 Usuário Final (Navegador Web)"] -->|HTTPS / Porta 443| Apache["🛡️ Apache HTTP Server (apache2)<br/>SSL Let's Encrypt & Proxy Reverso"]
     
     subgraph "Servidor UNIFEI (robsic.unifei.edu.br)"
-        Nginx -->|Entrega Arquivos Estáticos| StaticWeb["📦 /var/www/web/<br/>(Flutter Web SPA: HTML/JS/Wasm)"]
-        Nginx -->|Proxy Reverso /api e /admin| Strapi["🚀 Strapi CMS v4 (Node.js)<br/>Porta interna 1337"]
+        Apache -->|Entrega Arquivos Estáticos| StaticWeb["📦 /var/www/web/<br/>(Flutter Web SPA: HTML/JS/Wasm)"]
+        Apache -->|ProxyPass /api, /admin, /uploads...| Strapi["🚀 Strapi CMS v4 (Node.js)<br/>Porta interna 1337"]
         Strapi -->|Armazenamento de Dados| Postgres["🐘 PostgreSQL (Porta 5432)<br/>Banco: robsic"]
         Strapi -->|Uploads de Imagens e Mídia| UploadsDir["📁 public/uploads/"]
     end
@@ -28,12 +28,12 @@ graph TD
 
 ## 2. Componentes do Sistema
 
-### 1. NGINX (Servidor de Borda & Reverse Proxy)
-- **Localização:** `/etc/nginx/sites-available/` no servidor de produção.
+### 1. Apache HTTP Server (apache2 — Servidor Web & Reverse Proxy)
+- **Localização dos Virtual Hosts:** `/etc/apache2/sites-available/api-robsic-strapi-le-ssl.conf` no servidor de produção.
 - **Funções:**
-  - Terminação SSL/HTTPS com certificados válidos.
-  - Servir os arquivos compilados do Flutter Web de `/var/www/web/` com cache headers adequados e suporte a rotas do GoRouter (`try_files $uri $uri/ /index.html;`).
-  - Encaminhar requisições das rotas `/api/` e `/admin/` para a instância local do Strapi (Node.js rodando via PM2 ou systemd).
+  - Terminação SSL/HTTPS com certificados automatizados via Let's Encrypt (`certbot`).
+  - Servir os arquivos compilados do Flutter Web de `/var/www/web/` sob o usuário `www-data`.
+  - Atuar como Proxy Reverso (`mod_proxy` / `ProxyPass` e `ProxyPassReverse`) encaminhando requisições das rotas `/api`, `/admin`, `/uploads`, `/i18n`, `/translate`, etc. para a porta local `1337` do Strapi.
 
 ### 2. Frontend — Flutter Web SPA
 - **Repositório:** [Robsic/site-robsic](https://github.com/Robsic/site-robsic)

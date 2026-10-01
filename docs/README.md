@@ -38,7 +38,7 @@ PRÁTICA (Ação) ──┼───────────────┼─�
 
 ### 2. 🛠️ Guias Práticos / How-To (Orientados a Resolução de Problemas)
 *Passo a passo direto ao ponto para tarefas frequentes da rotina de desenvolvimento:*
-- [01. Deploy Manual em Produção](how-to-guides/01-manual-deployment.md) — Compilação, compactação e publicação no servidor NGINX via SSH/SCP.
+- [01. Deploy Manual em Produção](how-to-guides/01-manual-deployment.md) — Compilação, compactação e publicação no servidor Apache via SSH/SCP.
 - [02. Automação e Importação de Dados](how-to-guides/02-data-import-scripts.md) — Scripts Python para cadastrar membros (via Google Forms/CSV), publicações e projetos no Strapi.
 - [03. Internacionalização (i18n)](how-to-guides/03-internationalization.md) — Como adicionar novas strings de tradução (PT/EN) no frontend e Strapi.
 
@@ -48,7 +48,7 @@ PRÁTICA (Ação) ──┼───────────────┼─�
 *Discussões aprofundadas sobre as decisões técnicas, design de software e arquitetura:*
 - [01. Arquitetura Clean Dart](explanations/01-clean-dart-architecture.md) — Camadas Domain, Infra, External e Presentation, princípios S.O.L.I.D. e desacoplamento.
 - [02. Gerenciamento de Estado, DI e Result](explanations/02-state-management-and-di.md) — Reatividade com Stores/ValueNotifier, GetIt Service Locator e programação funcional com `result_dart`.
-- [03. Arquitetura Geral do Sistema](explanations/03-system-architecture.md) — Diagrama do ecossistema: NGINX, Flutter Web, Strapi CMS v4, PostgreSQL e serviços externos.
+- [03. Arquitetura Geral do Sistema](explanations/03-system-architecture.md) — Diagrama do ecossistema: Apache2, Flutter Web, Strapi CMS v4, PostgreSQL e serviços externos.
 
 ---
 

@@ -52,7 +52,7 @@ O site atua como a vitrine digital do laboratório, com os objetivos de:
 | **Frontend** | Flutter Web / Dart | Single Page Application (SPA) responsiva |
 | **Backend** | Strapi CMS v4 (Node.js) | Headless CMS para gestão dinâmica de conteúdo |
 | **Banco de Dados** | PostgreSQL | Persistência relacional em produção |
-| **Servidor Web** | NGINX | Servidor de borda, terminação SSL e reverse proxy |
+| **Servidor Web** | Apache HTTP Server (Apache2) | Servidor de borda, terminação SSL (Let's Encrypt) e reverse proxy |
 | **Automação** | Python 3.10+ | Scripts de sincronização em lote com o Strapi |
 
 ---
@@ -82,7 +82,7 @@ A documentação do projeto está estruturada seguindo o **Framework Diátaxis**
 | Quadrante | Propósito | Principais Guias |
 |---|---|---|
 | 🎓 **[Tutoriais](docs/tutorials/)** | *Aprender* | • [Primeiros Passos](docs/tutorials/01-getting-started.md)<br/>• [Primeira Contribuição e Git](docs/tutorials/02-first-contribution.md) |
-| 🛠️ **[Guias Práticos](docs/how-to-guides/)** | *Fazer* | • [Deploy em Produção (SSH/NGINX)](docs/how-to-guides/01-manual-deployment.md)<br/>• [Importação de Dados via Python](docs/how-to-guides/02-data-import-scripts.md)<br/>• [Internacionalização (i18n)](docs/how-to-guides/03-internationalization.md) |
+| 🛠️ **[Guias Práticos](docs/how-to-guides/)** | *Fazer* | • [Deploy em Produção (SSH/Apache)](docs/how-to-guides/01-manual-deployment.md)<br/>• [Importação de Dados via Python](docs/how-to-guides/02-data-import-scripts.md)<br/>• [Internacionalização (i18n)](docs/how-to-guides/03-internationalization.md) |
 | 🏛️ **[Explicações](docs/explanations/)** | *Entender* | • [Arquitetura Clean Dart](docs/explanations/01-clean-dart-architecture.md)<br/>• [Gerenciamento de Estado e DI](docs/explanations/02-state-management-and-di.md)<br/>• [Arquitetura Geral do Sistema](docs/explanations/03-system-architecture.md) |
 | 📖 **[Referências](docs/reference/)** | *Consultar* | • [Estrutura de Pastas e Módulos](docs/reference/01-directory-structure.md)<br/>• [Variáveis de Ambiente e Flags](docs/reference/02-environment-variables.md)<br/>• [Endpoints da API Strapi](docs/reference/03-strapi-api-endpoints.md) |
 
